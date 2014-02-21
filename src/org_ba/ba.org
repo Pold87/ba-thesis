@@ -1,0 +1,436 @@
+#+TITLE:  Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework
+#+AUTHOR: Volker Strobel
+#+STARTUP: showall
+#+OPTIONS: toc:nil todo:t
+#+LATEX_HEADER: \usepackage{tikz}
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
+#+PROPERTY: :mkdirp yes
+
+#+HTML: <div class="container">
+
+* Introduction
+
+** TODO Notes
+
+- Scope of the article (What did I miss out, what is included?)
+  - Learning Algorithms
+- Name Tools and provide found possibilities and limitations
+- Motivation: Why is this article interesting?
+- Structure of the article
+- Review of relevant literature? Note: I can review the relevant
+  literature and related work in the related chapter, if this is
+  convenient
+- Planning Architecture - 3 Tier Architecture
+- ICAPS
+- Alex: Do not write: I'll do this, because it does not exist yet
+- Do write: I'll do this because this is interesting, because it can
+  do xyz, etc.
+  
+** Intro
+The Planning Domain Definition Language (PDDL), firstly invented by
+Drew McDermott et al. (1998) has emerged to the standard language for
+modeling planning tasks (source!). Planning is about what to do and in
+which order for a given problem. While the scope of applications is
+enormous, there are several limitations and drawbacks that have to be
+considered. After giving a general introduction to PDDL, this thesis
+explores the scope of PDDL with respect to household domains. Possible
+applications exist in the construction of household robots, that are
+especially relevant for people with disabilities. A package that
+includes amongst other a syntax highlighter and code snippets for the
+text editor Sublime Text is presented and the functionality is
+transferred to a on-line editor with instant access.
+
+The main focus of this thesis is about real world applications and the
+development of handy tools that support (and partially automatize) the
+planning process. On the basis of a `kitchen domain' several
+possibilities and limitations are examined, while for each drawback an
+alternative route is provided.
+
+Planning is one the the classic Artificial Intelligence (AI) tasks. 
+
+* PDDL and Planning Basics
+** TODO Notes
+- Brief summary at start
+- Start with a paragraph that describes the context
+- Very interesing for basics of PDDL:
+- http://www.ida.liu.se/~TDDC17/info/labs/planning/writing.html
+- Konstruktionsanleitung
+- Propositionale Logic -> Articifial Intelligence a Modern Approach
+-To insert somewhere:
+  - It should be mentioned, that almost no planner supports every part
+    of PDDL. And, additionally, the quality of error messages is very
+    diversified. While some simple state: error occured, other list
+    the problem and the line.
+
+** Basic
+
+
+#+RESULTS:
+: #'org-ba.core/v
+
+Planning in terms of PDDL
+
+#+BEGIN_SRC ditaa :file workflow.png :eval no
++------------+
+|            |
+|            |
+|   Domain   +                                  
+|            | \--       +------------+          +------------+
+|            |    \--    |            |          |            |
++------------+       \- |             |          |            |
++------------+         -->   PPlanner |--------->|  Solution  |
+|            |     /---  |            |          |   (Plan)   |
+|            | /---      |            |          |            |
+|  Problem   +/          +------------+          +------------+
+|            |            
+|            |            
++------------+            
+                              
+#+END_SRC
+
+#+RESULTS:
+[[file:workflow.png]]
+
+#+CAPTION: Nice Caption
+#+NAME: fig:workflow
+[[file:img/pddl-workflow.png]]
+TODO:  Does not show up!
+
+
+Two files are needed for planning with PDDL: a domain file and a
+problem file. A planner and use the generated solution file (/plan/) (more
+extensive domains can be found on the website
+http://pold87.github.io/pddl-domains).
+
+
+PDDL was first described in `PDDL-the planning domain definition
+language' (1998) and has been in constant development since then. The
+current version (as of 2014) is PDDL 3.1 that is described in detail
+in \footnote
+{http://www.plg.inf.uc3m.es/ipc2011-deterministic/attachments/OtherContributions/kovacs-pddl-3.1-2011.pdf}.
+
+This thesis makes use of PDDL 3.1 if not otherwise stated. 
+
+Every planning task in PDDL is composed of two separate files:
+
+  - Domain file: description of general types, predicates, functions and actions 
+  - Problem file: description of a concrete problem environment.
+
+This separation allows for an intuitive process of task modeling:
+While general instances are described in the domain file, a specific
+instance of a problem is created in the problem file.
+
+These two files shell be investigated further in the following
+sections.
+
+** Format of the Domain File
+The description of the task files is deliberately performed without
+the use of the BNF notation. Fox et al. describe the BNF notation for
+PDDL 2.1 in \cite{fox2003pddl2} as well as in Kovacs' (unpublished)
+paper \cite{kovacs2011bnf}.
+
+
+Domain files have a strict format: All keyword arguments must appear
+in the order specified in the manual (an argument may be omitted) and
+just one PDDL definition (of a domain, problem, etc.) may appear per
+file. \cite[6]{fox2003pddl2}.
+
+
+*** TODO Include simple domain -> LaTeX
+*** TODO Include simple problem -> LaTeX
+*** TODO Include simple plan -> not yet in LaTeX
+*** Define
+Every domain file start with (define (domain <domainName>) ...) where,
+<domainName> can be any string
+
+*** Requirements
+The requirements part is not a mandatory part of a PDDL domain file.
+However, as most planners only support a subset of PDDL they are
+useful for determining if a planner is able to act on a given problem.
+They are declared by the (:requirements ...) part. Some often used
+requirements include ...
+
+*** Types
+In order to assign to assign categories of objects, PDDL allows for
+type definition. Like that, parameters in actions can be typed, as
+well as arguments in predicates, functions [extra source!]. Later, in
+the problem file, objects will be assigned to types, like objects to
+classes in Object Orientated Programming (OOP). Adding
+\mintinline{commin-lisp}{:typing} to the (:requirement ...) part of
+the file guarantees, that typing can be correctly used.
+Strips (no types) vs ADL (types).
+
+*** Functions
+Functions are not supported by many planners (source!) and, before
+% PDDL 3.1 they could only be modeled as 
+
+It is notable that before PDDL 3.0 the keyword
+\mintinline{common-lisp}{functors} was used instead
+
+*** Actions
+PDDL 3.1 supports two types of actions: durative-action and the
+'regular' action.
+
+
+** Format of the Problem File
+** Format of the Solution File (Plan)
+* Software Engineering Tools for AI Planning
+
+** TODO Ideas
+- PDDL type hierarchy and object instantiation to UML / TikZ, store
+  predicates (and action?) in same box as type 
+- Research Knowledge Engineering in Planning
+- Human Computer Interaction
+  - http://hci.waznelle.com/checklist.php
+- Write Tiago (itSimple) regarding PDDL -> UML (and knowledge
+  engineering in general
+- ICKEPS (International Competition on Knowledge Engineering for
+  Planning and Scheduling)
+- Orient on "How to Design Classes"
+
+** Text
+Writing and maintaining PDDL files can be time-consuming and
+cumbersome. However, handy development tools can support and
+facilitate the task design process and reduce potential errors.
+
+Below, methods are presented for
+
+- Section 1: The automation of the PDDL task design process. File
+  input and output and dynamic generation (design level)
+- Section 2: An interactive PDDL environment: speech synthesis and
+  recognition.
+- Section 3: Mathematical limitations (design level)
+  
+The code is written in Clojure, a LISP dialect. As PDDL has a
+'LISP-like syntax', using a LISP dialect for the interface is
+convenient. This thesis uses Clojure[TODO: src], a relatively modern
+LISP dialect that runs on the Java Virtual Machine. 
+
+In order to start the document, a namespace has to be defined. The
+required packages are:
+- clojure.tools.reader.edn :: Safe file input. I will use this
+  method for entirely replacing the tools in clojure.core/read
+- clojure.java.io :: Methods for file input and output (IO)
+
+
+#+BEGIN_SRC clojure :tangle core.clj
+(ns org-ba.core
+  (:gen-class)
+  (require [clojure.tools.reader.edn :as edn]
+           [clojure.java.io :as io]))
+#+END_SRC
+
+#+RESULTS:
+: nil
+
+And we use a main method that allows for testing and running the
+script. 
+
+#+BEGIN_SRC clojure :tangle core.clj
+(defn -main
+  "Runs the input/output scripts"
+  [& args]
+  (println "Running..."))
+#+END_SRC
+
+#+RESULTS:
+: #'user/-main
+
+#+RESULTS:
+: #'user/a
+
+As PDDL files and 'information' will be in stored externally, a reader
+method is needed. Edn reader provides functionality and guarantees
+that no harmful commands can be read in through the reader
+interface.
+
+#+BEGIN_SRC clojure :tangle core.clj
+(defn read-lispstyle-edn
+  "Read one s-expression from a file"
+  [filename]
+  (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
+    (edn/read rdr)))
+#+END_SRC
+
+#+RESULTS:
+: #'org-ba.core/read-lispstyle-edn
+
+Next, a macro is provided for writing to files. It rebinds *out* to a
+writer (that open a file for writing). Therefore, print statements
+(print, prn, etc.) that normally would be send to the standard out,
+are redirected to the file.
+
+#+BEGIN_SRC clojure :tangle core.cl
+(defmacro write->file
+  "Writes body to the given file name"
+  [filename & body]
+  `(with-open [w# (writer ~filename)]
+     (binding [*out* w#]
+       ~@body))
+  (println "Written to file: " ~filename))
+#+END_SRC
+
+#+RESULTS:
+: #'org-ba.core/write->file
+
+Desired objects that belong to a type for a domain are sometimes
+provided in a plain list, like the following:
+
+#+BEGIN_EXAMPLE
+vw-passat
+opel-corsa
+chevrolet-volt
+#+END_EXAMPLE
+
+It would be convenient to add a type to these objects, for two
+reasons:
+- Add a super-type to the subtypes in the list
+- Add a type to a list of objects for the problem file
+
+The following method affords that:
+#+BEGIN_SRC clojure :tangle core.cl
+(defn read-objs
+  "Read PDDL objects from a file and add type
+  (e.g. 'table bed' -> (list table - furniture
+                        bed - furniture))"
+  [file object-type]
+  (as-> (slurp file) objs
+        (clojure.string/split objs #"\s")
+        (map #(str % " - " object-type) objs)))
+#+END_SRC
+
+#+RESULTS:
+: #'org-ba.core/read-objs
+
+By the help of these methods, you can create PDDL templates, for
+example for a domain file:
+
+#+BEGIN_SRC clojure :tangle core.cl
+
+(defn create-pddl
+  "Creates a PDDL file from a list of objects and locations"
+  [objs-file objs-type]
+  (str
+"(define (domain domainName)
+
+  (:requirements
+     :durative-actions
+     :equality
+     :negative-preconditions
+     :numeric-fluents
+     :object-fluents
+     :typing)
+
+  (:types\n"
+   (clojure.pprint/cl-format nil "~{~&~5@T~a~}" (read-objs objs-file objs-type))
+        ")
+
+  (:constants
+
+  )
+
+  (:predicates
+
+  )
+
+  (:functions
+
+  )
+
+  (:durative-action actionName
+     :parameters (?x - <objectType>)
+     :duration (= ?duration #duration)
+     :condition (at start <effects>)
+     :effect (at end <effects>))
+)"
+))
+#+END_SRC
+
+#+RESULTS:
+: #'org-ba.core/create-pddl
+
+PDDL widely supports 'types'. These define possible shapes for objects
+(similar to 'classes' in object oriented programming (OOP)). Types are
+defined in the ':types' section of the PDDL domain file:
+#+BEGIN_EXAMPLE
+....
+(:types man woman - human
+        human - agent
+        robot - agent)
+...
+#+END_EXAMPLE
+
+A meaning-full type hierarchy is the basis for clean, well-written
+domains. Type definitions constitute the first part in the PDDL
+domain design process, as they determine, on which possible objects
+actions can be performed. 
+
+In order to further work with the specified types, they have to be
+extracted from the PDDL file. For this task, a regular expression is
+used, that splits the types in subtypes and belonging types.
+
+#+BEGIN_SRC clojure :tangle core.clj
+(defn split-up
+  "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
+  into strings of subtypes and associated types,
+  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
+  [coll]
+  (let [coll (if (= :types (first coll))
+                 (rest coll)
+                 coll)]
+    ;; REVIEW: insert (\w) for trimming?
+  (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
+        (clojure.string/join " " coll))))
+#+END_SRC
+
+#+RESULTS:
+: #'user/split-up
+
+The resulting list can be used for creating a hash-map, where every
+type from the PDDL type declaration is the hash-key and the subtypes
+are the values. 
+
+#+BEGIN_SRC clojure :tangle io.clj
+(defn types->hash-map
+  "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
+  to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
+  [coll]
+  (reduce (fn [h-map [_ objs obj-type]]
+           (let [key-obj-type (keyword obj-type)
+                 existing-vals (key-obj-type h-map)]
+          (assoc h-map
+                 key-obj-type
+                 (concat existing-vals
+                       (clojure.string/split objs #"\s")))))
+          {}
+          coll))
+#+END_SRC
+
+#+RESULTS:
+: #'user/types->hash-map
+
+Now, as these information is present in a 'native' Clojure data
+structure, it can be used for various purposes. A desirable purpose
+would be to display the type hierarchy in kind of a 'class' diagram:
+
+#+BEGIN_SRC clojure :tangle io.clj
+(defn map-entry->TikZ-seq
+  "Converts a hashmap entry (:key [vals]) to a TikZ string (key -- { vals })"
+  [entry]
+(str
+ (name (key entry))
+        " -- "
+        "{" (clojure.string/join ", " (val entry)) "}"))
+#+END_SRC
+
+#+RESULTS:
+: #'user/map-entry->TikZ-seq
+
+
+* Footnotes
+
+[fn:1]
+http://www.plg.inf.uc3m.es/ipc2011-deterministic/attachments/OtherContributions/kovacs-pddl-3.1-2011.pdf
+
+
+#+HTML: </div>
