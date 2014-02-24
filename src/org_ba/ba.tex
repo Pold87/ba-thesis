@@ -1,25 +1,49 @@
-* Export Configuration                                     :ARCHIVE:noexport:
-#+TITLE:  Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework
-#+AUTHOR: Volker Strobel
-#+EMAIL: volker.strobel87@gmail.com
-#+HTML: <div class="container">
-#+LANGUAGE: en, de
-#+OPTIONS: toc:t todo:t
-#+LaTeX_HEADER: \usepackage{minted}
-#+LaTeX_HEADER: \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
-#+LaTeX_HEADER: \addbibresource{bibliography.bib}
-#+LaTeX_HEADER: \usepackage[]{hyperref}
-#+LaTeX_HEADER: \hypersetup{hidelinks}
-#+PROPERTY: :mkdirp yes
-#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
-* Abstract
-** TODO Insert somewhere
-A introduction to the syntax of PDDL will be given, as well as
-Potential applications in real life environments could be ... And a
-way for writing proper.
+% Created 2014-02-24 Mon 08:34
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{minted}
+\usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
+\usepackage[]{hyperref}
+\hypersetup{hidelinks}
+\author{Volker Strobel}
+\date{\today}
+\title{Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.3.1 (Org mode 8.2.5h)}}
+\begin{document}
 
-** Abstract
-*** v_1
+\maketitle
+\tableofcontents
+
+\section{Abstract}
+\label{sec-1}
+\subsection{{\bfseries\sffamily TODO} Insert somewhere}
+\label{sec-1-1}
+A introduction to the syntax of PDDL will be given, as well as
+Potential applications in real life environments could be \ldots{} And a
+way for writing proper.
+\subsection{Abstract}
+\label{sec-1-2}
+\subsubsection{v\(_{\text{1}}\)}
+\label{sec-1-2-1}
 This thesis presents the Planvning Domain Definition Language (PDDL)
 and debates possibilities and limitations of its use with reference to
 household robots. Furthermore, a syntax highlighter for the text
@@ -36,11 +60,11 @@ overview will be given, whereas the topic's main focus are household
 domains (``household'').  A introduction to the syntax of PDDL will be
 given, as well as  Potential applications in real life environments
 could be   And a way for writing proper
+\subsubsection{v\(_{\text{2}}\)}
+\label{sec-1-2-2}
 
-*** v_2
-
-
-** Zusammenfassung
+\subsection{Zusammenfassung}
+\label{sec-1-3}
 Diese Arbeit untersucht die Möglichkeiten und Grenzen der
 Planungssprache Planning Domain Definition Language (PDDL) im Hinblick
 auf die Anwendung bei Haushaltsrobotern. Dazu wird ein umfassender
@@ -49,29 +73,34 @@ werden anhand praktischer Beispiele untersucht. Für die Konstruktion
 der Pläne wird eine Entwicklungsumgebung präsentiert, die Python,
 Spracherfassung und PDDL vereint. Weiterhin werden ein Plugin für den
 Texteditor Sublime Text (Version 2 und 3) und ein PDDL-Onlineeditor
-vorgestellt. Um P\"ane besser zu fassen, werden Möglichkeiten der
+vorgestellt. Um P$\backslash$"ane besser zu fassen, werden Möglichkeiten der
 Visualisierung mit der Robotersimulation MORSE und dem
 Planvisuialisierungsprogramm VISPlan angesprochen.
+\section{Introduction}
+\label{sec-2}
 
-* Introduction
+\subsection{{\bfseries\sffamily TODO} Notes}
+\label{sec-2-1}
 
-** TODO Notes
-
-- Scope of the article (What did I miss out, what is included?)
-  - Learning Algorithms
-- Name Tools and provide found possibilities and limitations
-- Motivation: Why is this article interesting?
-- Structure of the article
-- Review of relevant literature? Note: I can review the relevant
-  literature and related work in the related chapter, if this is
-  convenient
-- Planning Architecture - 3 Tier Architecture
-- ICAPS
-- Alex: Do not write: I'll do this, because it does not exist yet
-- Do write: I'll do this because this is interesting, because it can
-  do xyz, etc.
-  
-** Intro
+\begin{itemize}
+\item Scope of the article (What did I miss out, what is included?)
+\begin{itemize}
+\item Learning Algorithms
+\end{itemize}
+\item Name Tools and provide found possibilities and limitations
+\item Motivation: Why is this article interesting?
+\item Structure of the article
+\item Review of relevant literature? Note: I can review the relevant
+literature and related work in the related chapter, if this is
+convenient
+\item Planning Architecture - 3 Tier Architecture
+\item ICAPS
+\item Alex: Do not write: I'll do this, because it does not exist yet
+\item Do write: I'll do this because this is interesting, because it can
+do xyz, etc.
+\end{itemize}
+\subsection{Intro}
+\label{sec-2-2}
 The Planning Domain Definition Language (PDDL), firstly invented by
 Drew McDermott et al. (1998) has emerged to the standard language for
 modeling planning tasks (source!). Planning is about what to do and in
@@ -92,52 +121,60 @@ possibilities and limitations are examined, while for each drawback an
 alternative route is provided.
 
 Planning is one the the classic Artificial Intelligence (AI) tasks. 
-
-** Intro v_2
+\subsection{Intro v\(_{\text{2}}\)}
+\label{sec-2-3}
 The Planning Domain Definition Language (PDDL), firstly invented by
 Drew McDermott et al. (1998) has emerged to the standard language for
 modeling planning tasks. Despite the process in AI planning, knowledge
 engineering is still a 
-
-* PDDL and Planning Basics
-** TODO Notes
-- Brief summary at start
-- Start with a paragraph that describes the context
-- Very interesing for basics of PDDL:
-- http://www.ida.liu.se/~TDDC17/info/labs/planning/writing.html
-- Konstruktionsanleitung
-- Propositionale Logic -> Articifial Intelligence a Modern Approach
+\section{PDDL and Planning Basics}
+\label{sec-3}
+\subsection{{\bfseries\sffamily TODO} Notes}
+\label{sec-3-1}
+\begin{itemize}
+\item Brief summary at start
+\item Start with a paragraph that describes the context
+\item Very interesing for basics of PDDL:
+\item \url{http://www.ida.liu.se/~TDDC17/info/labs/planning/writing.html}
+\item Konstruktionsanleitung
+\item Propositionale Logic -> Articifial Intelligence a Modern Approach
+\end{itemize}
 -To insert somewhere:
-  - It should be mentioned, that almost no planner supports every part
-    of PDDL. And, additionally, the quality of error messages is very
-    diversified. While some simple state: error occured, other list
-    the problem and the line.
-
-** Basics
+\begin{itemize}
+\item It should be mentioned, that almost no planner supports every part
+of PDDL. And, additionally, the quality of error messages is very
+diversified. While some simple state: error occured, other list
+the problem and the line.
+\end{itemize}
+\subsection{Basics}
+\label{sec-3-2}
 
 Planning in terms of PDDL
 
-#+CAPTION: PDDL Planning workflow
-#+NAME: fig:workflow
-[[file:../../img/pddl-workflow.pdf]]
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{../../img/pddl-workflow.pdf}
+\caption{\label{fig:workflow}PDDL Planning workflow}
+\end{figure}
 
 
 Two files are needed for planning with PDDL: a domain file and a
-problem file. A planner and use the generated solution file (/plan/) (more
-extensive domains can be found on my website [fn::
-http://pold87.github.io/pddl-domains].
+problem file. A planner and use the generated solution file (\emph{plan}) (more
+extensive domains can be found on my website \footnote{\url{http://pold87.github.io/pddl-domains}}.
 
 
 PDDL was first described in PDDL-the planning domain definition
 language (1998) and has been in constant development since then. The
 current version (as of 2014) is PDDL 3.1 that is described in detail
-in [fn:: http://www.plg.inf.uc3m.es/ipc2011-deterministic/attachments/OtherContributions/kovacs-pddl-3.1-2011.pdf].
+in \footnote{\url{http://www.plg.inf.uc3m.es/ipc2011-deterministic/attachments/OtherContributions/kovacs-pddl-3.1-2011.pdf}}.
 This thesis makes use of PDDL 3.1 if not otherwise stated. 
 
 Every planning task in PDDL is composed of two separate files:
 
-  - Domain file: description of general types, predicates, functions and actions 
-  - Problem file: description of a concrete problem environment.
+\begin{itemize}
+\item Domain file: description of general types, predicates, functions and actions
+\item Problem file: description of a concrete problem environment.
+\end{itemize}
 
 This separation allows for an intuitive process of task modeling:
 While general instances are described in the domain file, a specific
@@ -145,8 +182,8 @@ instance of a problem is created in the problem file.
 
 These two files shell be investigated further in the following
 sections.
-
-** Format of the Domain File
+\subsection{Format of the Domain File}
+\label{sec-3-3}
 The description of the task files is deliberately performed without
 the use of the BNF notation. Fox et al. describe the BNF notation for
 PDDL 2.1 in \cite{fox2003pddl2} as well as in Kovacs' (unpublished)
@@ -158,123 +195,133 @@ in the order specified in the manual (an argument may be omitted) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
 file. \cite[6]{fox2003pddl2}.
 
-*** TODO Include simple domain -> LaTeX
-*** TODO Include simple problem -> LaTeX
-*** TODO Include simple plan -> not yet in LaTeX
-*** Define
-Every domain file start with (define (domain <domainName>) ...) where,
+\subsubsection{{\bfseries\sffamily TODO} Include simple domain -> \LaTeX{}}
+\label{sec-3-3-1}
+\subsubsection{{\bfseries\sffamily TODO} Include simple problem -> \LaTeX{}}
+\label{sec-3-3-2}
+\subsubsection{{\bfseries\sffamily TODO} Include simple plan -> not yet in \LaTeX{}}
+\label{sec-3-3-3}
+\subsubsection{Define}
+\label{sec-3-3-4}
+Every domain file start with (define (domain <domainName>) \ldots{}) where,
 <domainName> can be any string
-
-*** Requirements
+\subsubsection{Requirements}
+\label{sec-3-3-5}
 The requirements part is not a mandatory part of a PDDL domain file.
 However, as most planners only support a subset of PDDL they are
 useful for determining if a planner is able to act on a given problem.
-They are declared by the (:requirements ...) part. Some often used
-requirements include ...
-
-*** Types
+They are declared by the (:requirements \ldots{}) part. Some often used
+requirements include \ldots{}
+\subsubsection{Types}
+\label{sec-3-3-6}
 In order to assign to assign categories of objects, PDDL allows for
 type definition. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
-classes in Object Orientated Programming (OOP). Adding to the (:requirement ...) part of
+classes in Object Orientated Programming (OOP). Adding to the (:requirement \ldots{}) part of
 the file guarantees, that typing can be correctly used.
 Strips (no types) vs ADL (types).
-
-*** Functions
+\subsubsection{Functions}
+\label{sec-3-3-7}
 Functions are not supported by many planners (source!) and, before
-% PDDL 3.1 they could only be modeled as 
+\% PDDL 3.1 they could only be modeled as 
 
 It is notable that before PDDL 3.0 the keyword functors was used instead
-
-*** Actions
+\subsubsection{Actions}
+\label{sec-3-3-8}
 PDDL 3.1 supports two types of actions: durative-action and the
 'regular' action.
-
-** Format of the Problem File
-** Format of the Solution File (Plan)
-** Planning Process
-
-* Possibilities and Limitations
-** Kitchen Domain
+\subsection{Format of the Problem File}
+\label{sec-3-4}
+\subsection{Format of the Solution File (Plan)}
+\label{sec-3-5}
+\subsection{Planning Process}
+\label{sec-3-6}
+\section{Possibilities and Limitations}
+\label{sec-4}
+\subsection{Kitchen Domain}
+\label{sec-4-1}
 In this section, I will present a kitchen domain, whereby PDDL
 structures are presented that will be also useful in other domains. I
 will start with a rather simple domain, present possible limitations
 and then extend the file by more sophisticated constructs.
-*** Functions
+\subsubsection{Functions}
+\label{sec-4-1-1}
 As functions have a return value, the modeling possibilities
 dramatically increase.
-*** Numerical Expressiveness
+
+\subsubsection{Numerical Expressiveness}
+\label{sec-4-1-2}
 One might assume that the distance could be modeled as follows:
 
-#+BEGIN_EXAMPLE
-  (durative action ...
-  ...
-    :duration (= ?duration (sqrt (coord-x )))
-  ...
-#+END_EXAMPLE
+\begin{verbatim}
+(durative action ...
+...
+  :duration (= ?duration (sqrt (coord-x )))
+...
+\end{verbatim}
 
 However, PDDL does only support basic arithmetic operations (+, -, /, *).
 
 An Euclidean distance function that uses the square root would be convenient for distance modeling and measurement. However, PDDL (v3.1) supports only four arithmetic operators (+, -, /, *)\cite These operators can be used in preconditions, effects (normal/continuous/conditional) and durations. \cite{parkinson2012increasing} describe a workaround for this drawback. By declaring an action `calculate-sqrt', they bypass the lack of this function and rather write their own action that makes use of the Babylonian root method.
 
-% Alternative #1: Only sqrt exists
+\% Alternative \#1: Only sqrt exists
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
 :duration (= ?duration 
-			(sqrt
-				(+
-					(*
-						(- 
-							(pos-x (current-pos))
-							(pos-x ?goal))
-						(- 
-							(pos-x (current-pos))
-							(pos-x ?goal)))
-					(*
-						(- 
-							(pos-y (current-pos))
-							(pos-y ?goal))
-						(- 
-							(pos-y (current-pos))
-							(pos-y ?goal)))
+                        (sqrt
+                                (+
+                                        (*
+                                                (- 
+                                                        (pos-x (current-pos))
+                                                        (pos-x ?goal))
+                                                (- 
+                                                        (pos-x (current-pos))
+                                                        (pos-x ?goal)))
+                                        (*
+                                                (- 
+                                                        (pos-y (current-pos))
+                                                        (pos-y ?goal))
+                                                (- 
+                                                        (pos-y (current-pos))
+                                                        (pos-y ?goal)))
 
-			)))
+)))
 
-% Alternative #2: sqrt and expt exist
+\% Alternative \#2: sqrt and expt exist
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
 :duration (= ?duration 
-			(sqrt
-				(+
-					(expt
-						(- 
-							(pos-x (current-pos))
-							(pos-x ?goal)))
-					(expt
-						(- 
-							(pos-y (current-pos))
-							(pos-y ?goal)))
+                        (sqrt
+                                (+
+                                        (expt
+                                                (- 
+                                                        (pos-x (current-pos))
+                                                        (pos-x ?goal)))
+                                        (expt
+                                                (- 
+                                                        (pos-y (current-pos))
+                                                        (pos-y ?goal)))
 
-			)))
+)))
 
-% Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-% Distance Matrix
-% http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities
-% Scipy.spatial.distance
-% Mention that the Taxicab geometry allows different ways that have an equal length
+\% Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
+\% Distance Matrix
+\% \url{http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities}
+\% Scipy.spatial.distance
+\% Mention that the Taxicab geometry allows different ways that have an equal length
 
-Another alternative is to make use of an external helper and, instead of calculating every entry of the distance matrix. the distance only if needed, incorporate every possible combination of two locations. This approach has certainly a major drawback: With an increasing amount of locations, the number of combinations increases exponentially. That means, if there are 100 locations, there will be ... . The native approach would be to iterate over the cities twice and calculate only the half of the matrix (as it is symmetric, that mean distance from A to B is the same as the distance from B to A).
+Another alternative is to make use of an external helper and, instead of calculating every entry of the distance matrix. the distance only if needed, incorporate every possible combination of two locations. This approach has certainly a major drawback: With an increasing amount of locations, the number of combinations increases exponentially. That means, if there are 100 locations, there will be \ldots{} . The native approach would be to iterate over the cities twice and calculate only the half of the matrix (as it is symmetric, that mean distance from A to B is the same as the distance from B to A).
 
-% Alternative #4: Use the manhattan distance
+\% Alternative \#4: Use the manhattan distance
 
 Allowing the agent to move only vertically and horizontally would be that one can use the so called Taxicab geometry (or Manhattan length) as distance measurement.  In the Kitchen domain, this could be modeled as follows:
 
 
 
-% => Metric: reduce duration
+\% => Metric: reduce duration
 
-% dKitchenware.pddl
+\% dKitchenware.pddl
 \begin{figure}[t]
 \inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
             {csharp}
@@ -284,49 +331,57 @@ Allowing the agent to move only vertically and horizontally would be that one ca
 
 
 
-	\subsection{...}
+\subsection{...}
 \section{Human Planner Interaction}
 \section{World State - Plan Stepper}
-% EMail + SMS connection
+\% EMail + SMS connection
 
-% Very interesting:
-% http://www.tzi.de/~edelkamp/modplan/
+\% Very interesting:
+\% \url{http://www.tzi.de/~edelkamp/modplan/}
 
 
 
-% Reuse existing plans (VAL!). If a plan is not reusable, find problems  (e.g. step 13 and 17) and try to find solutions for that
+\% Reuse existing plans (VAL!). If a plan is not reusable, find problems  (e.g. step 13 and 17) and try to find solutions for that
 
-% Summary: List all limits and possibilities and write 5 sentences for
+\% Summary: List all limits and possibilities and write 5 sentences for
 each  statement (my own idea!)
-
-* Software Engineering Tools for AI Planning
-** TODO Ideas
-- PDDL type hierarchy and object instantiation to UML / TikZ, store
-  predicates (and action?) in same box as type 
-- Research Knowledge Engineering in Planning
-- Human Computer Interaction
-  - http://hci.waznelle.com/checklist.php
-- Write Tiago (itSimple) regarding PDDL -> UML (and knowledge
-  engineering in general
-- ICKEPS (International Competition on Knowledge Engineering for
-  Planning and Scheduling)
-- Orient on "How to Design Classes"
-
-** Statement of Problem
+\section{Software Engineering Tools for AI Planning}
+\label{sec-5}
+\subsection{{\bfseries\sffamily TODO} Ideas}
+\label{sec-5-1}
+\begin{itemize}
+\item PDDL type hierarchy and object instantiation to UML / TikZ, store
+predicates (and action?) in same box as type
+\item Research Knowledge Engineering in Planning
+\item Human Computer Interaction
+\begin{itemize}
+\item \url{http://hci.waznelle.com/checklist.php}
+\end{itemize}
+\item Write Tiago (itSimple) regarding PDDL -> UML (and knowledge
+engineering in general
+\item ICKEPS (International Competition on Knowledge Engineering for
+Planning and Scheduling)
+\item Orient on "How to Design Classes"
+\end{itemize}
+\subsection{Statement of Problem}
+\label{sec-5-2}
 Writing and maintaining PDDL files can be time-consuming and
 cumbersome. However, handy development tools can support and
 facilitate the task design process and reduce potential errors.
 
 Below, methods are presented for
 
-- Section 1 :: The automation of the PDDL task design process. File
-  input and output and dynamic generation (design level)
-- Section 2 :: An interactive PDDL environment: speech synthesis and
-  recognition.
-- Section 3 :: Mathematical limitations (design level)
-  
-** Implementation
-*** Integrated Design
+\begin{description}
+\item[{Section 1}] The automation of the PDDL task design process. File
+input and output and dynamic generation (design level)
+\item[{Section 2}] An interactive PDDL environment: speech synthesis and
+recognition.
+\item[{Section 3}] Mathematical limitations (design level)
+\end{description}
+\subsection{Implementation}
+\label{sec-5-3}
+\subsubsection{Integrated Design}
+\label{sec-5-3-1}
 
 The code is written in Clojure, a LISP dialect. As PDDL has a
 'LISP-like syntax', using a LISP dialect for the interface is
@@ -335,58 +390,52 @@ LISP dialect that runs on the Java Virtual Machine.
 
 In order to start the document, a namespace has to be defined. The
 required packages are:
-- clojure.tools.reader.edn :: Safe file input. I will use this
-  method for entirely replacing the tools in clojure.core/read
-- clojure.java.io :: Methods for file input and output (IO)
+\begin{description}
+\item[{clojure.tools.reader.edn}] Safe file input. I will use this
+method for entirely replacing the tools in clojure.core/read
+\item[{clojure.java.io}] Methods for file input and output (IO)
+\end{description}
 
-#+BEGIN_SRC clojure :tangle core.clj
+\begin{verbatim}
 (ns org-ba.core
   (:gen-class)
   (require [clojure.tools.reader.edn :as edn]
            [clojure.java.io :as io]))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> nil
+\end{verbatim}
 
 And we use a main method that allows for testing and running the
 script. 
 
-#+BEGIN_SRC clojure :tangle core.clj
+\begin{verbatim}
 (defn -main
   "Runs the input/output scripts"
   [& args]
   (println "Running..."))
-#+END_SRC
+\end{verbatim}
 
-#+RESULTS:
-: ;;=> #'user/-main
-
-#+RESULTS:
-: #'user/a
+\begin{verbatim}
+#'user/a
+\end{verbatim}
 
 As PDDL files and 'information' will be in stored externally, a reader
 method is needed. Edn reader provides functionality and guarantees
 that no harmful commands can be read in through the reader
 interface.
 
-#+BEGIN_SRC clojure :tangle core.clj
+\begin{verbatim}
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
   [filename]
   (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
     (edn/read rdr)))
-#+END_SRC
+\end{verbatim}
 
-#+RESULTS:
-: ;; CompilerException java.lang.RuntimeException: No such namespace: edn, compiling:(/tmp/form-init7457948236864479025.clj:5:5) 
-
-Next, a macro is provided for writing to files. It rebinds *out* to a
+Next, a macro is provided for writing to files. It rebinds \textbf{out} to a
 writer (that open a file for writing). Therefore, print statements
 (print, prn, etc.) that normally would be send to the standard out,
 are redirected to the file.
 
-#+BEGIN_SRC clojure :tangle core.cl
+\begin{verbatim}
 (defmacro write->file
   "Writes body to the given file name"
   [filename & body]
@@ -394,27 +443,26 @@ are redirected to the file.
      (binding [*out* w#]
        ~@body))
   (println "Written to file: " ~filename))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/write->file
+\end{verbatim}
 
 Desired objects that belong to a type for a domain are sometimes
 provided in a plain list, like the following:
 
-#+BEGIN_EXAMPLE
+\begin{verbatim}
 vw-passat
 opel-corsa
 chevrolet-volt
-#+END_EXAMPLE
+\end{verbatim}
 
 It would be convenient to add a type to these objects, for two
 reasons:
-- Add a super-type to the subtypes in the list
-- Add a type to a list of objects for the problem file
+\begin{itemize}
+\item Add a super-type to the subtypes in the list
+\item Add a type to a list of objects for the problem file
+\end{itemize}
 
 The following method affords that:
-#+BEGIN_SRC clojure :tangle core.cl
+\begin{verbatim}
 (defn read-objs
   "Read PDDL objects from a file and add type
   (e.g. 'table bed' -> (list table - furniture
@@ -423,16 +471,12 @@ The following method affords that:
   (as-> (slurp file) objs
         (clojure.string/split objs #"\s")
         (map #(str % " - " object-type) objs)))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/read-objs
+\end{verbatim}
 
 By the help of these methods, you can create PDDL templates, for
 example for a domain file:
 
-#+BEGIN_SRC clojure :tangle core.cl
-
+\begin{verbatim}
 (defn create-pddl
   "Creates a PDDL file from a list of objects and locations"
   [objs-file objs-type]
@@ -470,21 +514,18 @@ example for a domain file:
      :effect (at end <effects>))
 )"
 ))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/create-pddl
+\end{verbatim}
 
 PDDL widely supports 'types'. These define possible shapes for objects
 (similar to 'classes' in object oriented programming (OOP)). Types are
 defined in the ':types' section of the PDDL domain file:
-#+BEGIN_EXAMPLE
+\begin{verbatim}
 ....
 (:types man woman - human
         human - agent
         robot - agent)
 ...
-#+END_EXAMPLE
+\end{verbatim}
 
 A meaning-full type hierarchy is the basis for clean, well-written
 domains. Type definitions constitute the first part in the PDDL
@@ -495,7 +536,7 @@ In order to further work with the specified types, they have to be
 extracted from the PDDL file. For this task, a regular expression is
 used, that splits the types in subtypes and belonging types.
 
-#+BEGIN_SRC clojure :tangle core.clj
+\begin{verbatim}
 (defn split-up
   "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
   into strings of subtypes and associated types,
@@ -507,16 +548,13 @@ used, that splits the types in subtypes and belonging types.
     ;; REVIEW: insert (\w) for trimming?
   (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
         (clojure.string/join " " coll))))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/split-up
+\end{verbatim}
 
 The resulting list can be used for creating a hash-map, where every
 type from the PDDL type declaration is the hash-key and the subtypes
 are the values. 
 
-#+BEGIN_SRC clojure :tangle io.clj
+\begin{verbatim}
 (defn types->hash-map
   "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
   to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
@@ -530,17 +568,13 @@ are the values.
                        (clojure.string/split objs #"\s")))))
           {}
           coll))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/types->hash-map
+\end{verbatim}
 
 Now, as these information is present in a 'native' Clojure data
 structure, it can be used for various purposes. A desirable purpose
 would be to display the type hierarchy in kind of a 'class' diagram:
 
-#+name: map-entry->TikZ-seq
-#+BEGIN_SRC clojure :tangle io.clj
+\begin{verbatim}
 (defn map-entry->TikZ-seq
   "Converts a hashmap entry (:key [val1 val2 ...])
 to a TikZ string (key -- { val1, val2 })"
@@ -549,20 +583,16 @@ to a TikZ string (key -- { val1, val2 })"
  (name (key entry))
         " -- "
         "{" (clojure.string/join ", " (val entry)) "}"))
-#+END_SRC
+\end{verbatim}
 
-#+RESULTS: map-entry->TikZ-seq
-: ;;=> #'user/map-entry->TikZ-seq
+\begin{verbatim}
+#'user/map-entry->TikZ-seq
+\end{verbatim}
 
-#+RESULTS:
-: #'user/map-entry->TikZ-seq
-
-This method can now be used in order to create a TikZ standalone LaTeX
+This method can now be used in order to create a TikZ standalone \LaTeX{}
 file, that is converted to a png file by the use of lualatex.
 
-#+name: hash-map->TikZ-out
-#+BEGIN_SRC clojure 
-
+\begin{verbatim}
 (defn hash-map->TikZ-out
   "Converts complete PDDL type hash-map to TikZ file"
   [h-map]
@@ -589,36 +619,25 @@ file, that is converted to a png file by the use of lualatex.
 
 \\end{tikzpicture}
 \\end{document}"))
-
-#+END_SRC
-
-#+RESULTS: hash-map->TikZ-out
-: ;;=> #'user/hash-map->TikZ-out
+\end{verbatim}
 
 A resulting example image would look like this:
 
-[[../../img/tikz-file.pdf]]
+\includegraphics[width=.9\linewidth]{../../img/tikz-file.pdf}
 
 This look can be further extended in order to create a 
 UML class diagram for PDDL domains and problems:
-...
+\ldots{}
 
 
 
-#+TODO TODO
-#+BEGIN_SRC clojure
+\#+TODO TODO
+\subsubsection{Syntax Highlighting and Code Snippets}
+\label{sec-5-3-2}
+\begin{enumerate}
+\item Problem Statement
+\label{sec-5-3-2-1}
 
-
-
-#+END_SRC
-
-#+RESULTS:
-
-*** Syntax Highlighting and Code Snippets
-**** Problem Statement
-
-# Problembewusstsein und Vorteile: Ignore larger parts of text etc.
-# (see http://en.wikipedia.org/wiki/Syntax_highlighting) 
 
 Writing extensive domain and problem files is a cumbersome task:
 longer files can get quickly confusing. Therefore, it is convenient to
@@ -635,8 +654,8 @@ For Mac user, TextMate (TM) is very similar to ST and the syntax
 highlighting file can be used there, too. Besides, the general
 principles (e.g. regular expressions) outlined here, apply to most of
 other editors as well.  
-
-**** Implementation
+\item Implementation
+\label{sec-5-3-2-2}
 ST syntax definitions are written in property lists in the XML format. 
 
 The syntax definition is implemented by the use of the ST plug-in
@@ -644,11 +663,11 @@ AAAPackageDev\textcite{aaapackagedev}. So, the definitions can be
 written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
 following features:
 
-#+BEGIN_QUOTE
+\begin{quote}
 AAAPackageDev is a Sublime Text 2 and 3 plug-in
 that helps to create and edit syntax definitions, snippets,
 completions files, build systems and other Sublime Text extensions.
-#+END_QUOTE
+\end{quote}
 
 By means of Oniguruma regular expressions \parencite{kosako}, scopes are
 defined, that determine the meaning of the PDDL code block. The scope naming
@@ -658,12 +677,30 @@ display different colors (not all themes support all naming conventions).
 
 The syntax highlighting is intended for PDDL 3.1, but is downward
 compatible, as previous versions are subsets of later versions.
-*************** TODO Are later versions really subsets?
-Like that, the PDDL file is parsed 
-*************** TODO Is it really parsed, or are just parts highlighted?
-into different parts. 
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+\textbf{\textsf{\textsc{TODO}}} Are later versions really subsets?
 
-**** Usage and Customization
+\rule[.8em]{\textwidth}{2pt}
+
+nil\end{minipage}
+}
+\end{center}
+Like that, the PDDL file is parsed 
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+\textbf{\textsf{\textsc{TODO}}} Is it really parsed, or are just parts highlighted?
+
+\rule[.8em]{\textwidth}{2pt}
+
+nil\end{minipage}
+}
+\end{center}
+into different parts. 
+\item Usage and Customization
+\label{sec-5-3-2-3}
 By using ST as editor, language independent ST features are supported, like auto
 completion, code folding and column selection, described in the
 Sublime Text 2 Documentation.
@@ -673,27 +710,35 @@ repository have to be placed in the ST packages folder. The first part
 of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
 should be highlighted. By removing (or commenting) include 
 
-#+BEGIN_EXAMPLE
-
-#+END_EXAMPLE
-
 By default, all scopes are included.
+\item Related Work
+\label{sec-5-3-2-4}
 
-**** Related Work
-
-***** PDDL Studio
+\begin{enumerate}
+\item PDDL Studio
+\label{sec-5-3-2-4-1}
 PDDL Studio is an Integrated Development Environment (IDE) for
 creating PDDL tasks. 
-***** PDDL Mode
+
+\item PDDL Mode
+\label{sec-5-3-2-4-2}
 Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.1
+\item itSimple
+\label{sec-5-3-2-4-3}
+\end{enumerate}
+\end{enumerate}
+\subsection{Evaluation}
+\label{sec-5-4}
 
-***** itSimple
-
-** Evaluation
-* Discussion
-* Conclusion
-* Bibliography
+\section{Discussion}
+\label{sec-6}
+\section{Conclusion}
+\label{sec-7}
+\section{Bibliography}
+\label{sec-8}
 \printbibliography
-* Appendix
 
-#  LocalWords:  AAAPackageDev
+\section{Appendix}
+\label{sec-9}
+% Emacs 24.3.1 (Org mode 8.2.5h)
+\end{document}
