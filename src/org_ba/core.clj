@@ -2,7 +2,10 @@
   (:gen-class)
   (require [clojure.tools.reader.edn :as edn]
            [clojure.java.io :as io]
-           [clojure.pprint :as pprint]))
+           [clojure.pprint :as pprint]
+           ;[speech-synthesis.say :as say]
+           ;[speech-recognition.hear :as hear]
+           ))
 
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
@@ -133,4 +136,6 @@ to a TikZ string (key -- { val1, val2 })"
   (print
    (types->hash-map
     (split-up
-     '(:types man woman - agent table bed - furniture robot agent)))))
+     '(:types man woman - agent table bed - furniture robot agent))))
+  (say/say "Welcome to PDDL environment"))
+

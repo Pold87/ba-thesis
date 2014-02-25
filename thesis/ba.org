@@ -5,14 +5,17 @@
 #+HTML: <div class="container">
 #+LANGUAGE: en
 #+OPTIONS: toc:t todo:t
+#+LATEX_CLASS: report
 #+LaTeX_HEADER: \usepackage{minted}
 #+LaTeX_HEADER: \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
 #+LaTeX_HEADER: \addbibresource{bibliography.bib}
- #+LaTeX_HEADER: \usepackage[]{hyperref}
+#+LaTeX_HEADER: \usepackage[]{hyperref}
 #+LaTeX_HEADER: \hypersetup{hidelinks}
+#+LaTeX_HEADER: \usepackage[]{nomencl}
 #+PROPERTY: :mkdirp yes
 #+OPTIONS org-export-publishing-directory "./exports"
 #+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
+** TODO: Glossary?
 * Abstract
 ** TODO Insert somewhere
 A introduction to the syntax of PDDL will be given, as well as
@@ -54,6 +57,8 @@ vorgestellt. Um P\"ane besser zu fassen, werden Möglichkeiten der
 Visualisierung mit der Robotersimulation MORSE und dem
 Planvisuialisierungsprogramm VISPlan angesprochen.
 
+* Abbreviation List
+\makenomenclature
 * Introduction
 
 ** TODO Notes
@@ -73,14 +78,7 @@ Planvisuialisierungsprogramm VISPlan angesprochen.
   do xyz, etc.
   
 ** Intro
-The Planning Domain Definition Language (PDDL), firstly invented by
-Drew McDermott et al. (1998) has emerged to the standard language for
-modeling planning tasks (source!). Planning is about what to do and in
-which order for a given problem. While the scope of applications is
-enormous, there are several limitations and drawbacks that have to be
-considered. After giving a general introduction to PDDL, this thesis
-explores the scope of PDDL with respect to household domains. Possible
-applications exist in the construction of household robots, that are
+Possible applications exist in the construction of household robots, that are
 especially relevant for people with disabilities. A package that
 includes amongst other a syntax highlighter and code snippets for the
 text editor Sublime Text is presented and the functionality is
@@ -95,11 +93,33 @@ alternative route is provided.
 Planning is one the the classic Artificial Intelligence (AI) tasks. 
 
 ** Intro v_2
-The Planning Domain Definition Language (PDDL), firstly invented by
-Drew McDermott et al. (1998) has emerged to the standard language for
-modeling planning tasks. Despite the process in AI planning, knowledge
-engineering is still a 
+Knowledge engineering (\nomenclature[]{KE}{Knowledge Engineering}),
+that means representing world information in a computer system, is the
+crucial step for utilizing AI planning system to solve problems. 
+By definition, it requires an expert that knows the underlying syntax
+and models the information manually. This process is naturally
+error-prone and time-consuming. While planning system are improving
+steadily, the main work for useful systems lies on the representing
+language. The Planning Domain Definition Language
+(PDDL) \parencite{mcdermott1998pddl} allows for a
+standardized way of specifying planning tasks. 
+While on the one hand, recent PDDL extensions
+\parencite{fox2003pddl2,kovacs2011bnf} extended the expressiveness of
+PDDL and tackle a route for real-world applications, they also demand
+a higher level of knowledge and attention of the knowledge engineer.
+Several approaches to shift the modeling process from a text based
+'programming paradigm' to a user-friendly graphical design tool exist,
+however, they also arouse drawbacks: limited functionality,
+expenditure of time, editing difficulty, to name a few. As in other
+computer languages, so far, there is no real way around diving into
+the 'code paradigm'. 
+This thesis will, after introducing the basic terms and definitions of
+PDDL, focus on the software support for knowledge engineers. A package
+for the text and source code editor Sublime Text (ST) will be
+introduced, that provides syntax highlighting and PDDL templates. 
 
+
+* Related Work
 * PDDL and Planning Basics
 ** TODO Notes
 - Brief summary at start
@@ -122,18 +142,17 @@ Planning in terms of PDDL
 #+NAME: fig:workflow
 [[file:../img/pddl-workflow.pdf]]
 
-
-Two files are needed for planning with PDDL: a domain file and a
-problem file. A planner and use the generated solution file (/plan/).
+ A planner and use the generated solution file (/plan/).
 
 PDDL was first described in PDDL-the planning domain definition
 language (1998) and has been in constant development since then.
 This thesis makes use of \textcite{pddl3.1} if not otherwise stated. 
 
-Every planning task in PDDL is composed of two separate files:
+PDDL planning task specifications are composed of two separate text files:
 
-  - Domain file: description of general types, predicates, functions and actions 
-  - Problem file: description of a concrete problem environment.
+  - Domain file: description of general types, predicates, functions
+    and actions -> uninstanciated problem independent
+  - Problem file: description of a concrete problem environment -> instance speciﬁc
 
 This separation allows for an intuitive process of task modeling:
 While general instances are described in the domain file, a specific
@@ -336,19 +355,97 @@ statement (my idea -> ask Alexandra).
 
 ** Statement of Problem
 Writing and maintaining PDDL files can be time-consuming and
-cumbersome. However, handy development tools can support and
-facilitate the task design process and reduce potential errors.
+cumbersome \textcite{li2012translating}. So, the following development
+tools shell support and facilitate the PDDL task design process and
+reduce potential errors.
 
 Below, methods are presented for
 
-- Section 1 :: The automation of the PDDL task design process. File
+- Syntax Highlighting and Code Snippets :: Environment for Editing
+     PDDL files
+- Class Diagram Generator :: The automation of the PDDL task design process. File
   input and output and dynamic generation (design level)
-- Section 2 :: An interactive PDDL environment: speech synthesis and
+- Human Planner Interaction :: An interactive PDDL environment: speech synthesis and
   recognition.
-- Section 3 :: Mathematical limitations (design level)
-  
-** Implementation
-*** Integrated Design
+- Domain Generator :: Mathematical limitations (design level)
+
+** Syntax Highlighting and Code Snippets
+
+# Problembewusstsein und Vorteile: Ignore larger parts of text etc.
+# (see http://en.wikipedia.org/wiki/Syntax_highlighting) 
+
+Writing extensive domain and problem files is a cumbersome task:
+longer files can get quickly confusing. Therefore, it is convenient to
+have a tool that supports editing these files. Syntax highlighting
+describes the feature of text editors of displaying code in different
+colors and fonts according to the category of terms (source: Wiki). A
+syntax highlighting plug-in for the text and source code editors
+\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
+transferred to the on-line text editor Ace are used to implement this
+feature, as ST Syntax Highlighting files can easily be converted to
+Ace Files. 
+
+For Mac user, TextMate (TM) is very similar to ST and the syntax
+highlighting file can be used there, too. Besides, the general
+principles (e.g. regular expressions) outlined here, apply to most of
+other editors as well.  
+
+*** Implementation
+ST syntax definitions are written in property lists in the XML format. 
+
+The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
+written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
+following features:
+
+#+BEGIN_QUOTE
+AAAPackageDev is a Sublime Text 2 and 3 plug-in
+that helps to create and edit syntax definitions, snippets,
+completions files, build systems and other Sublime Text extensions.
+#+END_QUOTE
+
+By means of Oniguruma regular expressions \parencite{kosako}, scopes are
+defined, that determine the meaning of the PDDL code block. The scope naming
+conventions mentioned in the \citetitle{textmate} are applied here. By the means
+of the name, the colors are assigned. Different ST themes
+display different colors (not all themes support all naming conventions).
+
+The syntax highlighting is intended for PDDL 3.1, but is downward
+compatible, as previous versions are subsets of later versions.
+*************** TODO Are later versions really subsets?
+Like that, the PDDL file is parsed 
+*************** TODO Is it really parsed, or are just parts highlighted?
+into different parts. 
+
+*** Usage and Customization
+By using ST as editor, language independent ST features are supported, like auto
+completion, code folding and column selection, described in the
+Sublime Text 2 Documentation.
+
+To enable syntax highlighting and code snippets, the files of the
+repository have to be placed in the ST packages folder. The first part
+of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
+should be highlighted. By removing (or commenting) include statements,
+the syntax highlighter is adjustable the user's need.
+
+#+BEGIN_EXAMPLE
+
+#+END_EXAMPLE
+
+By default, all scopes are included.
+
+**** Related Work
+***** PDDL Studio
+PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
+creating PDDL tasks. 
+***** PDDL Mode
+Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
+
+***** itSIMPLE
+
+***** Pygments
+*** Evaluation
+
+** Class Diagram Generator
 
 The code is written in Clojure, a LISP dialect. As PDDL has a
 'LISP-like syntax', using a LISP dialect for the interface is
@@ -366,7 +463,9 @@ required packages are:
     (:gen-class)
     (require [clojure.tools.reader.edn :as edn]
              [clojure.java.io :as io]
-             [clojure.pprint :as pprint]))
+             [clojure.pprint :as pprint]
+             [speech-synthesis.say :as say]
+             [speech-recognition.hear :as hear]))
 #+END_SRC
 
 #+RESULTS:
@@ -622,91 +721,16 @@ script.
     (print
      (types->hash-map
       (split-up
-       '(:types man woman - agent table bed - furniture robot agent)))))
+       '(:types man woman - agent table bed - furniture robot agent))))
+    (say/say "Welcome to PDDL environment"))
 #+END_SRC
 
 #+RESULTS:
 : ;;=> #'user/-main
-
-
-*** Syntax Highlighting and Code Snippets
-**** Problem Statement
-
-# Problembewusstsein und Vorteile: Ignore larger parts of text etc.
-# (see http://en.wikipedia.org/wiki/Syntax_highlighting) 
-
-Writing extensive domain and problem files is a cumbersome task:
-longer files can get quickly confusing. Therefore, it is convenient to
-have a tool that supports editing these files. Syntax highlighting
-describes the feature of text editors of displaying code in different
-colors and fonts according to the category of terms (source: Wiki). A
-syntax highlighting plug-in for the text and source code editors
-\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
-transferred to the on-line text editor Ace are used to implement this
-feature, as ST Syntax Highlighting files can easily be converted to
-Ace Files. 
-
-For Mac user, TextMate (TM) is very similar to ST and the syntax
-highlighting file can be used there, too. Besides, the general
-principles (e.g. regular expressions) outlined here, apply to most of
-other editors as well.  
-
-**** Implementation
-ST syntax definitions are written in property lists in the XML format. 
-
-The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
-written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
-following features:
-
-#+BEGIN_QUOTE
-AAAPackageDev is a Sublime Text 2 and 3 plug-in
-that helps to create and edit syntax definitions, snippets,
-completions files, build systems and other Sublime Text extensions.
-#+END_QUOTE
-
-By means of Oniguruma regular expressions \parencite{kosako}, scopes are
-defined, that determine the meaning of the PDDL code block. The scope naming
-conventions mentioned in the \citetitle{textmate} are applied here. By the means
-of the name, the colors are assigned. Different ST themes
-display different colors (not all themes support all naming conventions).
-
-The syntax highlighting is intended for PDDL 3.1, but is downward
-compatible, as previous versions are subsets of later versions.
-*************** TODO Are later versions really subsets?
-Like that, the PDDL file is parsed 
-*************** TODO Is it really parsed, or are just parts highlighted?
-into different parts. 
-
-**** Usage and Customization
-By using ST as editor, language independent ST features are supported, like auto
-completion, code folding and column selection, described in the
-Sublime Text 2 Documentation.
-
-To enable syntax highlighting and code snippets, the files of the
-repository have to be placed in the ST packages folder. The first part
-of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
-should be highlighted. By removing (or commenting) include statements,
-the syntax highlighter is adjustable the user's need.
-
-#+BEGIN_EXAMPLE
-
-#+END_EXAMPLE
-
-By default, all scopes are included.
-
-**** Related Work
-***** PDDL Studio
-PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
-creating PDDL tasks. 
-***** PDDL Mode
-Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
-
-***** itSIMPLE
-
-***** Pygments
-** Evaluation
+** VAL Plan Verification
+* Evaluation
 * Discussion
-* Conclusion / Tests
+* Conclusion
 #+BEGIN_EXAMPLE PDDL
   
   (define (domain xyz)

@@ -5,8 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.reader "0.8.3"]
-                 ;[facts/speech-synthesis "1.0.0-pold"]
-                 ;[facts/speech-recognition "1.0.0-pold"] 
+                 [facts/speech-synthesis "1.0.0-pold"]
+                ; [facts/speech-recognition "1.0.0-pold"]
                  ]
   :main ^:skip-aot org-ba.core
   :target-path "target/%s"
