@@ -408,7 +408,7 @@ writer (that open a file for writing). Therefore, print statements
 (print, prn, etc.) that normally would be send to the standard out,
 are redirected to the file.
 
-#+BEGIN_SRC clojure :tangle core.cl
+#+BEGIN_SRC clojure :tangle core.clj
 (defmacro write->file
   "Writes body to the given file name"
   [filename & body]
@@ -436,7 +436,7 @@ reasons:
 - Add a type to a list of objects for the problem file
 
 The following method affords that:
-#+BEGIN_SRC clojure :tangle core.cl
+#+BEGIN_SRC clojure :tangle core.clj
 (defn read-objs
   "Read PDDL objects from a file and add type
   (e.g. 'table bed' -> (list table - furniture
@@ -453,7 +453,7 @@ The following method affords that:
 By the help of these methods, you can create PDDL templates, for
 example for a domain file:
 
-#+BEGIN_SRC clojure :tangle core.cl
+#+BEGIN_SRC clojure :tangle core.clj
 
 (defn create-pddl
   "Creates a PDDL file from a list of objects and locations"
@@ -538,7 +538,7 @@ The resulting list can be used for creating a hash-map, where every
 type from the PDDL type declaration is the hash-key and the subtypes
 are the values. 
 
-#+BEGIN_SRC clojure :tangle io.clj
+#+BEGIN_SRC clojure :tangle core.clj
 (defn types->hash-map
   "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
   to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
@@ -562,7 +562,7 @@ structure, it can be used for various purposes. A desirable purpose
 would be to display the type hierarchy in kind of a 'class' diagram:
 
 #+name: map-entry->TikZ-seq
-#+BEGIN_SRC clojure :tangle io.clj
+#+BEGIN_SRC clojure :tangle core.clj
 (defn map-entry->TikZ-seq
   "Converts a hashmap entry (:key [val1 val2 ...])
 to a TikZ string (key -- { val1, val2 })"
@@ -583,7 +583,7 @@ This method can now be used in order to create a TikZ standalone LaTeX
 file, that is converted to a png file by the use of lualatex.
 
 #+name: hash-map->TikZ-out
-#+BEGIN_SRC clojure 
+#+BEGIN_SRC clojure :tangle core.clj
 
 (defn hash-map->TikZ-out
   "Converts complete PDDL type hash-map to TikZ file"
@@ -690,20 +690,41 @@ the syntax highlighter is adjustable the user's need.
 By default, all scopes are included.
 
 **** Related Work
-
 ***** PDDL Studio
-PDDL Studio is an Integrated Development Environment (IDE) for
+PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
 creating PDDL tasks. 
 ***** PDDL Mode
 Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
 
 ***** itSIMPLE
 
+***** Pygments
 ** Evaluation
 * Discussion
-* Conclusion
+* Conclusion / Tests
+#+BEGIN_SRC PDDL
+  
+  (define (domain xyz)
+    (:requirements
+     :strips))
+  
+#+END_SRC
+
+#+BEGIN_SRC dot :file mygraph.png :exports results
+digraph graph1  {
+node [shape=box] 
+       A -> B;
+       D -> C;
+       B -> D;
+       E -> F;
+}
+  
+#+END_SRC
+
+#+RESULTS:
+[[file:mygraph.png]]
+
 * Bibliography
 \printbibliography
 * Appendix
-
-#  LocalWords:  AAAPackageDev itSIMPLE
+\alpha

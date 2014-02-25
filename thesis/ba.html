@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework</title>
-<!-- 2014-02-24 Mon 10:11 -->
+<!-- 2014-02-24 Mon 11:36 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Volker Strobel" />
@@ -543,8 +543,9 @@ Strips (no types) vs ADL (types).
 <div class="outline-text-4" id="text-3-3-7">
 <p>
 Functions are not supported by many planners (source!) and, before
-% PDDL 3.1 they could only be modeled as 
+PDDL 3.1 they could only be modeled as 
 </p>
+
 <div class="inlinetask">
 <b>Complete that!</b><br  />
 nil</div>
@@ -636,19 +637,19 @@ Assuming that a function sqrt would actually exist, the duration could be modele
 
 <div class="org-src-container">
 
-<pre class="src src-elisp">:duration (= ?duration 
-             (sqrt
-              (+
-               (*
-                (- (pos-x (current-pos))
-                   (pos-x ?goal))
-                (- (pos-x (current-pos))
-                   (pos-x ?goal)))
-               (*
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))))))
+<pre class="src src-elisp"><span style="color: #b0c4de;">:duration</span> <span style="color: #7f7f7f;">(</span>= ?duration 
+             <span style="color: #7f7f7f;">(</span>sqrt
+              <span style="color: #7f7f7f;">(</span>+
+               <span style="color: #7f7f7f;">(</span>*
+                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                   <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">))</span>
+                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                   <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">)))</span>
+               <span style="color: #7f7f7f;">(</span>*
+                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                   <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))</span>
+                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                   <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))))))</span>
 </pre>
 </div>
 </div>
@@ -659,17 +660,17 @@ Assuming that a function sqrt would actually exist, the duration could be modele
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">:duration (= ?duration 
-             (sqrt
-              (+
-               (expt
-                (- 
-                 (pos-x (current-pos))
-                 (pos-x ?goal)))
-               (expt
-                (- 
-                 (pos-y (current-pos))
-                 (pos-y ?goal))))))
+<pre class="src src-elisp"><span style="color: #b0c4de;">:duration</span> <span style="color: #7f7f7f;">(</span>= ?duration 
+             <span style="color: #7f7f7f;">(</span>sqrt
+              <span style="color: #7f7f7f;">(</span>+
+               <span style="color: #7f7f7f;">(</span>expt
+                <span style="color: #7f7f7f;">(</span>- 
+                 <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                 <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">)))</span>
+               <span style="color: #7f7f7f;">(</span>expt
+                <span style="color: #7f7f7f;">(</span>- 
+                 <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
+                 <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))))))</span>
 </pre>
 </div>
 </div>
@@ -839,10 +840,10 @@ method for entirely replacing the tools in clojure.core/read
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(ns org-ba.core
-  (:gen-class)
-  (require [clojure.tools.reader.edn :as edn]
-           [clojure.java.io :as io]))
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">ns</span> org-ba.core
+  <span style="color: #7f7f7f;">(</span><span style="color: #90a959;">:gen-class</span><span style="color: #7f7f7f;">)</span>
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">require</span> [clojure.tools.reader.edn <span style="color: #90a959;">:as</span> edn]
+           [clojure.java.io <span style="color: #90a959;">:as</span> io]<span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -853,10 +854,10 @@ script.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn -main
-  "Runs the input/output scripts"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">-main</span>
+  <span style="color: #90a959;">"Runs the input/output scripts"</span>
   [&amp; args]
-  (println "Running..."))
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">println</span> <span style="color: #90a959;">"Running..."</span><span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -873,11 +874,11 @@ interface.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn read-lispstyle-edn
-  "Read one s-expression from a file"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">read-lispstyle-edn</span>
+  <span style="color: #90a959;">"Read one s-expression from a file"</span>
   [filename]
-  (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
-    (edn/read rdr)))
+  <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">with-open</span> [rdr <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">java.io.PushbackReader.</span> <span style="color: #7f7f7f;">(</span>clojure.java.io/reader filename<span style="color: #7f7f7f;">))</span>]
+    <span style="color: #7f7f7f;">(</span>edn/read rdr<span style="color: #7f7f7f;">)))</span>
 </pre>
 </div>
 
@@ -890,13 +891,13 @@ are redirected to the file.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defmacro write-&gt;file
-  "Writes body to the given file name"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defmacro</span> <span style="color: #6a9fb5;">write-&gt;file</span>
+  <span style="color: #90a959;">"Writes body to the given file name"</span>
   [filename &amp; body]
-  `(with-open [w# (writer ~filename)]
-     (binding [*out* w#]
-       ~@body))
-  (println "Written to file: " ~filename))
+  `<span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">with-open</span> [w# <span style="color: #7f7f7f;">(</span>writer ~filename<span style="color: #7f7f7f;">)</span>]
+     <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">binding</span> [*out* w#]
+       ~@body<span style="color: #7f7f7f;">))</span>
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">println</span> <span style="color: #90a959;">"Written to file: "</span> ~filename<span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -927,14 +928,14 @@ The following method affords that:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn read-objs
-  "Read PDDL objects from a file and add type
-  (e.g. 'table bed' -&gt; (list table - furniture
-                        bed - furniture))"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">read-objs</span>
+  <span style="color: #90a959;">"Read PDDL objects from a file and add type</span>
+<span style="color: #90a959;">  (e.g. 'table bed' -&gt; (list table - furniture</span>
+<span style="color: #90a959;">                        bed - furniture))"</span>
   [file object-type]
-  (as-&gt; (slurp file) objs
-        (clojure.string/split objs #"\s")
-        (map #(str % " - " object-type) objs)))
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">as-&gt;</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">slurp</span> file<span style="color: #7f7f7f;">)</span> objs
+        <span style="color: #7f7f7f;">(</span>clojure.string/split objs #<span style="color: #90a959;">"\s"</span><span style="color: #7f7f7f;">)</span>
+        <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">map</span> #<span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span> % <span style="color: #90a959;">" - "</span> object-type<span style="color: #7f7f7f;">)</span> objs<span style="color: #7f7f7f;">)))</span>
 </pre>
 </div>
 
@@ -945,43 +946,43 @@ example for a domain file:
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn create-pddl
-  "Creates a PDDL file from a list of objects and locations"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">create-pddl</span>
+  <span style="color: #90a959;">"Creates a PDDL file from a list of objects and locations"</span>
   [objs-file objs-type]
-  (str
-"(define (domain domainName)
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
+<span style="color: #90a959;">"(define (domain domainName)</span>
 
-  (:requirements
-     :durative-actions
-     :equality
-     :negative-preconditions
-     :numeric-fluents
-     :object-fluents
-     :typing)
+<span style="color: #90a959;">  (:requirements</span>
+<span style="color: #90a959;">     :durative-actions</span>
+<span style="color: #90a959;">     :equality</span>
+<span style="color: #90a959;">     :negative-preconditions</span>
+<span style="color: #90a959;">     :numeric-fluents</span>
+<span style="color: #90a959;">     :object-fluents</span>
+<span style="color: #90a959;">     :typing)</span>
 
-  (:types\n"
-   (clojure.pprint/cl-format nil "~{~&amp;~5@T~a~}" (read-objs objs-file objs-type))
-        ")
+<span style="color: #90a959;">  (:types\n"</span>
+   <span style="color: #7f7f7f;">(</span>clojure.pprint/cl-format nil <span style="color: #90a959;">"~{~&amp;~5@T~a~}"</span> <span style="color: #7f7f7f;">(</span>read-objs objs-file objs-type<span style="color: #7f7f7f;">))</span>
+        <span style="color: #90a959;">")</span>
 
-  (:constants
+<span style="color: #90a959;">  (:constants</span>
 
-  )
+<span style="color: #90a959;">  )</span>
 
-  (:predicates
+<span style="color: #90a959;">  (:predicates</span>
 
-  )
+<span style="color: #90a959;">  )</span>
 
-  (:functions
+<span style="color: #90a959;">  (:functions</span>
 
-  )
+<span style="color: #90a959;">  )</span>
 
-  (:durative-action actionName
-     :parameters (?x - &lt;objectType&gt;)
-     :duration (= ?duration #duration)
-     :condition (at start &lt;effects&gt;)
-     :effect (at end &lt;effects&gt;))
-)"
-))
+<span style="color: #90a959;">  (:durative-action actionName</span>
+<span style="color: #90a959;">     :parameters (?x - &lt;objectType&gt;)</span>
+<span style="color: #90a959;">     :duration (= ?duration #duration)</span>
+<span style="color: #90a959;">     :condition (at start &lt;effects&gt;)</span>
+<span style="color: #90a959;">     :effect (at end &lt;effects&gt;))</span>
+<span style="color: #90a959;">)"</span>
+<span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -1013,17 +1014,17 @@ used, that splits the types in subtypes and belonging types.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn split-up
-  "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
-  into strings of subtypes and associated types,
-  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">split-up</span>
+  <span style="color: #90a959;">"Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)</span>
+<span style="color: #90a959;">  into strings of subtypes and associated types,</span>
+<span style="color: #90a959;">  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"</span>
   [coll]
-  (let [coll (if (= :types (first coll))
-                 (rest coll)
-                 coll)]
-    ;; REVIEW: insert (\w) for trimming?
-  (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
-        (clojure.string/join " " coll))))
+  <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">let</span> [coll <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">if</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">=</span> <span style="color: #90a959;">:types</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">first</span> coll<span style="color: #7f7f7f;">))</span>
+                 <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">rest</span> coll<span style="color: #7f7f7f;">)</span>
+                 coll<span style="color: #7f7f7f;">)</span>]
+    <span style="color: #b0b0b0;">;; </span><span style="color: #b0b0b0;">REVIEW: insert (\w) for trimming?</span>
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">re-seq</span> #<span style="color: #90a959;">"</span><span style="color: #90a959; font-weight: bold;">(</span><span style="color: #90a959; font-weight: bold;">(?:</span><span style="color: #90a959;">\s*\w+\s*</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">+</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">-\s*</span><span style="color: #90a959; font-weight: bold;">(</span><span style="color: #90a959;">\w+</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">\s*"</span>
+        <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">" "</span> coll<span style="color: #7f7f7f;">))))</span>
 </pre>
 </div>
 
@@ -1035,19 +1036,19 @@ are the values.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure">(defn types-&gt;hash-map
-  "Convert splitted type list (['&lt;expr&gt;' '&lt;subtype1.1&gt; &lt;subtype1.2&gt; ...' '&lt;type1&gt;']
-  to a hash-map {'&lt;type1&gt;': ['&lt;subtype1.1&gt;' '&lt;subtype1.2&gt;' ...], '&lt;type2&gt;': ...}"
+<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">types-&gt;hash-map</span>
+  <span style="color: #90a959;">"Convert splitted type list (['&lt;expr&gt;' '&lt;subtype1.1&gt; &lt;subtype1.2&gt; ...' '&lt;type1&gt;']</span>
+<span style="color: #90a959;">  to a hash-map {'&lt;type1&gt;': ['&lt;subtype1.1&gt;' '&lt;subtype1.2&gt;' ...], '&lt;type2&gt;': ...}"</span>
   [coll]
-  (reduce (fn [h-map [_ objs obj-type]]
-           (let [key-obj-type (keyword obj-type)
-                 existing-vals (key-obj-type h-map)]
-          (assoc h-map
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">reduce</span> <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">fn</span> [h-map [_ objs obj-type]]
+           <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">let</span> [key-obj-type <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">keyword</span> obj-type<span style="color: #7f7f7f;">)</span>
+                 existing-vals <span style="color: #7f7f7f;">(</span>key-obj-type h-map<span style="color: #7f7f7f;">)</span>]
+          <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">assoc</span> h-map
                  key-obj-type
-                 (concat existing-vals
-                       (clojure.string/split objs #"\s")))))
+                 <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">concat</span> existing-vals
+                       <span style="color: #7f7f7f;">(</span>clojure.string/split objs #<span style="color: #90a959;">"\s"</span><span style="color: #7f7f7f;">)))))</span>
           {}
-          coll))
+          coll<span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -1059,14 +1060,14 @@ would be to display the type hierarchy in kind of a 'class' diagram:
 
 <div class="org-src-container">
 
-<pre class="src src-clojure" id="map-entry-TikZ-seq">(defn map-entry-&gt;TikZ-seq
-  "Converts a hashmap entry (:key [val1 val2 ...])
-to a TikZ string (key -- { val1, val2 })"
+<pre class="src src-clojure" id="map-entry-TikZ-seq"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">map-entry-&gt;TikZ-seq</span>
+  <span style="color: #90a959;">"Converts a hashmap entry (:key [val1 val2 ...])</span>
+<span style="color: #90a959;">to a TikZ string (key -- { val1, val2 })"</span>
   [entry]
-(str
- (name (key entry))
-        " -- "
-        "{" (clojure.string/join ", " (val entry)) "}"))
+<span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
+ <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">name</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">key</span> entry<span style="color: #7f7f7f;">))</span>
+        <span style="color: #90a959;">" -- "</span>
+        <span style="color: #90a959;">"{"</span> <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">", "</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">val</span> entry<span style="color: #7f7f7f;">))</span> <span style="color: #90a959;">"}"</span><span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -1081,32 +1082,32 @@ file, that is converted to a png file by the use of lualatex.
 
 <div class="org-src-container">
 
-<pre class="src src-clojure" id="hash-map-TikZ-out">(defn hash-map-&gt;TikZ-out
-  "Converts complete PDDL type hash-map to TikZ file"
+<pre class="src src-clojure" id="hash-map-TikZ-out"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">hash-map-&gt;TikZ-out</span>
+  <span style="color: #90a959;">"Converts complete PDDL type hash-map to TikZ file"</span>
   [h-map]
-  (str
-"\\documentclass[tikz]{standalone}
+  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
+<span style="color: #90a959;">"\\documentclass[tikz]{standalone}</span>
 
-\\usepackage[utf8]{inputenc}
+<span style="color: #90a959;">\\usepackage[utf8]{inputenc}</span>
 
-\\usepackage{tikz}
+<span style="color: #90a959;">\\usepackage{tikz}</span>
 
-\\usetikzlibrary{graphdrawing}
-\\usetikzlibrary{graphs}
-\\usegdlibrary{layered,trees}
+<span style="color: #90a959;">\\usetikzlibrary{graphdrawing}</span>
+<span style="color: #90a959;">\\usetikzlibrary{graphs}</span>
+<span style="color: #90a959;">\\usegdlibrary{layered,trees}</span>
 
-\\begin{document}
+<span style="color: #90a959;">\\begin{document}</span>
 
-\\begin{tikzpicture}
+<span style="color: #90a959;">\\begin{tikzpicture}</span>
 
-\\graph[layered layout, nodes={draw,circle,fill=blue!20,font=\\bfseries}]
-{
-  " (clojure.string/join ",\n  " (map map-entry-&gt;TikZ-seq h-map))
-"
-};
+<span style="color: #90a959;">\\graph[layered layout, nodes={draw,circle,fill=blue!20,font=\\bfseries}]</span>
+<span style="color: #ac4142; font-weight: bold;">{</span>
+<span style="color: #90a959;">  "</span> <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">",\n  "</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">map</span> map-entry-&gt;TikZ-seq h-map<span style="color: #7f7f7f;">))</span>
+<span style="color: #90a959;">"</span>
+<span style="color: #90a959;">};</span>
 
-\\end{tikzpicture}
-\\end{document}"))
+<span style="color: #90a959;">\\end{tikzpicture}</span>
+<span style="color: #90a959;">\\end{document}"</span><span style="color: #7f7f7f;">))</span>
 </pre>
 </div>
 
@@ -1155,8 +1156,7 @@ ST syntax definitions are written in property lists in the XML format.
 </p>
 
 <p>
-The syntax definition is implemented by the use of the ST plug-in
-AAAPackageDev\textcite{aaapackagedev}. So, the definitions can be
+The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
 written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
 following features:
 </p>
@@ -1246,7 +1246,17 @@ Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2.
 </div>
 <div id="outline-container-sec-7" class="outline-2">
 <h2 id="sec-7"><span class="section-number-2">7</span> Conclusion</h2>
+<div class="outline-text-2" id="text-7">
+<div class="org-src-container">
+
+<pre class="src src-PDDL">(<span style="color: #aa759f;">define</span> (<span style="color: #aa759f;">domain</span> xyz)
+  (<span style="color: #b0c4de;">:requirements</span>
+   <span style="color: #90a959;">:strips</span>))
+</pre>
 </div>
+</div>
+</div>
+
 <div id="outline-container-sec-8" class="outline-2">
 <h2 id="sec-8"><span class="section-number-2">8</span> Bibliography</h2>
 <div class="outline-text-2" id="text-8">
@@ -1264,7 +1274,7 @@ Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Volker Strobel</p>
-<p class="date">Created: 2014-02-24 Mon 10:11</p>
+<p class="date">Created: 2014-02-24 Mon 11:36</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
