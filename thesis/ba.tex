@@ -1,4 +1,4 @@
-% Created 2014-02-25 Tue 09:13
+% Created 2014-02-25 Tue 09:40
 \documentclass[11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -36,16 +36,22 @@
 
 \chapter{Abstract}
 \label{sec-1}
-\section{{\bfseries\sffamily TODO} Insert somewhere}
-\label{sec-1-1}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+Insert somewhere
+
+\rule[.8em]{\textwidth}{2pt}
+
 A introduction to the syntax of PDDL will be given, as well as
 Potential applications in real life environments could be \ldots{} And a
 way for writing proper.
+\end{minipage}
+}
+\end{center}
 \section{Abstract}
-\label{sec-1-2}
-\subsection{v\(_{\text{1}}\)}
-\label{sec-1-2-1}
-This thesis presents the Planvning Domain Definition Language (PDDL)
+\label{sec-1-1}
+This thesis presents the Planning Domain Definition Language (PDDL)
 and debates possibilities and limitations of its use with reference to
 household robots. Furthermore, a syntax highlighter for the text
 editor Sublime Text and an online code editor is presesented and ways
@@ -61,11 +67,9 @@ overview will be given, whereas the topic's main focus are household
 domains (``household'').  A introduction to the syntax of PDDL will be
 given, as well as  Potential applications in real life environments
 could be   And a way for writing proper
-\subsection{v\(_{\text{2}}\)}
-\label{sec-1-2-2}
 
 \section{Zusammenfassung}
-\label{sec-1-3}
+\label{sec-1-2}
 Diese Arbeit untersucht die Möglichkeiten und Grenzen der
 Planungssprache Planning Domain Definition Language (PDDL) im Hinblick
 auf die Anwendung bei Haushaltsrobotern. Dazu wird ein umfassender
@@ -74,7 +78,7 @@ werden anhand praktischer Beispiele untersucht. Für die Konstruktion
 der Pläne wird eine Entwicklungsumgebung präsentiert, die Python,
 Spracherfassung und PDDL vereint. Weiterhin werden ein Plugin für den
 Texteditor Sublime Text (Version 2 und 3) und ein PDDL-Onlineeditor
-vorgestellt. Um P$\backslash$"ane besser zu fassen, werden Möglichkeiten der
+vorgestellt. Um Pläne besser zu fassen, werden Möglichkeiten der
 Visualisierung mit der Robotersimulation MORSE und dem
 Planvisuialisierungsprogramm VISPlan angesprochen.
 \chapter{Abbreviation List}
@@ -83,15 +87,16 @@ Planvisuialisierungsprogramm VISPlan angesprochen.
 
 \chapter{Introduction}
 \label{sec-3}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+TODO:
 
-\section{{\bfseries\sffamily TODO} Notes}
-\label{sec-3-1}
+\rule[.8em]{\textwidth}{2pt}
 
 \begin{itemize}
 \item Scope of the article (What did I miss out, what is included?)
-\begin{itemize}
 \item Learning Algorithms
-\end{itemize}
 \item Name Tools and provide found possibilities and limitations
 \item Motivation: Why is this article interesting?
 \item Structure of the article
@@ -100,46 +105,25 @@ literature and related work in the related chapter, if this is
 convenient
 \item Planning Architecture - 3 Tier Architecture
 \item ICAPS
+\item Handicapped people -> Planning Interaction
 \item Alex: Do not write: I'll do this, because it does not exist yet
 \item Do write: I'll do this because this is interesting, because it can
 do xyz, etc.
 \end{itemize}
-\section{Intro}
-\label{sec-3-2}
-The Planning Domain Definition Language (PDDL), firstly invented by
-Drew McDermott et al. (1998) has emerged to the standard language for
-modeling planning tasks (source!). Planning is about what to do and in
-which order for a given problem. While the scope of applications is
-enormous, there are several limitations and drawbacks that have to be
-considered. After giving a general introduction to PDDL, this thesis
-explores the scope of PDDL with respect to household domains. Possible
-applications exist in the construction of household robots, that are
-especially relevant for people with disabilities. A package that
-includes amongst other a syntax highlighter and code snippets for the
-text editor Sublime Text is presented and the functionality is
-transferred to a on-line editor with instant access.
+\end{minipage}
+}
+\end{center}
 
-The main focus of this thesis is about real world applications and the
-development of handy tools that support (and partially automatize) the
-planning process. On the basis of a `kitchen domain' several
-possibilities and limitations are examined, while for each drawback an
-alternative route is provided.
-
-Planning is one the the classic Artificial Intelligence (AI) tasks. 
-\section{Intro v\(_{\text{2}}\)}
-\label{sec-3-3}
-Knowledge engineering (\nomenclature[]{KE}{Knowledge Engineering}),
-that means representing world information in a computer system, is the
-crucial step for utilizing AI planning system to solve problems. 
-By definition, it requires an expert that knows the underlying syntax
-and models the information manually. This process is naturally
-error-prone and time-consuming. While planning system are improving
-steadily, the main work for useful systems lies on the representing
-language. The Planning Domain Definition Language
-(PDDL) \parencite\{mcdermott1998pddl allows for a
-standardized way of specifying planning tasks. 
-While on the one hand, recent PDDL extensions
-\textcite{fox2003pddl2,kovacs2011bnf} extended the expressiveness of
+Knowledge engineering (KE), that means representing world information
+in a computer system, is the crucial step for utilizing AI planning
+system to solve problems. By definition, it requires an expert that
+knows the underlying syntax and models the information manually. This
+process is naturally error-prone and time-consuming. While planning
+system are improving steadily, the main work for useful systems lies
+on the representing language. The Planning Domain Definition Language
+(PDDL) \parencite{mcdermott1998pddl} allows for a standardized way of
+specifying planning tasks. While on the one hand, recent PDDL extensions
+\parencite{fox2003pddl2,kovacs2011bnf} extended the expressiveness of
 PDDL and tackle a route for real-world applications, they also demand
 a higher level of knowledge and attention of the knowledge engineer.
 Several approaches to shift the modeling process from a text based
@@ -148,7 +132,16 @@ however, they also arouse drawbacks: limited functionality,
 expenditure of time, editing difficulty, to name a few. As in other
 computer languages, so far, there is no real way around diving into
 the 'code paradigm'. 
+This thesis will, after introducing the basic terms and definitions of
+PDDL, focus on the software support for knowledge engineers. A package
+for the text and source code editor Sublime Text (ST) will be
+introduced, that provides syntax highlighting and PDDL templates. And
+the functionality is transferred to a on-line editor with instant access. 
 
+Planning is one the the classic Artificial Intelligence (AI) tasks.
+The main focus of this thesis is about real world applications and the
+development of handy tools that support (and partially automatize) the
+planning process. 
 \chapter{Related Work}
 \label{sec-4}
 \chapter{PDDL and Planning Basics}
