@@ -6,7 +6,7 @@
 (defn -main
   "Runs the input/output scripts"
   [& args]
-  (println "Running..."))
+  (types->hash-map (split-up '(:types man woman - agent table bed - furniture robot agent))))
 
 (defn read-lispstyle-edn
   "Read one s-expression from a file"

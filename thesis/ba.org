@@ -229,7 +229,7 @@ of the Babylonian root method.
 **** Alternative #1: Only sqrt exists
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
-#+BEGIN_SRC elisp
+#+BEGIN_EXAMPLE PDDL
   :duration (= ?duration 
                (sqrt
                 (+
@@ -244,11 +244,11 @@ Assuming that a function sqrt would actually exist, the duration could be modele
                   (- (pos-y (current-pos))
                      (pos-y ?goal))))))
   
-#+END_SRC
+#+END_EXAMPLE
 
 **** Alternative #2: sqrt and expt exist
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-#+BEGIN_SRC elisp
+#+BEGIN_EXAMPLE PDDL
   :duration (= ?duration 
                (sqrt
                 (+
@@ -260,7 +260,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
                   (- 
                    (pos-y (current-pos))
                    (pos-y ?goal))))))
-#+END_SRC
+#+END_EXAMPLE
 
 
 **** Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
@@ -361,28 +361,16 @@ required packages are:
   method for entirely replacing the tools in clojure.core/read
 - clojure.java.io :: Methods for file input and output (IO)
 
-#+BEGIN_SRC clojure :tangle core.clj
-(ns org-ba.core
-  (:gen-class)
-  (require [clojure.tools.reader.edn :as edn]
-           [clojure.java.io :as io]))
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
+  (ns org-ba.core
+    (:gen-class)
+    (require [clojure.tools.reader.edn :as edn]
+             [clojure.java.io :as io]
+             [clojure.pprint :as pprint]))
 #+END_SRC
 
 #+RESULTS:
 : ;;=> nil
-
-And we use a main method that allows for testing and running the
-script. 
-
-#+BEGIN_SRC clojure :tangle core.clj
-(defn -main
-  "Runs the input/output scripts"
-  [& args]
-  (println "Running..."))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/-main
 
 #+RESULTS:
 : #'user/a
@@ -392,7 +380,7 @@ method is needed. Edn reader provides functionality and guarantees
 that no harmful commands can be read in through the reader
 interface.
 
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
   [filename]
@@ -401,14 +389,14 @@ interface.
 #+END_SRC
 
 #+RESULTS:
-: ;; CompilerException java.lang.RuntimeException: No such namespace: edn, compiling:(/tmp/form-init7457948236864479025.clj:5:5) 
+: ;; CompilerException java.lang.RuntimeException: No such namespace: edn, compiling:(/tmp/form-init2170294417979567805.clj:5:5) 
 
 Next, a macro is provided for writing to files. It rebinds *out* to a
 writer (that open a file for writing). Therefore, print statements
 (print, prn, etc.) that normally would be send to the standard out,
 are redirected to the file.
 
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defmacro write->file
   "Writes body to the given file name"
   [filename & body]
@@ -436,7 +424,7 @@ reasons:
 - Add a type to a list of objects for the problem file
 
 The following method affords that:
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defn read-objs
   "Read PDDL objects from a file and add type
   (e.g. 'table bed' -> (list table - furniture
@@ -453,7 +441,7 @@ The following method affords that:
 By the help of these methods, you can create PDDL templates, for
 example for a domain file:
 
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 
 (defn create-pddl
   "Creates a PDDL file from a list of objects and locations"
@@ -470,7 +458,7 @@ example for a domain file:
      :typing)
 
   (:types\n"
-   (clojure.pprint/cl-format nil "~{~&~5@T~a~}" (read-objs objs-file objs-type))
+   (pprint/cl-format nil "~{~&~5@T~a~}" (read-objs objs-file objs-type))
         ")
 
   (:constants
@@ -495,7 +483,7 @@ example for a domain file:
 #+END_SRC
 
 #+RESULTS:
-: ;;=> #'user/create-pddl
+: ;; CompilerException java.lang.RuntimeException: No such namespace: pprint, compiling:(/tmp/form-init2170294417979567805.clj:17:4) 
 
 PDDL widely supports 'types'. These define possible shapes for objects
 (similar to 'classes' in object oriented programming (OOP)). Types are
@@ -517,7 +505,7 @@ In order to further work with the specified types, they have to be
 extracted from the PDDL file. For this task, a regular expression is
 used, that splits the types in subtypes and belonging types.
 
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defn split-up
   "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
   into strings of subtypes and associated types,
@@ -538,7 +526,7 @@ The resulting list can be used for creating a hash-map, where every
 type from the PDDL type declaration is the hash-key and the subtypes
 are the values. 
 
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defn types->hash-map
   "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
   to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
@@ -562,7 +550,7 @@ structure, it can be used for various purposes. A desirable purpose
 would be to display the type hierarchy in kind of a 'class' diagram:
 
 #+name: map-entry->TikZ-seq
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 (defn map-entry->TikZ-seq
   "Converts a hashmap entry (:key [val1 val2 ...])
 to a TikZ string (key -- { val1, val2 })"
@@ -583,7 +571,7 @@ This method can now be used in order to create a TikZ standalone LaTeX
 file, that is converted to a png file by the use of lualatex.
 
 #+name: hash-map->TikZ-out
-#+BEGIN_SRC clojure :tangle core.clj
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
 
 (defn hash-map->TikZ-out
   "Converts complete PDDL type hash-map to TikZ file"
@@ -623,6 +611,23 @@ A resulting example image would look like this:
 
 This look can be further extended in order to create a 
 UML class diagram for PDDL domains and problems:
+
+At last, a main method is used, that allows for testing and running the
+script. 
+
+#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
+  (defn -main
+    "Runs the input/output scripts"
+    [& args]
+    (print
+     (types->hash-map
+      (split-up
+       '(:types man woman - agent table bed - furniture robot agent)))))
+#+END_SRC
+
+#+RESULTS:
+: ;;=> #'user/-main
+
 
 *** Syntax Highlighting and Code Snippets
 **** Problem Statement
@@ -702,13 +707,13 @@ Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2.
 ** Evaluation
 * Discussion
 * Conclusion / Tests
-#+BEGIN_SRC PDDL
+#+BEGIN_EXAMPLE PDDL
   
   (define (domain xyz)
     (:requirements
      :strips))
   
-#+END_SRC
+#+END_EXAMPLE
 
 #+BEGIN_SRC dot :file mygraph.png :exports results
 digraph graph1  {
