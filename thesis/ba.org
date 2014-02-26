@@ -1,65 +1,25 @@
-* Export Configuration                                     :ARCHIVE:noexport:
-#+TITLE:  Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework
-#+AUTHOR: Volker Strobel
-#+EMAIL: volker.strobel87@gmail.com
-#+HTML: <div class="container">
-#+LANGUAGE: en
-#+OPTIONS: toc:t todo:t
-#+LATEX_CLASS: report
-#+LaTeX_HEADER: \usepackage{minted}
-#+LaTeX_HEADER: \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
-#+LaTeX_HEADER: \addbibresource{bibliography.bib}
-#+LaTeX_HEADER: \usepackage[]{hyperref}
-#+LaTeX_HEADER: \hypersetup{hidelinks}
-#+LaTeX_HEADER: \usepackage[]{nomencl}
-#+PROPERTY: :mkdirp yes
-#+OPTIONS org-export-publishing-directory "./exports"
-#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
-** TODO: Glossary?
-* Abstract
-*************** Insert somewhere
-A introduction to the syntax of PDDL will be given, as well as
-Potential applications in real life environments could be ... And a
-way for writing proper.
-*************** END
-** Abstract
-This thesis presents the Planning Domain Definition Language (PDDL)
-and debates possibilities and limitations of its use with reference to
-household robots. Furthermore, a syntax highlighter for the text
-editor Sublime Text and an online code editor is presesented and ways
-of visualizing the found plan are discussed. (more concrete!)
+#+BEGIN_ABSTRACT
+Automated planning and scheduling blazes a trail for artificial
+intelligent behavior. PDDL, a planning language widely used for AI
+task specifications requires extensive knowledge engineering effort.
+After giving an overview of PDDL syntax and planning basics, a plug-in
+(including syntax highlighting) for the code editor Sublime Text and
+related editors will be given. A type diagram generator will be
+presented that supports modeling of the environment. The usability of
+these tools will be evaluated by subjects without prior knowledge in
+PDDL. By the use of these tool, the average modeling time of a shorter
+task specification could be improved by ... percent and the error rate
+could be reduced from ... to ... . Furthermore, this thesis will
+present approaches for the automatic generation of task specifications
+and provide a basic interface between the functional programming
+language Clojure and PDDL. The proposed tools can assist knowledge
+engineers in the design process.
 
-
-The purpose of this thesis is to explore the possibilities and
-limitations of modeling real life household domains by the Planning
-Domain Definition Language (PDDL). Thereto all steps for developing a
-new planning problem with will be given, from necessary software, over
-syntax to convenient PDDL constructs. That means that a widespread
-overview will be given, whereas the topic's main focus are household
-domains (``household'').  A introduction to the syntax of PDDL will be
-given, as well as  Potential applications in real life environments
-could be   And a way for writing proper
-
-
-** Zusammenfassung
-Diese Arbeit untersucht die Möglichkeiten und Grenzen der
-Planungssprache Planning Domain Definition Language (PDDL) im Hinblick
-auf die Anwendung bei Haushaltsrobotern. Dazu wird ein umfassender
-Einblick in die Syntax dieser Sprache gegeben und Anwendungsbereiche
-werden anhand praktischer Beispiele untersucht. Für die Konstruktion
-der Pläne wird eine Entwicklungsumgebung präsentiert, die Python,
-Spracherfassung und PDDL vereint. Weiterhin werden ein Plugin für den
-Texteditor Sublime Text (Version 2 und 3) und ein PDDL-Onlineeditor
-vorgestellt. Um Pläne besser zu fassen, werden Möglichkeiten der
-Visualisierung mit der Robotersimulation MORSE und dem
-Planvisuialisierungsprogramm VISPlan angesprochen.
-
-* Abbreviation List
-\makenomenclature
+https://www.ece.cmu.edu/~koopman/essays/abstract.html
+#+END_ABSTRACT
 * Introduction
 *************** TODO:
 - Scope of the article (What did I miss out, what is included?)
-- Learning Algorithms
 - Name Tools and provide found possibilities and limitations
 - Motivation: Why is this article interesting?
 - Structure of the article
@@ -69,9 +29,8 @@ Planvisuialisierungsprogramm VISPlan angesprochen.
 - Planning Architecture - 3 Tier Architecture
 - ICAPS
 - Handicapped people -> Planning Interaction
-- Alex: Do not write: I'll do this, because it does not exist yet
-- Do write: I'll do this because this is interesting, because it can
-  do xyz, etc.
+- Why is something interesting? -> reasons! (and not because it does
+  not exist yet)
 *************** END
 
 Knowledge engineering (KE), that means representing world information
@@ -104,8 +63,15 @@ development of handy tools that support (and partially automatize) the
 planning process. 
 
 * Related Work
-* PDDL and Planning Basics
-** TODO Notes
+** PDDL Studio
+** VISPlan
+
+** Emacs Mode
+
+** itSimple
+
+* Planning Basics and PDDL 
+*************** TODO
 - Brief summary at start
 - Start with a paragraph that describes the context
 - Very interesing for basics of PDDL:
@@ -113,20 +79,19 @@ planning process.
 - Konstruktionsanleitung
 - Propositionale Logic -> Articifial Intelligence a Modern Approach
 - To insert somewhere:
-  - It should be mentioned, that almost no planner supports every part
-    of PDDL. And, additionally, the quality of error messages is very
-    diversified. While some simple state: error occured, other list
-    the problem and the line.
+ - It should be mentioned, that almost no planner supports every part
+   of PDDL. And, additionally, the quality of error messages is very
+   diversified. While some simple state: error occured, other list the
+   problem and the line.
+*************** END
 
-** Basics
 
-Planning in terms of PDDL
+Introduction to planing:
+http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false
 
-#+CAPTION: PDDL Planning workflow
-#+NAME: fig:workflow
-[[file:../img/pddl-workflow.pdf]]
+AI planning describes ...
 
- A planner and use the generated solution file (/plan/).
+A planner and use the generated solution file (/plan/).
 
 PDDL was first described in PDDL-the planning domain definition
 language (1998) and has been in constant development since then.
@@ -139,27 +104,28 @@ PDDL planning task specifications are composed of two separate text files:
   - Problem file: description of a concrete problem environment -> instance speciﬁc
 
 This separation allows for an intuitive process of task modeling:
-While general instances are described in the domain file, a specific
-instance of a problem is created in the problem file.
+While general instances are described in the domain file, specific
+instances of problems are created in the problem files.
+
+#+CAPTION: PDDL Planning workflow
+#+NAME: fig:workflow
+[[file:../img/pddl-workflow.pdf]]
 
 These two files shell be investigated further in the following
 sections.
 
 ** Format of the Domain File
-The description of the task files is deliberately performed without
-the use of the BNF notation. Fox et al. describe the BNF notation for
-PDDL 2.1 in \cite{fox2003pddl2} as well as in Kovacs' (unpublished)
-paper \cite{kovacs2011bnf}.
-
-
 Domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
 file. \cite[6]{fox2003pddl2}.
 
-*** TODO Include simple domain -> LaTeX
-*** TODO Include simple problem -> LaTeX
-*** TODO Include simple plan -> not yet in LaTeX
+*************** TODO
+Include simple domain -> LaTeX
+Include simple problem -> LaTeX
+Include simple plan -> not yet in LaTeX
+*************** END
+
 *** Define
 Every domain file start with (define (domain <domainName>) ...) where,
 <domainName> can be any string
@@ -176,17 +142,13 @@ In order to assign to assign categories of objects, PDDL allows for
 type definition. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
-classes in Object Orientated Programming (OOP). Adding to the (:requirement ...) part of
-the file guarantees, that typing can be correctly used.
-Strips (no types) vs ADL (types).
+classes in Object Orientated Programming (OOP). Adding to the
+(:requirement ...) part of the file guarantees, that typing can be
+correctly used. Strips (no types) vs ADL (types).
 
 *** Functions
 Functions are not supported by many planners (source!) and, before
 PDDL 3.1 they could only be modeled as 
-
-*************** Complete that!
-*************** END
-
 
 It is notable that before PDDL 3.0 the keyword functors was used instead
 
@@ -197,135 +159,9 @@ PDDL 3.1 supports two types of actions: durative-action and the
 ** Format of the Problem File
 ** Format of the Solution File (Plan)
 ** Planning Process
-
-* Possibilities and Limitations
-** Kitchen Domain
-In this section, a kitchen domain will be presented, whereby PDDL
-structures are presented that will be also useful in other domains. I
-will start with a rather simple domain, present possible limitations
-and then extend the file by more sophisticated constructs.
-*** Functions
-As functions have a return value, the modeling possibilities
-dramatically increase.
-*** Numerical Expressiveness
-One might assume that the distance could be modeled as follows:
-
-#+BEGIN_EXAMPLE
-  (durative action ...
-  ...
-    :duration (= ?duration (sqrt (coord-x )))
-  ...
-#+END_EXAMPLE
-
-However, PDDL does only support basic arithmetic operations (+, -, /, *).
-
-An Euclidean distance function that uses the square root would be
-convenient for distance modeling and measurement. However, PDDL 3.1
-supports only four arithmetic operators (+, -, /, *). These
-operators can be used in preconditions, effects
-(normal/continuous/conditional) and durations.
-\textcite{parkinson2012increasing} describe a workaround for this
-drawback. By declaring an action `calculate-sqrt', they bypass the
-lack of this function and rather write their own action that makes use
-of the Babylonian root method.
-
-**** Alternative #1: Only sqrt exists
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-
-#+BEGIN_EXAMPLE PDDL
-  :duration (= ?duration 
-               (sqrt
-                (+
-                 (*
-                  (- (pos-x (current-pos))
-                     (pos-x ?goal))
-                  (- (pos-x (current-pos))
-                     (pos-x ?goal)))
-                 (*
-                  (- (pos-y (current-pos))
-                     (pos-y ?goal))
-                  (- (pos-y (current-pos))
-                     (pos-y ?goal))))))
-  
-#+END_EXAMPLE
-
-**** Alternative #2: sqrt and expt exist
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-#+BEGIN_EXAMPLE PDDL
-  :duration (= ?duration 
-               (sqrt
-                (+
-                 (expt
-                  (- 
-                   (pos-x (current-pos))
-                   (pos-x ?goal)))
-                 (expt
-                  (- 
-                   (pos-y (current-pos))
-                   (pos-y ?goal))))))
-#+END_EXAMPLE
-
-
-**** Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-
--  Distance Matrix
-- http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities
-- Scipy.spatial.distance (-> Clojure?)
-- Mention that the Taxicab geometry allows different ways that have an equal length
-
-Another alternative is to make use of an external helper and, instead
-of calculating every entry of the distance matrix. the distance only
-if needed, incorporate every possible combination of two locations.
-This approach has certainly a major drawback: With an increasing
-amount of locations, the number of combinations increases
-exponentially. That means, if there are 100 locations, there will be
-*************** TODO: Calculate possibilities
-... . The native approach would be to iterate over the cities twice
-and calculate only the half of the matrix (as it is symmetric, that
-mean distance from A to B is the same as the distance from B to A).
-
-
-**** Alternative #4: Use the manhattan distance
-
-Allowing the agent to move only vertically and horizontally would be
-that one can use the so called Taxicab geometry (or Manhattan length)
-as distance measurement.  In the Kitchen domain, this could be modeled
-as follows:
-
-#+BEGIN_EXAMPLE
-
-% => Metric: reduce duration
-
-% dKitchenware.pddl 
-\begin{figure}[t]
-\inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
-            {csharp}
-            {Code/dKitchenware.pddl}
-\caption{The basic kitchenware domain}
-\end{figure}
-\section
-
-#+END_EXAMPLE
-
-**** TODO Human Planner Interaction
-
-
-**** TODO World State - Plan Stepper
-
-- EMail + SMS connection
-- Very interesting: http://www.tzi.de/~edelkamp/modplan/
-
-
-**** TODO Plan verification
-% Reuse existing plans (VAL!). If a plan is not reusable, find
-problems  (e.g. step 13 and 17) and try to find solutions for that
-
-**** TODO Summary
-List all limits and possibilities and write 5 sentences for each
-statement (my idea -> ask Alexandra).
-
+   
 * Software Engineering Tools for AI Planning
-** TODO Ideas
+*************** TODO
 - PDDL type hierarchy and object instantiation to UML / TikZ, store
   predicates (and action?) in same box as type 
 - Research Knowledge Engineering in Planning
@@ -336,6 +172,7 @@ statement (my idea -> ask Alexandra).
 - ICKEPS (International Competition on Knowledge Engineering for
   Planning and Scheduling)
 - Orient on "How to Design Classes"
+*************** END
 
 ** Statement of Problem
 Writing and maintaining PDDL files can be time-consuming and
@@ -427,317 +264,149 @@ Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2.
 ***** itSIMPLE
 
 ***** Pygments
+***** ModPlan
+- Very interesting: http://www.tzi.de/~edelkamp/modplan/
 *** Evaluation
+** Clojure Interface
+As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
+using a LISP dialect for the interface seems reasonable. This thesis
+uses Clojure \parencite{hickey2008clojure}, a relatively modern LISP
+dialect that runs on the Java Virtual Machine.
 
-** Class Diagram Generator
-
-The code is written in Clojure, a LISP dialect. As PDDL has a
-'LISP-like syntax', using a LISP dialect for the interface is
-convenient. This thesis uses Clojure[TODO: src], a relatively modern
-LISP dialect that runs on the Java Virtual Machine. 
-
-In order to start the document, a namespace has to be defined. The
-required packages are:
-- clojure.tools.reader.edn :: Safe file input. I will use this
-  method for entirely replacing the tools in clojure.core/read
-- clojure.java.io :: Methods for file input and output (IO)
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-  (ns org-ba.core
-    (:gen-class)
-    (require [clojure.tools.reader.edn :as edn]
-             [clojure.java.io :as io]
-             [clojure.pprint :as pprint]
-             [speech-synthesis.say :as say]
-             [speech-recognition.hear :as hear]))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> nil
-
-#+RESULTS:
-: #'user/a
-
-As PDDL files and 'information' will be in stored externally, a reader
-method is needed. Edn reader provides functionality and guarantees
-that no harmful commands can be read in through the reader
-interface.
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defn read-lispstyle-edn
-  "Read one s-expression from a file"
-  [filename]
-  (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
-    (edn/read rdr)))
-#+END_SRC
-
-#+RESULTS:
-: ;; CompilerException java.lang.RuntimeException: No such namespace: edn, compiling:(/tmp/form-init2170294417979567805.clj:5:5) 
-
-Next, a macro is provided for writing to files. It rebinds *out* to a
-writer (that open a file for writing). Therefore, print statements
-(print, prn, etc.) that normally would be send to the standard out,
-are redirected to the file.
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defmacro write->file
-  "Writes body to the given file name"
-  [filename & body]
-  `(with-open [w# (writer ~filename)]
-     (binding [*out* w#]
-       ~@body))
-  (println "Written to file: " ~filename))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/write->file
-
-Desired objects that belong to a type for a domain are sometimes
-provided in a plain list, like the following:
+In this section, a kitchen domain will be presented, whereby PDDL
+structures are presented that will be also useful in other domains. I
+will start with a rather simple domain, present possible limitations
+and then extend the file by more sophisticated constructs.
+*** Functions
+As functions have a return value, the modeling possibilities
+dramatically increase.
+*** Numerical Expressiveness
+One might assume that the distance could be modeled as follows:
 
 #+BEGIN_EXAMPLE
-vw-passat
-opel-corsa
-chevrolet-volt
+  (durative action ...
+  ...
+    :duration (= ?duration (sqrt (coord-x )))
+  ...
 #+END_EXAMPLE
 
-It would be convenient to add a type to these objects, for two
-reasons:
-- Add a super-type to the subtypes in the list
-- Add a type to a list of objects for the problem file
+However, PDDL does only support basic arithmetic operations (+, -, /, *).
 
-The following method affords that:
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defn read-objs
-  "Read PDDL objects from a file and add type
-  (e.g. 'table bed' -> (list table - furniture
-                        bed - furniture))"
-  [file object-type]
-  (as-> (slurp file) objs
-        (clojure.string/split objs #"\s")
-        (map #(str % " - " object-type) objs)))
-#+END_SRC
+An Euclidean distance function that uses the square root would be
+convenient for distance modeling and measurement. However, PDDL 3.1
+supports only four arithmetic operators (+, -, /, *). These
+operators can be used in preconditions, effects
+(normal/continuous/conditional) and durations.
+\textcite{parkinson2012increasing} describe a workaround for this
+drawback. By declaring an action `calculate-sqrt', they bypass the
+lack of this function and rather write their own action that makes use
+of the Babylonian root method.
 
-#+RESULTS:
-: ;;=> #'user/read-objs
+**** Alternative #1: Only sqrt exists
+Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
-By the help of these methods, you can create PDDL templates, for
-example for a domain file:
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-
-(defn create-pddl
-  "Creates a PDDL file from a list of objects and locations"
-  [objs-file objs-type]
-  (str
-"(define (domain domainName)
-
-  (:requirements
-     :durative-actions
-     :equality
-     :negative-preconditions
-     :numeric-fluents
-     :object-fluents
-     :typing)
-
-  (:types\n"
-   (pprint/cl-format nil "~{~&~5@T~a~}" (read-objs objs-file objs-type))
-        ")
-
-  (:constants
-
-  )
-
-  (:predicates
-
-  )
-
-  (:functions
-
-  )
-
-  (:durative-action actionName
-     :parameters (?x - <objectType>)
-     :duration (= ?duration #duration)
-     :condition (at start <effects>)
-     :effect (at end <effects>))
-)"
-))
-#+END_SRC
-
-#+RESULTS:
-: ;; CompilerException java.lang.RuntimeException: No such namespace: pprint, compiling:(/tmp/form-init2170294417979567805.clj:17:4) 
-
-PDDL widely supports 'types'. These define possible shapes for objects
-(similar to 'classes' in object oriented programming (OOP)). Types are
-defined in the ':types' section of the PDDL domain file:
-#+BEGIN_EXAMPLE
-....
-(:types man woman - human
-        human - agent
-        robot - agent)
-...
-#+END_EXAMPLE
-
-A meaning-full type hierarchy is the basis for clean, well-written
-domains. Type definitions constitute the first part in the PDDL
-domain design process, as they determine, on which possible objects
-actions can be performed. 
-
-In order to further work with the specified types, they have to be
-extracted from the PDDL file. For this task, a regular expression is
-used, that splits the types in subtypes and belonging types.
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defn split-up
-  "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
-  into strings of subtypes and associated types,
-  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
-  [coll]
-  (let [coll (if (= :types (first coll))
-                 (rest coll)
-                 coll)]
-    ;; REVIEW: insert (\w) for trimming?
-  (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
-        (clojure.string/join " " coll))))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/split-up
-
-The resulting list can be used for creating a hash-map, where every
-type from the PDDL type declaration is the hash-key and the subtypes
-are the values. 
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defn types->hash-map
-  "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
-  to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
-  [coll]
-  (reduce (fn [h-map [_ objs obj-type]]
-           (let [key-obj-type (keyword obj-type)
-                 existing-vals (key-obj-type h-map)]
-          (assoc h-map
-                 key-obj-type
-                 (concat existing-vals
-                       (clojure.string/split objs #"\s")))))
-          {}
-          coll))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/types->hash-map
-
-Now, as these information is present in a 'native' Clojure data
-structure, it can be used for various purposes. A desirable purpose
-would be to display the type hierarchy in kind of a 'class' diagram:
-
-#+name: map-entry->TikZ-seq
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-(defn map-entry->TikZ-seq
-  "Converts a hashmap entry (:key [val1 val2 ...])
-to a TikZ string (key -- { val1, val2 })"
-  [entry]
-(str
- (name (key entry))
-        " -- "
-        "{" (clojure.string/join ", " (val entry)) "}"))
-#+END_SRC
-
-#+RESULTS: map-entry->TikZ-seq
-: ;;=> #'user/map-entry->TikZ-seq
-
-#+RESULTS:
-: #'user/map-entry->TikZ-seq
-
-This method can now be used in order to create a TikZ standalone LaTeX
-file, that is converted to a png file by the use of lualatex.
-
-#+name: hash-map->TikZ-out
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-
-(defn hash-map->TikZ-out
-  "Converts complete PDDL type hash-map to TikZ file"
-  [h-map]
-  (str
-"\\documentclass[tikz]{standalone}
-
-\\usepackage[utf8]{inputenc}
-
-\\usepackage{tikz}
-
-\\usetikzlibrary{graphdrawing}
-\\usetikzlibrary{graphs}
-\\usegdlibrary{layered,trees}
-
-\\begin{document}
-
-\\begin{tikzpicture}
-
-\\graph[layered layout, nodes={draw,circle,fill=blue!20,font=\\bfseries}]
-{
-  " (clojure.string/join ",\n  " (map map-entry->TikZ-seq h-map))
-"
-};
-
-\\end{tikzpicture}
-\\end{document}"))
-
-#+END_SRC
-
-#+RESULTS: hash-map->TikZ-out
-: ;;=> #'user/hash-map->TikZ-out
-
-A resulting example image would look like this:
-
-[[../img/tikz-file.pdf]]
-
-This look can be further extended in order to create a 
-UML class diagram for PDDL domains and problems:
-
-At last, a main method is used, that allows for testing and running the
-script. 
-
-#+BEGIN_SRC clojure :tangle ./../src/org_ba/core.clj
-  (defn -main
-    "Runs the input/output scripts"
-    [& args]
-    (print
-     (types->hash-map
-      (split-up
-       '(:types man woman - agent table bed - furniture robot agent))))
-    (say/say "Welcome to PDDL environment"))
-#+END_SRC
-
-#+RESULTS:
-: ;;=> #'user/-main
-** VAL Plan Verification
-* Evaluation
-* Discussion
-* Conclusion
 #+BEGIN_EXAMPLE PDDL
-  
-  (define (domain xyz)
-    (:requirements
-     :strips))
+  :duration (= ?duration 
+               (sqrt
+                (+
+                 (*
+                  (- (pos-x (current-pos))
+                     (pos-x ?goal))
+                  (- (pos-x (current-pos))
+                     (pos-x ?goal)))
+                 (*
+                  (- (pos-y (current-pos))
+                     (pos-y ?goal))
+                  (- (pos-y (current-pos))
+                     (pos-y ?goal))))))
   
 #+END_EXAMPLE
 
-#+BEGIN_SRC dot :file mygraph.png :exports results
-digraph graph1  {
-node [shape=box] 
-       A -> B;
-       D -> C;
-       B -> D;
-       E -> F;
-}
-  
-#+END_SRC
+**** Alternative #2: sqrt and expt exist
+Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
+#+BEGIN_EXAMPLE PDDL
+  :duration (= ?duration 
+               (sqrt
+                (+
+                 (expt
+                  (- 
+                   (pos-x (current-pos))
+                   (pos-x ?goal)))
+                 (expt
+                  (- 
+                   (pos-y (current-pos))
+                   (pos-y ?goal))))))
+#+END_EXAMPLE
 
-#+RESULTS:
-[[file:mygraph.png]]
 
+**** Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
+
+-  Distance Matrix
+- http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities
+- Scipy.spatial.distance (-> Clojure?)
+- Mention that the Taxicab geometry allows different ways that have an equal length
+
+Another alternative is to make use of an external helper and, instead
+of calculating every entry of the distance matrix. the distance only
+if needed, incorporate every possible combination of two locations.
+This approach has certainly a major drawback: With an increasing
+amount of locations, the number of combinations increases
+exponentially. That means, if there are 100 locations, there will be
+*************** TODO: Calculate possibilities
+... . The native approach would be to iterate over the cities twice
+and calculate only the half of the matrix (as it is symmetric, that
+mean distance from A to B is the same as the distance from B to A).
+
+
+**** Alternative #4: Use the Manhattan distance
+
+Allowing the agent to move only vertically and horizontally would be
+that one can use the so called Taxicab geometry (or Manhattan length)
+as distance measurement.  In the Kitchen domain, this could be modeled
+as follows:
+
+#+BEGIN_EXAMPLE
+
+% => Metric: reduce duration
+
+% dKitchenware.pddl 
+\begin{figure}[t]
+\inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
+            {csharp}
+            {Code/dKitchenware.pddl}
+\caption{The basic kitchenware domain}
+\end{figure}
+\section
+
+#+END_EXAMPLE
+
+*************** TODO:
+TODO Human Planner Interaction
+*************** END
+
+** Type Diagram Generator
+* Analysis
+* Discussion and Outlook
 * Bibliography
 \printbibliography
 * Appendix
 \alpha
+* Export Configuration                                     :ARCHIVE:noexport:
+#+TITLE:  Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework
+#+AUTHOR: Volker Strobel
+#+EMAIL: volker.strobel87@gmail.com
+#+HTML: <div class="container">
+#+LANGUAGE: en
+#+OPTIONS: toc:t todo:nil
+#+LATEX_CLASS: article
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
+#+LaTeX_HEADER: \addbibresource{bibliography.bib}
+#+LaTeX_HEADER: \usepackage[]{hyperref}
+#+LaTeX_HEADER: \hypersetup{hidelinks}
+#+LaTeX_HEADER: \usepackage[]{nomencl}
+#+PROPERTY: :mkdirp yes
+#+OPTIONS org-export-publishing-directory "./exports"
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
+** TODO: Glossary?
+   

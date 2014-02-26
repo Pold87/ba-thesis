@@ -1,5 +1,5 @@
-% Created 2014-02-25 Tue 09:40
-\documentclass[11pt]{report}
+% Created 2014-02-25 Tue 23:32
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -34,59 +34,27 @@
 \maketitle
 \tableofcontents
 
-\chapter{Abstract}
+\begin{abstract}
+Automated planning and scheduling blazes a trail for artificial
+intelligent behavior. PDDL, a planning language widely used for AI
+task specifications requires extensive knowledge engineering effort.
+After giving an overview of PDDL syntax and planning basics, a plug-in
+(including syntax highlighting) for the code editor Sublime Text and
+related editors will be given. A type diagram generator will be
+presented that supports modeling of the environment. The usability of
+these tools will be evaluated by subjects without prior knowledge in
+PDDL. By the use of these tool, the average modeling time of a shorter
+task specification could be improved by \ldots{} percent and the error rate
+could be reduced from \ldots{} to \ldots{} . Furthermore, this thesis will
+present approaches for the automatic generation of task specifications
+and provide a basic interface between the functional programming
+language Clojure and PDDL. The proposed tools can assist knowledge
+engineers in the design process.
+
+\url{https://www.ece.cmu.edu/~koopman/essays/abstract.html}
+\end{abstract}
+\section{Introduction}
 \label{sec-1}
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-Insert somewhere
-
-\rule[.8em]{\textwidth}{2pt}
-
-A introduction to the syntax of PDDL will be given, as well as
-Potential applications in real life environments could be \ldots{} And a
-way for writing proper.
-\end{minipage}
-}
-\end{center}
-\section{Abstract}
-\label{sec-1-1}
-This thesis presents the Planning Domain Definition Language (PDDL)
-and debates possibilities and limitations of its use with reference to
-household robots. Furthermore, a syntax highlighter for the text
-editor Sublime Text and an online code editor is presesented and ways
-of visualizing the found plan are discussed. (more concrete!)
-
-
-The purpose of this thesis is to explore the possibilities and
-limitations of modeling real life household domains by the Planning
-Domain Definition Language (PDDL). Thereto all steps for developing a
-new planning problem with will be given, from necessary software, over
-syntax to convenient PDDL constructs. That means that a widespread
-overview will be given, whereas the topic's main focus are household
-domains (``household'').  A introduction to the syntax of PDDL will be
-given, as well as  Potential applications in real life environments
-could be   And a way for writing proper
-
-\section{Zusammenfassung}
-\label{sec-1-2}
-Diese Arbeit untersucht die Möglichkeiten und Grenzen der
-Planungssprache Planning Domain Definition Language (PDDL) im Hinblick
-auf die Anwendung bei Haushaltsrobotern. Dazu wird ein umfassender
-Einblick in die Syntax dieser Sprache gegeben und Anwendungsbereiche
-werden anhand praktischer Beispiele untersucht. Für die Konstruktion
-der Pläne wird eine Entwicklungsumgebung präsentiert, die Python,
-Spracherfassung und PDDL vereint. Weiterhin werden ein Plugin für den
-Texteditor Sublime Text (Version 2 und 3) und ein PDDL-Onlineeditor
-vorgestellt. Um Pläne besser zu fassen, werden Möglichkeiten der
-Visualisierung mit der Robotersimulation MORSE und dem
-Planvisuialisierungsprogramm VISPlan angesprochen.
-\chapter{Abbreviation List}
-\label{sec-2}
-\makenomenclature
-
-\chapter{Introduction}
-\label{sec-3}
 \begin{center}
 \fbox{
 \begin{minipage}[c]{.6\textwidth}
@@ -96,7 +64,6 @@ TODO:
 
 \begin{itemize}
 \item Scope of the article (What did I miss out, what is included?)
-\item Learning Algorithms
 \item Name Tools and provide found possibilities and limitations
 \item Motivation: Why is this article interesting?
 \item Structure of the article
@@ -106,9 +73,8 @@ convenient
 \item Planning Architecture - 3 Tier Architecture
 \item ICAPS
 \item Handicapped people -> Planning Interaction
-\item Alex: Do not write: I'll do this, because it does not exist yet
-\item Do write: I'll do this because this is interesting, because it can
-do xyz, etc.
+\item Why is something interesting? -> reasons! (and not because it does
+not exist yet)
 \end{itemize}
 \end{minipage}
 }
@@ -142,12 +108,27 @@ Planning is one the the classic Artificial Intelligence (AI) tasks.
 The main focus of this thesis is about real world applications and the
 development of handy tools that support (and partially automatize) the
 planning process. 
-\chapter{Related Work}
-\label{sec-4}
-\chapter{PDDL and Planning Basics}
-\label{sec-5}
-\section{{\bfseries\sffamily TODO} Notes}
-\label{sec-5-1}
+\section{Related Work}
+\label{sec-2}
+\subsection{PDDL Studio}
+\label{sec-2-1}
+\subsection{VISPlan}
+\label{sec-2-2}
+
+\subsection{Emacs Mode}
+\label{sec-2-3}
+
+\subsection{itSimple}
+\label{sec-2-4}
+\section{Planning Basics and PDDL}
+\label{sec-3}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+
+
+\rule[.8em]{\textwidth}{2pt}
+
 \begin{itemize}
 \item Brief summary at start
 \item Start with a paragraph that describes the context
@@ -159,20 +140,19 @@ planning process.
 \begin{itemize}
 \item It should be mentioned, that almost no planner supports every part
 of PDDL. And, additionally, the quality of error messages is very
-diversified. While some simple state: error occured, other list
-the problem and the line.
+diversified. While some simple state: error occured, other list the
+problem and the line.
 \end{itemize}
 \end{itemize}
-\section{Basics}
-\label{sec-5-2}
+\end{minipage}
+}
+\end{center}
 
-Planning in terms of PDDL
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=.9\linewidth]{../img/pddl-workflow.pdf}
-\caption{\label{fig:workflow}PDDL Planning workflow}
-\end{figure}
+Introduction to planing:
+\url{http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false}
+
+AI planning describes \ldots{}
 
 A planner and use the generated solution file (\emph{plan}).
 
@@ -189,93 +169,235 @@ and actions -> uninstanciated problem independent
 \end{itemize}
 
 This separation allows for an intuitive process of task modeling:
-While general instances are described in the domain file, a specific
-instance of a problem is created in the problem file.
+While general instances are described in the domain file, specific
+instances of problems are created in the problem files.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{../img/pddl-workflow.pdf}
+\caption{\label{fig:workflow}PDDL Planning workflow}
+\end{figure}
 
 These two files shell be investigated further in the following
 sections.
-\section{Format of the Domain File}
-\label{sec-5-3}
-The description of the task files is deliberately performed without
-the use of the BNF notation. Fox et al. describe the BNF notation for
-PDDL 2.1 in \cite{fox2003pddl2} as well as in Kovacs' (unpublished)
-paper \cite{kovacs2011bnf}.
 
-
+\subsection{Format of the Domain File}
+\label{sec-3-1}
 Domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
 file. \cite[6]{fox2003pddl2}.
 
-\subsection{{\bfseries\sffamily TODO} Include simple domain -> \LaTeX{}}
-\label{sec-5-3-1}
-\subsection{{\bfseries\sffamily TODO} Include simple problem -> \LaTeX{}}
-\label{sec-5-3-2}
-\subsection{{\bfseries\sffamily TODO} Include simple plan -> not yet in \LaTeX{}}
-\label{sec-5-3-3}
-\subsection{Define}
-\label{sec-5-3-4}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+
+
+\rule[.8em]{\textwidth}{2pt}
+
+Include simple domain -> \LaTeX{}
+Include simple problem -> \LaTeX{}
+Include simple plan -> not yet in \LaTeX{}
+\end{minipage}
+}
+\end{center}
+
+\subsubsection{Define}
+\label{sec-3-1-1}
 Every domain file start with (define (domain <domainName>) \ldots{}) where,
 <domainName> can be any string
-\subsection{Requirements}
-\label{sec-5-3-5}
+\subsubsection{Requirements}
+\label{sec-3-1-2}
 The requirements part is not a mandatory part of a PDDL domain file.
 However, as most planners only support a subset of PDDL they are
 useful for determining if a planner is able to act on a given problem.
 They are declared by the (:requirements \ldots{}) part. Some often used
 requirements include \ldots{}
-\subsection{Types}
-\label{sec-5-3-6}
+\subsubsection{Types}
+\label{sec-3-1-3}
 In order to assign to assign categories of objects, PDDL allows for
 type definition. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
-classes in Object Orientated Programming (OOP). Adding to the (:requirement \ldots{}) part of
-the file guarantees, that typing can be correctly used.
-Strips (no types) vs ADL (types).
-\subsection{Functions}
-\label{sec-5-3-7}
+classes in Object Orientated Programming (OOP). Adding to the
+(:requirement \ldots{}) part of the file guarantees, that typing can be
+correctly used. Strips (no types) vs ADL (types).
+\subsubsection{Functions}
+\label{sec-3-1-4}
 Functions are not supported by many planners (source!) and, before
 PDDL 3.1 they could only be modeled as 
 
+It is notable that before PDDL 3.0 the keyword functors was used instead
+\subsubsection{Actions}
+\label{sec-3-1-5}
+PDDL 3.1 supports two types of actions: durative-action and the
+'regular' action.
+\subsection{Format of the Problem File}
+\label{sec-3-2}
+\subsection{Format of the Solution File (Plan)}
+\label{sec-3-3}
+\subsection{Planning Process}
+\label{sec-3-4}
+\section{Software Engineering Tools for AI Planning}
+\label{sec-4}
+\subsection{Ideas}
+\label{sec-4-1}
+\begin{itemize}
+\item PDDL type hierarchy and object instantiation to UML / TikZ, store
+predicates (and action?) in same box as type
+\item Research Knowledge Engineering in Planning
+\item Human Computer Interaction
+\begin{itemize}
+\item \url{http://hci.waznelle.com/checklist.php}
+\end{itemize}
+\item Write Tiago (itSimple) regarding PDDL -> UML (and knowledge
+engineering in general
+\item ICKEPS (International Competition on Knowledge Engineering for
+Planning and Scheduling)
+\item Orient on "How to Design Classes"
+\end{itemize}
+\subsection{Statement of Problem}
+\label{sec-4-2}
+Writing and maintaining PDDL files can be time-consuming and
+cumbersome \textcite{li2012translating}. So, the following development
+tools shell support and facilitate the PDDL task design process and
+reduce potential errors.
+
+Below, methods are presented for
+
+\begin{description}
+\item[{Syntax Highlighting and Code Snippets}] Environment for Editing
+PDDL files
+\item[{Class Diagram Generator}] The automation of the PDDL task design process. File
+input and output and dynamic generation (design level)
+\item[{Human Planner Interaction}] An interactive PDDL environment: speech synthesis and
+recognition.
+\item[{Domain Generator}] Mathematical limitations (design level)
+\end{description}
+\subsection{Syntax Highlighting and Code Snippets}
+\label{sec-4-3}
+
+
+Writing extensive domain and problem files is a cumbersome task:
+longer files can get quickly confusing. Therefore, it is convenient to
+have a tool that supports editing these files. Syntax highlighting
+describes the feature of text editors of displaying code in different
+colors and fonts according to the category of terms (source: Wiki). A
+syntax highlighting plug-in for the text and source code editors
+\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
+transferred to the on-line text editor Ace are used to implement this
+feature, as ST Syntax Highlighting files can easily be converted to
+Ace Files. 
+
+For Mac user, TextMate (TM) is very similar to ST and the syntax
+highlighting file can be used there, too. Besides, the general
+principles (e.g. regular expressions) outlined here, apply to most of
+other editors as well.  
+
+\subsubsection{Implementation}
+\label{sec-4-3-1}
+ST syntax definitions are written in property lists in the XML format. 
+
+The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
+written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
+following features:
+
+\begin{quote}
+AAAPackageDev is a Sublime Text 2 and 3 plug-in
+that helps to create and edit syntax definitions, snippets,
+completions files, build systems and other Sublime Text extensions.
+\end{quote}
+
+By means of Oniguruma regular expressions \parencite{kosako}, scopes are
+defined, that determine the meaning of the PDDL code block. The scope naming
+conventions mentioned in the \citetitle{textmate} are applied here. By the means
+of the name, the colors are assigned. Different ST themes
+display different colors (not all themes support all naming conventions).
+
+The syntax highlighting is intended for PDDL 3.1, but is downward
+compatible, as previous versions are subsets of later versions.
 \begin{center}
 \fbox{
 \begin{minipage}[c]{.6\textwidth}
-Complete that!
+Are later versions really subsets?
 
 \rule[.8em]{\textwidth}{2pt}
 
 nil\end{minipage}
 }
 \end{center}
+Like that, the PDDL file is parsed 
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+Is it really parsed, or are just parts highlighted?
 
+\rule[.8em]{\textwidth}{2pt}
 
-It is notable that before PDDL 3.0 the keyword functors was used instead
-\subsection{Actions}
-\label{sec-5-3-8}
-PDDL 3.1 supports two types of actions: durative-action and the
-'regular' action.
-\section{Format of the Problem File}
-\label{sec-5-4}
-\section{Format of the Solution File (Plan)}
-\label{sec-5-5}
-\section{Planning Process}
-\label{sec-5-6}
-\chapter{Possibilities and Limitations}
-\label{sec-6}
-\section{Kitchen Domain}
-\label{sec-6-1}
+nil\end{minipage}
+}
+\end{center}
+into different parts. 
+\subsubsection{Usage and Customization}
+\label{sec-4-3-2}
+By using ST as editor, language independent ST features are supported, like auto
+completion, code folding and column selection, described in the
+Sublime Text 2 Documentation.
+
+To enable syntax highlighting and code snippets, the files of the
+repository have to be placed in the ST packages folder. The first part
+of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
+should be highlighted. By removing (or commenting) include statements,
+the syntax highlighter is adjustable the user's need.
+
+By default, all scopes are included.
+
+\begin{enumerate}
+\item Related Work
+\label{sec-4-3-2-1}
+\begin{enumerate}
+\item PDDL Studio
+\label{sec-4-3-2-1-1}
+PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
+creating PDDL tasks. 
+
+\item PDDL Mode
+\label{sec-4-3-2-1-2}
+Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
+\item itSIMPLE
+\label{sec-4-3-2-1-3}
+
+\item Pygments
+\label{sec-4-3-2-1-4}
+\item ModPlan
+\label{sec-4-3-2-1-5}
+\begin{itemize}
+\item Very interesting: \url{http://www.tzi.de/~edelkamp/modplan/}
+\end{itemize}
+\end{enumerate}
+\end{enumerate}
+
+\subsubsection{Evaluation}
+\label{sec-4-3-3}
+
+\subsection{Clojure Interface}
+\label{sec-4-4}
+As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
+using a LISP dialect for the interface seems reasonable. This thesis
+uses Clojure \parencite{hickey2008clojure}, a relatively modern LISP
+dialect that runs on the Java Virtual Machine.
+
 In this section, a kitchen domain will be presented, whereby PDDL
 structures are presented that will be also useful in other domains. I
 will start with a rather simple domain, present possible limitations
 and then extend the file by more sophisticated constructs.
-\subsection{Functions}
-\label{sec-6-1-1}
+\subsubsection{Functions}
+\label{sec-4-4-1}
 As functions have a return value, the modeling possibilities
 dramatically increase.
 
-\subsection{Numerical Expressiveness}
-\label{sec-6-1-2}
+\subsubsection{Numerical Expressiveness}
+\label{sec-4-4-2}
 One might assume that the distance could be modeled as follows:
 
 \begin{verbatim}
@@ -299,7 +421,7 @@ of the Babylonian root method.
 
 \begin{enumerate}
 \item Alternative \#1: Only sqrt exists
-\label{sec-6-1-2-1}
+\label{sec-4-4-2-1}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
 \begin{verbatim}
@@ -318,7 +440,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
                    (pos-y ?goal))))))
 \end{verbatim}
 \item Alternative \#2: sqrt and expt exist
-\label{sec-6-1-2-2}
+\label{sec-4-4-2-2}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 \begin{verbatim}
 :duration (= ?duration 
@@ -335,7 +457,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
 \end{verbatim}
 
 \item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-\label{sec-6-1-2-3}
+\label{sec-4-4-2-3}
 
 \begin{itemize}
 \item Distance Matrix
@@ -364,8 +486,8 @@ nil\end{minipage}
 and calculate only the half of the matrix (as it is symmetric, that
 mean distance from A to B is the same as the distance from B to A).
 
-\item Alternative \#4: Use the manhattan distance
-\label{sec-6-1-2-4}
+\item Alternative \#4: Use the Manhattan distance
+\label{sec-4-4-2-4}
 
 Allowing the agent to move only vertically and horizontally would be
 that one can use the so called Taxicab geometry (or Manhattan length)
@@ -384,440 +506,30 @@ as follows:
 \end{figure}
 \section
 \end{verbatim}
-\item {\bfseries\sffamily TODO} Human Planner Interaction
-\label{sec-6-1-2-5}
 
-
-\item {\bfseries\sffamily TODO} World State - Plan Stepper
-\label{sec-6-1-2-6}
-
-\begin{itemize}
-\item EMail + SMS connection
-\item Very interesting: \url{http://www.tzi.de/~edelkamp/modplan/}
-\end{itemize}
-
-\item {\bfseries\sffamily TODO} Plan verification
-\label{sec-6-1-2-7}
-\% Reuse existing plans (VAL!). If a plan is not reusable, find
-problems  (e.g. step 13 and 17) and try to find solutions for that
-\item {\bfseries\sffamily TODO} Summary
-\label{sec-6-1-2-8}
-List all limits and possibilities and write 5 sentences for each
-statement (my idea -> ask Alexandra).
-\end{enumerate}
-\chapter{Software Engineering Tools for AI Planning}
-\label{sec-7}
-\section{{\bfseries\sffamily TODO} Ideas}
-\label{sec-7-1}
-\begin{itemize}
-\item PDDL type hierarchy and object instantiation to UML / TikZ, store
-predicates (and action?) in same box as type
-\item Research Knowledge Engineering in Planning
-\item Human Computer Interaction
-\begin{itemize}
-\item \url{http://hci.waznelle.com/checklist.php}
-\end{itemize}
-\item Write Tiago (itSimple) regarding PDDL -> UML (and knowledge
-engineering in general
-\item ICKEPS (International Competition on Knowledge Engineering for
-Planning and Scheduling)
-\item Orient on "How to Design Classes"
-\end{itemize}
-\section{Statement of Problem}
-\label{sec-7-2}
-Writing and maintaining PDDL files can be time-consuming and
-cumbersome \textcite{li2012translating}. So, the following development
-tools shell support and facilitate the PDDL task design process and
-reduce potential errors.
-
-Below, methods are presented for
-
-\begin{description}
-\item[{Syntax Highlighting and Code Snippets}] Environment for Editing
-PDDL files
-\item[{Class Diagram Generator}] The automation of the PDDL task design process. File
-input and output and dynamic generation (design level)
-\item[{Human Planner Interaction}] An interactive PDDL environment: speech synthesis and
-recognition.
-\item[{Domain Generator}] Mathematical limitations (design level)
-\end{description}
-\section{Syntax Highlighting and Code Snippets}
-\label{sec-7-3}
-
-
-Writing extensive domain and problem files is a cumbersome task:
-longer files can get quickly confusing. Therefore, it is convenient to
-have a tool that supports editing these files. Syntax highlighting
-describes the feature of text editors of displaying code in different
-colors and fonts according to the category of terms (source: Wiki). A
-syntax highlighting plug-in for the text and source code editors
-\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
-transferred to the on-line text editor Ace are used to implement this
-feature, as ST Syntax Highlighting files can easily be converted to
-Ace Files. 
-
-For Mac user, TextMate (TM) is very similar to ST and the syntax
-highlighting file can be used there, too. Besides, the general
-principles (e.g. regular expressions) outlined here, apply to most of
-other editors as well.  
-
-\subsection{Implementation}
-\label{sec-7-3-1}
-ST syntax definitions are written in property lists in the XML format. 
-
-The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
-written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
-following features:
-
-\begin{quote}
-AAAPackageDev is a Sublime Text 2 and 3 plug-in
-that helps to create and edit syntax definitions, snippets,
-completions files, build systems and other Sublime Text extensions.
-\end{quote}
-
-By means of Oniguruma regular expressions \parencite{kosako}, scopes are
-defined, that determine the meaning of the PDDL code block. The scope naming
-conventions mentioned in the \citetitle{textmate} are applied here. By the means
-of the name, the colors are assigned. Different ST themes
-display different colors (not all themes support all naming conventions).
-
-The syntax highlighting is intended for PDDL 3.1, but is downward
-compatible, as previous versions are subsets of later versions.
 \begin{center}
 \fbox{
 \begin{minipage}[c]{.6\textwidth}
-\textbf{\textsf{\textsc{TODO}}} Are later versions really subsets?
+TODO:
 
 \rule[.8em]{\textwidth}{2pt}
 
-nil\end{minipage}
+TODO Human Planner Interaction
+\end{minipage}
 }
 \end{center}
-Like that, the PDDL file is parsed 
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-\textbf{\textsf{\textsc{TODO}}} Is it really parsed, or are just parts highlighted?
-
-\rule[.8em]{\textwidth}{2pt}
-
-nil\end{minipage}
-}
-\end{center}
-into different parts. 
-\subsection{Usage and Customization}
-\label{sec-7-3-2}
-By using ST as editor, language independent ST features are supported, like auto
-completion, code folding and column selection, described in the
-Sublime Text 2 Documentation.
-
-To enable syntax highlighting and code snippets, the files of the
-repository have to be placed in the ST packages folder. The first part
-of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
-should be highlighted. By removing (or commenting) include statements,
-the syntax highlighter is adjustable the user's need.
-
-By default, all scopes are included.
-
-\begin{enumerate}
-\item Related Work
-\label{sec-7-3-2-1}
-\begin{enumerate}
-\item PDDL Studio
-\label{sec-7-3-2-1-1}
-PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
-creating PDDL tasks. 
-
-\item PDDL Mode
-\label{sec-7-3-2-1-2}
-Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
-\item itSIMPLE
-\label{sec-7-3-2-1-3}
-
-\item Pygments
-\label{sec-7-3-2-1-4}
 \end{enumerate}
-\end{enumerate}
+\subsection{Type Diagram Generator}
+\label{sec-4-5}
 
-\subsection{Evaluation}
-\label{sec-7-3-3}
-\section{Class Diagram Generator}
-\label{sec-7-4}
-
-The code is written in Clojure, a LISP dialect. As PDDL has a
-'LISP-like syntax', using a LISP dialect for the interface is
-convenient. This thesis uses Clojure[TODO: src], a relatively modern
-LISP dialect that runs on the Java Virtual Machine. 
-
-In order to start the document, a namespace has to be defined. The
-required packages are:
-\begin{description}
-\item[{clojure.tools.reader.edn}] Safe file input. I will use this
-method for entirely replacing the tools in clojure.core/read
-\item[{clojure.java.io}] Methods for file input and output (IO)
-\end{description}
-
-\begin{verbatim}
-(ns org-ba.core
-  (:gen-class)
-  (require [clojure.tools.reader.edn :as edn]
-           [clojure.java.io :as io]
-           [clojure.pprint :as pprint]
-           [speech-synthesis.say :as say]
-           [speech-recognition.hear :as hear]))
-\end{verbatim}
-
-\begin{verbatim}
-#'user/a
-\end{verbatim}
-
-As PDDL files and 'information' will be in stored externally, a reader
-method is needed. Edn reader provides functionality and guarantees
-that no harmful commands can be read in through the reader
-interface.
-
-\begin{verbatim}
-(defn read-lispstyle-edn
-  "Read one s-expression from a file"
-  [filename]
-  (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
-    (edn/read rdr)))
-\end{verbatim}
-
-Next, a macro is provided for writing to files. It rebinds \textbf{out} to a
-writer (that open a file for writing). Therefore, print statements
-(print, prn, etc.) that normally would be send to the standard out,
-are redirected to the file.
-
-\begin{verbatim}
-(defmacro write->file
-  "Writes body to the given file name"
-  [filename & body]
-  `(with-open [w# (writer ~filename)]
-     (binding [*out* w#]
-       ~@body))
-  (println "Written to file: " ~filename))
-\end{verbatim}
-
-Desired objects that belong to a type for a domain are sometimes
-provided in a plain list, like the following:
-
-\begin{verbatim}
-vw-passat
-opel-corsa
-chevrolet-volt
-\end{verbatim}
-
-It would be convenient to add a type to these objects, for two
-reasons:
-\begin{itemize}
-\item Add a super-type to the subtypes in the list
-\item Add a type to a list of objects for the problem file
-\end{itemize}
-
-The following method affords that:
-\begin{verbatim}
-(defn read-objs
-  "Read PDDL objects from a file and add type
-  (e.g. 'table bed' -> (list table - furniture
-                        bed - furniture))"
-  [file object-type]
-  (as-> (slurp file) objs
-        (clojure.string/split objs #"\s")
-        (map #(str % " - " object-type) objs)))
-\end{verbatim}
-
-By the help of these methods, you can create PDDL templates, for
-example for a domain file:
-
-\begin{verbatim}
-(defn create-pddl
-  "Creates a PDDL file from a list of objects and locations"
-  [objs-file objs-type]
-  (str
-"(define (domain domainName)
-
-  (:requirements
-     :durative-actions
-     :equality
-     :negative-preconditions
-     :numeric-fluents
-     :object-fluents
-     :typing)
-
-  (:types\n"
-   (pprint/cl-format nil "~{~&~5@T~a~}" (read-objs objs-file objs-type))
-        ")
-
-  (:constants
-
-  )
-
-  (:predicates
-
-  )
-
-  (:functions
-
-  )
-
-  (:durative-action actionName
-     :parameters (?x - <objectType>)
-     :duration (= ?duration #duration)
-     :condition (at start <effects>)
-     :effect (at end <effects>))
-)"
-))
-\end{verbatim}
-
-PDDL widely supports 'types'. These define possible shapes for objects
-(similar to 'classes' in object oriented programming (OOP)). Types are
-defined in the ':types' section of the PDDL domain file:
-\begin{verbatim}
-....
-(:types man woman - human
-        human - agent
-        robot - agent)
-...
-\end{verbatim}
-
-A meaning-full type hierarchy is the basis for clean, well-written
-domains. Type definitions constitute the first part in the PDDL
-domain design process, as they determine, on which possible objects
-actions can be performed. 
-
-In order to further work with the specified types, they have to be
-extracted from the PDDL file. For this task, a regular expression is
-used, that splits the types in subtypes and belonging types.
-
-\begin{verbatim}
-(defn split-up
-  "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
-  into strings of subtypes and associated types,
-  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
-  [coll]
-  (let [coll (if (= :types (first coll))
-                 (rest coll)
-                 coll)]
-    ;; REVIEW: insert (\w) for trimming?
-  (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
-        (clojure.string/join " " coll))))
-\end{verbatim}
-
-The resulting list can be used for creating a hash-map, where every
-type from the PDDL type declaration is the hash-key and the subtypes
-are the values. 
-
-\begin{verbatim}
-(defn types->hash-map
-  "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
-  to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
-  [coll]
-  (reduce (fn [h-map [_ objs obj-type]]
-           (let [key-obj-type (keyword obj-type)
-                 existing-vals (key-obj-type h-map)]
-          (assoc h-map
-                 key-obj-type
-                 (concat existing-vals
-                       (clojure.string/split objs #"\s")))))
-          {}
-          coll))
-\end{verbatim}
-
-Now, as these information is present in a 'native' Clojure data
-structure, it can be used for various purposes. A desirable purpose
-would be to display the type hierarchy in kind of a 'class' diagram:
-
-\begin{verbatim}
-(defn map-entry->TikZ-seq
-  "Converts a hashmap entry (:key [val1 val2 ...])
-to a TikZ string (key -- { val1, val2 })"
-  [entry]
-(str
- (name (key entry))
-        " -- "
-        "{" (clojure.string/join ", " (val entry)) "}"))
-\end{verbatim}
-
-\begin{verbatim}
-#'user/map-entry->TikZ-seq
-\end{verbatim}
-
-This method can now be used in order to create a TikZ standalone \LaTeX{}
-file, that is converted to a png file by the use of lualatex.
-
-\begin{verbatim}
-(defn hash-map->TikZ-out
-  "Converts complete PDDL type hash-map to TikZ file"
-  [h-map]
-  (str
-"\\documentclass[tikz]{standalone}
-
-\\usepackage[utf8]{inputenc}
-
-\\usepackage{tikz}
-
-\\usetikzlibrary{graphdrawing}
-\\usetikzlibrary{graphs}
-\\usegdlibrary{layered,trees}
-
-\\begin{document}
-
-\\begin{tikzpicture}
-
-\\graph[layered layout, nodes={draw,circle,fill=blue!20,font=\\bfseries}]
-{
-  " (clojure.string/join ",\n  " (map map-entry->TikZ-seq h-map))
-"
-};
-
-\\end{tikzpicture}
-\\end{document}"))
-\end{verbatim}
-
-A resulting example image would look like this:
-
-\includegraphics[width=.9\linewidth]{../img/tikz-file.pdf}
-
-This look can be further extended in order to create a 
-UML class diagram for PDDL domains and problems:
-
-At last, a main method is used, that allows for testing and running the
-script. 
-
-\begin{verbatim}
-(defn -main
-  "Runs the input/output scripts"
-  [& args]
-  (print
-   (types->hash-map
-    (split-up
-     '(:types man woman - agent table bed - furniture robot agent))))
-  (say/say "Welcome to PDDL environment"))
-\end{verbatim}
-
-\section{VAL Plan Verification}
-\label{sec-7-5}
-
-\chapter{Evaluation}
-\label{sec-8}
-\chapter{Discussion}
-\label{sec-9}
-\chapter{Conclusion}
-\label{sec-10}
-\begin{verbatim}
-(define (domain xyz)
-  (:requirements
-   :strips))
-\end{verbatim}
-
-\includegraphics[width=.9\linewidth]{mygraph.png}
-\chapter{Bibliography}
-\label{sec-11}
+\section{Discussion and Outlook}
+\label{sec-5}
+\section{Bibliography}
+\label{sec-6}
 \printbibliography
 
-\chapter{Appendix}
-\label{sec-12}
+\section{Appendix}
+\label{sec-7}
 \(\alpha\)
 % Emacs 24.3.1 (Org mode 8.2.5h)
 \end{document}
