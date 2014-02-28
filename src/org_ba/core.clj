@@ -152,26 +152,9 @@ to the dot language notation"
   [pddl-types-map]
   (clojure.string/join "\n" (map types-map-entry->dot-language pddl-types-map)))
 
-(defn -main
-  "Runs the input/output scripts"
-  [& args]
-  (print
-   (types->hash-map
-     '(:types man woman - agent table bed - furniture robot agent)))
-  #_(say/say "Welcome to PDDL environment"))
-
-
 ;;;; Read PDDL predicates and generate UML 'type' diagram
 
-;;; Example for Predicate:
-(def predicates 
-  '(:predicates (at ?x - location ?y - object)
-	              (have ?x - object) 
-	              (hot ?x - object)
-	              (on ?f - furniture ?o - object)))
 
-;;; Example invocation:
-(hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
 
 (defn get-types-in-predicate
   "Takes a PDDL predicate,
@@ -242,6 +225,7 @@ edge[dir=back, arrowtail=empty]
    (clojure.string/join (hash-map->dot h-map))
    "}"))
 
+
 (defn PDDL->dot-with-style
   "Adds dot template to
 hash-map>dot"
@@ -256,3 +240,59 @@ edge[dir=back, arrowtail=empty]
    (types-hash-map->dot-language (types->hash-map types))
    
    "}"))
+
+;;; Example for Predicate:
+(def predicates 
+  '(:predicates (at ?x - location ?y - object)
+	              (have ?x - object) 
+	              (hot ?x - object)
+	              (on ?f - furniture ?o - object)))
+
+;;; Example invocation:
+(hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
+
+
+(defn get-PDDL-construct
+  "Takes a PDDL keyword and a PDDL domain/problem
+file and returns all parts of the file that
+belong to the PDDL keyword."
+  [pddl-keyword pddl-file]
+  (filter #(and (seq? %)
+                (= (keyword pddl-keyword)
+                   (first %)))
+          pddl-file))
+
+
+; TODO: Throw error if length != 1
+(defn get-PDDL-predicates
+  "Get all predicates in a PDDL file"
+  [pddl-file]
+  (first (get-PDDL-construct 'predicates pddl-file)))
+
+
+; TODO: Throw error if length != 1
+(defn get-PDDL-types
+  "Get all types in a PDDL file"
+  [pddl-file]
+  (first (get-PDDL-construct 'types pddl-file)))
+
+(defn PDDL->dot
+  "Takes a complete PDDL file
+and generates a UML type diagram"
+  [pddl-file]
+  (PDDL->dot-with-style (get-PDDL-predicates pddl-file)
+                        (get-PDDL-types pddl-file)))
+
+(defn PDDL->dot-commandline
+  "Assumes that the PDDL input is
+a string and 'reads' this string"
+  [pddl-file]
+  (print "The type is " (type pddl-file))
+  (PDDL->dot (edn/read-string pddl-file)))
+
+
+(defn -main
+  "Runs the input/output scripts"
+  [& args]
+  (print
+   (PDDL->dot-commandline (first args))))

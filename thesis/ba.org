@@ -33,31 +33,38 @@ https://www.ece.cmu.edu/~koopman/essays/abstract.html
   not exist yet)
 *************** END
 
-Knowledge engineering (KE), that means representing world information
-in a computer system, is the crucial step for utilizing AI planning
-system to solve problems. By definition, it requires an expert that
-knows the underlying syntax and models the information manually. This
-process is naturally error-prone and time-consuming. While planning
-system are improving steadily, the main work for useful systems lies
-on the representing language. The Planning Domain Definition Language
-(PDDL) \parencite{mcdermott1998pddl} allows for a standardized way of
-specifying planning tasks. While on the one hand, recent PDDL extensions
-\parencite{fox2003pddl2,kovacs2011bnf} extended the expressiveness of
-PDDL and tackle a route for real-world applications, they also demand
-a higher level of knowledge and attention of the knowledge engineer.
-Several approaches to shift the modeling process from a text based
-'programming paradigm' to a user-friendly graphical design tool exist,
-however, they also arouse drawbacks: limited functionality,
-expenditure of time, editing difficulty, to name a few. As in other
-computer languages, so far, there is no real way around diving into
-the 'code paradigm'. 
-This thesis will, after introducing the basic terms and definitions of
-PDDL, focus on the software support for knowledge engineers. A package
-for the text and source code editor Sublime Text (ST) will be
-introduced, that provides syntax highlighting and PDDL templates. And
-the functionality is transferred to a on-line editor with instant access. 
+Planning is one the the classic Artificial Intelligence (AI)
+tasks. Knowledge engineering (KE), that means representing world
+information in a computer system, is the crucial step for utilizing AI
+planning systems to solve problems. By definition (TODO: ...), it
+requires an human expert who knows the underlying syntax and models
+the information manually. This process is naturally error-prone and
+time-consuming. While planning systems are improving steadily (...),
+the main work for useful systems lies on the representing language.
+The Planning Domain Definition Language (PDDL)
+\parencite{mcdermott1998pddl} allows for a standardized way of
+specifying planning tasks. While on the one hand, recent PDDL
+extensions \parencite{fox2003pddl2,kovacs2011bnf} extended the
+expressiveness of PDDL and tackle a route for real-world applications,
+they also demand a higher level of knowledge and attention of the
+knowledge engineer. Several approaches to shift the modeling process
+from a text based 'programming paradigm' to a user-friendly graphical
+design tool exist, however, they also arouse drawbacks: limited
+functionality, expenditure of time, editing difficulty, to name a few.
+As in other computer languages, so far, there is no real way around
+diving into the 'code paradigm'. This thesis will, after introducing
+the basic terms and definitions of PDDL, focus on the software support
+for knowledge engineers. A package for the text and source code editor
+Sublime Text (ST) will be introduced, that provides syntax
+highlighting and PDDL templates. And the functionality is transferred
+to a on-line editor with instant access. Together with this package, a
+basic interface between the functional programming language Clojure
+and PDDL is developed. In this process, a UML 'type diagram'
+generator, derived from UML class diagrams for Object Oriented
+Programming, is presented that supports the knowledge engineer in
+keeping in keeping track during the design process and gain a fast
+overview of existing domains and problems.
 
-Planning is one the the classic Artificial Intelligence (AI) tasks.
 The main focus of this thesis is about real world applications and the
 development of handy tools that support (and partially automatize) the
 planning process. 
