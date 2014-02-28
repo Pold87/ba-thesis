@@ -66,7 +66,7 @@ planning process.
 ** PDDL Studio
 ** VISPlan
 
-** Emacs Mode
+** Emacs PDDL Mode
 
 ** itSimple
 
@@ -138,13 +138,19 @@ They are declared by the (:requirements ...) part. Some often used
 requirements include ...
 
 *** Types
+
+If order to be able to use types in a domain file, the
+requirement :typing should be declared.
+
 In order to assign to assign categories of objects, PDDL allows for
-type definition. Like that, parameters in actions can be typed, as
+type definitions. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
 classes in Object Orientated Programming (OOP). Adding to the
 (:requirement ...) part of the file guarantees, that typing can be
 correctly used. Strips (no types) vs ADL (types).
+
+
 
 *** Functions
 Functions are not supported by many planners (source!) and, before
@@ -191,6 +197,7 @@ Below, methods are presented for
 - Domain Generator :: Mathematical limitations (design level)
 
 ** Syntax Highlighting and Code Snippets
+<<sec:syntax>>
 
 # Problembewusstsein und Vorteile: Ignore larger parts of text etc.
 # (see http://en.wikipedia.org/wiki/Syntax_highlighting) 
@@ -270,7 +277,7 @@ Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2.
 ** Clojure Interface
 As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
 using a LISP dialect for the interface seems reasonable. This thesis
-uses Clojure \parencite{hickey2008clojure}, a relatively modern LISP
+uses Clojure \parencite{hickey2008clojure}, a modern LISP
 dialect that runs on the Java Virtual Machine.
 
 In this section, a kitchen domain will be presented, whereby PDDL
@@ -384,8 +391,34 @@ as follows:
 TODO Human Planner Interaction
 *************** END
 
+*** PDDL Parsing
 ** Type Diagram Generator
+*************** TODO
+                Add actions to the Type Diagram?
+*************** END
+
+Types play a major role in the PDDL design process: they are involved,
+besides their definition, in the constants, predicates and actions
+part. So, a fine grasp of their hierarchy, as well as their involved
+predicates becomes handy and assists the KE in the planning process. 
 * Analysis
+** Participants
+Ten non-paid students (six female) took part in the experiment. All
+had knowledge about LISP syntax, but neither one had faced PDDL prior
+to this study. 
+
+** Material 
+The usability of the Syntax Highlighter (see [[sec:syntax]]) and the Type
+Diagram Generator (see [[Type%20Diagram%20Generator][Type Diagram Generator]]) were
+tested.
+
+** Design
+
+The participants had to 
+
+
+** Procedure
+
 * Discussion and Outlook
 * Bibliography
 \printbibliography
@@ -398,7 +431,7 @@ TODO Human Planner Interaction
 #+HTML: <div class="container">
 #+LANGUAGE: en
 #+OPTIONS: toc:t todo:nil
-#+LATEX_CLASS: article
+#+LATEX_CLASS: report
 #+LaTeX_HEADER: \usepackage{minted}
 #+LaTeX_HEADER: \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
 #+LaTeX_HEADER: \addbibresource{bibliography.bib}

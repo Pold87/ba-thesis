@@ -1,5 +1,5 @@
-% Created 2014-02-25 Tue 23:32
-\documentclass[11pt]{article}
+% Created 2014-02-27 Thu 13:55
+\documentclass[11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -53,7 +53,7 @@ engineers in the design process.
 
 \url{https://www.ece.cmu.edu/~koopman/essays/abstract.html}
 \end{abstract}
-\section{Introduction}
+\chapter{Introduction}
 \label{sec-1}
 \begin{center}
 \fbox{
@@ -108,19 +108,19 @@ Planning is one the the classic Artificial Intelligence (AI) tasks.
 The main focus of this thesis is about real world applications and the
 development of handy tools that support (and partially automatize) the
 planning process. 
-\section{Related Work}
+\chapter{Related Work}
 \label{sec-2}
-\subsection{PDDL Studio}
+\section{PDDL Studio}
 \label{sec-2-1}
-\subsection{VISPlan}
+\section{VISPlan}
 \label{sec-2-2}
 
-\subsection{Emacs Mode}
+\section{Emacs PDDL Mode}
 \label{sec-2-3}
 
-\subsection{itSimple}
+\section{itSimple}
 \label{sec-2-4}
-\section{Planning Basics and PDDL}
+\chapter{Planning Basics and PDDL}
 \label{sec-3}
 \begin{center}
 \fbox{
@@ -181,7 +181,7 @@ instances of problems are created in the problem files.
 These two files shell be investigated further in the following
 sections.
 
-\subsection{Format of the Domain File}
+\section{Format of the Domain File}
 \label{sec-3-1}
 Domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted) and
@@ -202,46 +202,57 @@ Include simple plan -> not yet in \LaTeX{}
 }
 \end{center}
 
-\subsubsection{Define}
+\subsection{Define}
 \label{sec-3-1-1}
 Every domain file start with (define (domain <domainName>) \ldots{}) where,
 <domainName> can be any string
-\subsubsection{Requirements}
+\subsection{Requirements}
 \label{sec-3-1-2}
 The requirements part is not a mandatory part of a PDDL domain file.
 However, as most planners only support a subset of PDDL they are
 useful for determining if a planner is able to act on a given problem.
 They are declared by the (:requirements \ldots{}) part. Some often used
 requirements include \ldots{}
-\subsubsection{Types}
+\subsection{Types}
 \label{sec-3-1-3}
+
+If order to be able to use types in a domain file, the
+requirement :typing should be declared.
+
 In order to assign to assign categories of objects, PDDL allows for
-type definition. Like that, parameters in actions can be typed, as
+type definitions. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
 classes in Object Orientated Programming (OOP). Adding to the
 (:requirement \ldots{}) part of the file guarantees, that typing can be
 correctly used. Strips (no types) vs ADL (types).
-\subsubsection{Functions}
+
+
+\subsection{Functions}
 \label{sec-3-1-4}
 Functions are not supported by many planners (source!) and, before
 PDDL 3.1 they could only be modeled as 
 
 It is notable that before PDDL 3.0 the keyword functors was used instead
-\subsubsection{Actions}
+\subsection{Actions}
 \label{sec-3-1-5}
 PDDL 3.1 supports two types of actions: durative-action and the
 'regular' action.
-\subsection{Format of the Problem File}
+\section{Format of the Problem File}
 \label{sec-3-2}
-\subsection{Format of the Solution File (Plan)}
+\section{Format of the Solution File (Plan)}
 \label{sec-3-3}
-\subsection{Planning Process}
+\section{Planning Process}
 \label{sec-3-4}
-\section{Software Engineering Tools for AI Planning}
+\chapter{Software Engineering Tools for AI Planning}
 \label{sec-4}
-\subsection{Ideas}
-\label{sec-4-1}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+
+
+\rule[.8em]{\textwidth}{2pt}
+
 \begin{itemize}
 \item PDDL type hierarchy and object instantiation to UML / TikZ, store
 predicates (and action?) in same box as type
@@ -256,8 +267,12 @@ engineering in general
 Planning and Scheduling)
 \item Orient on "How to Design Classes"
 \end{itemize}
-\subsection{Statement of Problem}
-\label{sec-4-2}
+\end{minipage}
+}
+\end{center}
+
+\section{Statement of Problem}
+\label{sec-4-1}
 Writing and maintaining PDDL files can be time-consuming and
 cumbersome \textcite{li2012translating}. So, the following development
 tools shell support and facilitate the PDDL task design process and
@@ -274,8 +289,9 @@ input and output and dynamic generation (design level)
 recognition.
 \item[{Domain Generator}] Mathematical limitations (design level)
 \end{description}
-\subsection{Syntax Highlighting and Code Snippets}
-\label{sec-4-3}
+\section{Syntax Highlighting and Code Snippets}
+\label{sec-4-2}
+\label{sec:syntax}
 
 
 Writing extensive domain and problem files is a cumbersome task:
@@ -294,8 +310,8 @@ highlighting file can be used there, too. Besides, the general
 principles (e.g. regular expressions) outlined here, apply to most of
 other editors as well.  
 
-\subsubsection{Implementation}
-\label{sec-4-3-1}
+\subsection{Implementation}
+\label{sec-4-2-1}
 ST syntax definitions are written in property lists in the XML format. 
 
 The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
@@ -338,8 +354,8 @@ nil\end{minipage}
 }
 \end{center}
 into different parts. 
-\subsubsection{Usage and Customization}
-\label{sec-4-3-2}
+\subsection{Usage and Customization}
+\label{sec-4-2-2}
 By using ST as editor, language independent ST features are supported, like auto
 completion, code folding and column selection, described in the
 Sublime Text 2 Documentation.
@@ -354,34 +370,34 @@ By default, all scopes are included.
 
 \begin{enumerate}
 \item Related Work
-\label{sec-4-3-2-1}
+\label{sec-4-2-2-1}
 \begin{enumerate}
 \item PDDL Studio
-\label{sec-4-3-2-1-1}
+\label{sec-4-2-2-1-1}
 PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
 creating PDDL tasks. 
 
 \item PDDL Mode
-\label{sec-4-3-2-1-2}
+\label{sec-4-2-2-1-2}
 Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
 \item itSIMPLE
-\label{sec-4-3-2-1-3}
+\label{sec-4-2-2-1-3}
 
 \item Pygments
-\label{sec-4-3-2-1-4}
+\label{sec-4-2-2-1-4}
 \item ModPlan
-\label{sec-4-3-2-1-5}
+\label{sec-4-2-2-1-5}
 \begin{itemize}
 \item Very interesting: \url{http://www.tzi.de/~edelkamp/modplan/}
 \end{itemize}
 \end{enumerate}
 \end{enumerate}
 
-\subsubsection{Evaluation}
-\label{sec-4-3-3}
+\subsection{Evaluation}
+\label{sec-4-2-3}
 
-\subsection{Clojure Interface}
-\label{sec-4-4}
+\section{Clojure Interface}
+\label{sec-4-3}
 As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
 using a LISP dialect for the interface seems reasonable. This thesis
 uses Clojure \parencite{hickey2008clojure}, a relatively modern LISP
@@ -391,13 +407,13 @@ In this section, a kitchen domain will be presented, whereby PDDL
 structures are presented that will be also useful in other domains. I
 will start with a rather simple domain, present possible limitations
 and then extend the file by more sophisticated constructs.
-\subsubsection{Functions}
-\label{sec-4-4-1}
+\subsection{Functions}
+\label{sec-4-3-1}
 As functions have a return value, the modeling possibilities
 dramatically increase.
 
-\subsubsection{Numerical Expressiveness}
-\label{sec-4-4-2}
+\subsection{Numerical Expressiveness}
+\label{sec-4-3-2}
 One might assume that the distance could be modeled as follows:
 
 \begin{verbatim}
@@ -421,7 +437,7 @@ of the Babylonian root method.
 
 \begin{enumerate}
 \item Alternative \#1: Only sqrt exists
-\label{sec-4-4-2-1}
+\label{sec-4-3-2-1}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
 \begin{verbatim}
@@ -440,7 +456,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
                    (pos-y ?goal))))))
 \end{verbatim}
 \item Alternative \#2: sqrt and expt exist
-\label{sec-4-4-2-2}
+\label{sec-4-3-2-2}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 \begin{verbatim}
 :duration (= ?duration 
@@ -457,7 +473,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
 \end{verbatim}
 
 \item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-\label{sec-4-4-2-3}
+\label{sec-4-3-2-3}
 
 \begin{itemize}
 \item Distance Matrix
@@ -487,7 +503,7 @@ and calculate only the half of the matrix (as it is symmetric, that
 mean distance from A to B is the same as the distance from B to A).
 
 \item Alternative \#4: Use the Manhattan distance
-\label{sec-4-4-2-4}
+\label{sec-4-3-2-4}
 
 Allowing the agent to move only vertically and horizontally would be
 that one can use the so called Taxicab geometry (or Manhattan length)
@@ -519,17 +535,55 @@ TODO Human Planner Interaction
 }
 \end{center}
 \end{enumerate}
-\subsection{Type Diagram Generator}
-\label{sec-4-5}
+\subsection{PDDL Parsing}
+\label{sec-4-3-3}
 
-\section{Discussion and Outlook}
+\section{Type Diagram Generator}
+\label{sec-4-4}
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+
+
+\rule[.8em]{\textwidth}{2pt}
+
+Add actions to the Type Diagram?
+\end{minipage}
+}
+\end{center}
+
+Types play a major role in the PDDL design process: they are involved,
+besides their definition, in the constants, predicates and actions
+part. So, a fine grasp of their hierarchy, as well as their involved
+predicates becomes handy and assists the KE in the planning process. 
+
+\chapter{Analysis}
 \label{sec-5}
-\section{Bibliography}
+\section{Participants}
+\label{sec-5-1}
+Ten non-paid students (six female) took part in the experiment. All
+had knowledge about LISP syntax, but neither one had faced PDDL prior
+to this study. 
+\section{Material}
+\label{sec-5-2}
+The usability of the Syntax Highlighter (see \ref{sec:syntax}) and the Type
+Diagram Generator (see \texttt{Type Diagram Generator}) were
+tested.
+\section{Design}
+\label{sec-5-3}
+
+The participants had to 
+
+\section{Procedure}
+\label{sec-5-4}
+\chapter{Discussion and Outlook}
 \label{sec-6}
+\chapter{Bibliography}
+\label{sec-7}
 \printbibliography
 
-\section{Appendix}
-\label{sec-7}
+\chapter{Appendix}
+\label{sec-8}
 \(\alpha\)
 % Emacs 24.3.1 (Org mode 8.2.5h)
 \end{document}

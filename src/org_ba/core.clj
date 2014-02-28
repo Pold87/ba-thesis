@@ -81,7 +81,7 @@
             (clojure.string/join " " coll))))
 
 
-(defn types->hash-map
+(defn types->hash-map-helper
   "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
   to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
   [coll]
@@ -94,6 +94,11 @@
                         (clojure.string/split objs #"\s")))))
           {}
           coll))
+
+(defn types->hash-map
+  "Splits types and converts them into a hash-map"
+  [pddl-types]
+  (types->hash-map-helper (split-up pddl-types)))
 
 (defn map-entry->TikZ-seq
   "Converts a hashmap entry (:key [val1 val2 ...])
@@ -131,27 +136,42 @@ to a TikZ string (key -- { val1, val2 })"
 \\end{tikzpicture}
 \\end{document}"))
 
+(defn types-map-entry->dot-language
+  "Converts one hash-map entry
+to the dot language"
+  [entry]
+  (str
+   (name (key entry))
+   " -> "
+   "{" (clojure.string/join " " (val entry)) "}"))
+
+
+(defn types-hash-map->dot-language
+  "Converts a PDDL types hash-map
+to the dot language notation"
+  [pddl-types-map]
+  (clojure.string/join "\n" (map types-map-entry->dot-language pddl-types-map)))
+
 (defn -main
   "Runs the input/output scripts"
   [& args]
   (print
    (types->hash-map
-    (split-up
-     '(:types man woman - agent table bed - furniture robot agent))))
+     '(:types man woman - agent table bed - furniture robot agent)))
   #_(say/say "Welcome to PDDL environment"))
 
 
 ;;;; Read PDDL predicates and generate UML 'type' diagram
 
 ;;; Example for Predicate:
-#_(def predicates 
+(def predicates 
   '(:predicates (at ?x - location ?y - object)
 	              (have ?x - object) 
 	              (hot ?x - object)
 	              (on ?f - furniture ?o - object)))
 
 ;;; Example invocation:
-;;; (hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
+(hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
 
 (defn get-types-in-predicate
   "Takes a PDDL predicate,
@@ -220,4 +240,19 @@ node[shape=Mrecord,style=filled,fillcolor=gray92]
 edge[dir=back, arrowtail=empty]
 \n"
    (clojure.string/join (hash-map->dot h-map))
+   "}"))
+
+(defn PDDL->dot-with-style
+  "Adds dot template to
+hash-map>dot"
+  [preds types]
+  (str
+   "digraph hierarchy {
+node[shape=Mrecord,style=filled,fillcolor=gray92]
+edge[dir=back, arrowtail=empty]
+\n"
+   
+   (clojure.string/join (hash-map->dot (all-pddl-preds->hash-map-long preds)))
+   (types-hash-map->dot-language (types->hash-map types))
+   
    "}"))
