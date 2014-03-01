@@ -1,4 +1,4 @@
-% Created 2014-02-27 Thu 13:55
+% Created 2014-03-01 Sat 16:08
 \documentclass[11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -80,31 +80,44 @@ not exist yet)
 }
 \end{center}
 
+Planning is one the the classic Artificial Intelligence (AI) tasks.
 Knowledge engineering (KE), that means representing world information
 in a computer system, is the crucial step for utilizing AI planning
-system to solve problems. By definition, it requires an expert that
-knows the underlying syntax and models the information manually. This
-process is naturally error-prone and time-consuming. While planning
-system are improving steadily, the main work for useful systems lies
-on the representing language. The Planning Domain Definition Language
-(PDDL) \parencite{mcdermott1998pddl} allows for a standardized way of
-specifying planning tasks. While on the one hand, recent PDDL extensions
-\parencite{fox2003pddl2,kovacs2011bnf} extended the expressiveness of
-PDDL and tackle a route for real-world applications, they also demand
-a higher level of knowledge and attention of the knowledge engineer.
-Several approaches to shift the modeling process from a text based
-'programming paradigm' to a user-friendly graphical design tool exist,
-however, they also arouse drawbacks: limited functionality,
-expenditure of time, editing difficulty, to name a few. As in other
-computer languages, so far, there is no real way around diving into
-the 'code paradigm'. 
-This thesis will, after introducing the basic terms and definitions of
-PDDL, focus on the software support for knowledge engineers. A package
-for the text and source code editor Sublime Text (ST) will be
-introduced, that provides syntax highlighting and PDDL templates. And
-the functionality is transferred to a on-line editor with instant access. 
+systems to solve problems. By definition (TODO: \ldots{}), it requires an
+human expert who knows the underlying syntax and models the
+information manually. This process is naturally error-prone and
+time-consuming. While planning systems are improving steadily (\ldots{}),
+the main work for useful systems lies on the representing language.
+The Planning Domain Definition Language (PDDL)
+\parencite{mcdermott1998pddl} allows for a standardized way of
+specifying planning tasks. While on the one hand, recent PDDL
+extensions \parencite{fox2003pddl2,kovacs2011bnf} extended the
+expressiveness of PDDL and tackle a route for real-world applications,
+they also demand a higher level of knowledge and attention of the
+knowledge engineer. Particularly with the start in 2005 of the
+International Competition on Knowledge Engineering for Planning and
+Scheduling (ICKEPS), new tools for the shift from at the modeling
+process from a text based 'programming paradigm' to a user-friendly
+graphical design tool exist, however, they also arouse drawbacks:
+limited functionality, expenditure of time, editing difficulty, to
+name a few. As in other computer languages, so far, there is no real
+way around diving into the 'code paradigm'. Despite recent advances in
+the area, the performance of planning \& scheduling systems is still
+dependent to a large extent on how problems and domains are
+formulated, resulting in the need for careful system fine-tuning
+(copied 1:1). This thesis will, after introducing the basic terms and
+definitions of PDDL, focus on the software support for knowledge
+engineers. A package for the text and source code editor Sublime Text
+(ST) will be introduced, that provides syntax highlighting and PDDL
+templates. And the functionality is transferred to a on-line editor
+with instant access. Together with this package, a basic interface
+between the functional programming language Clojure and PDDL is
+developed. In this process, a UML 'type diagram' generator, derived
+from UML class diagrams for Object Oriented Programming, is presented
+that supports the knowledge engineer in keeping in keeping track
+during the design process and gain a fast overview of existing domains
+and problems.
 
-Planning is one the the classic Artificial Intelligence (AI) tasks.
 The main focus of this thesis is about real world applications and the
 development of handy tools that support (and partially automatize) the
 planning process. 
@@ -112,14 +125,34 @@ planning process.
 \label{sec-2}
 \section{PDDL Studio}
 \label{sec-2-1}
-\section{VISPlan}
+PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
+creating PDDL tasks. It was designed from scratch without, in contrast
+to the work presented in this thesis, that is build on top of Sublime
+Text. PDDL Studio is a pure PDDL text editor 
+
+\section{PDDL Mode for Emacs}
 \label{sec-2-2}
-
-\section{Emacs PDDL Mode}
+Announced 2005 in a mailing list entry, PDDL mode for Emacs supports
+PDDL 2.2. 
+\section{itSIMPLE}
 \label{sec-2-3}
-
-\section{itSimple}
+The itSIMPLE project is a tool that supports the knowledge engineer in
+designing a PDDL domain by the use of UML diagrams. This approach is
+reversed to the approach mentioned in this paper: while itSIMPLE
+generates PDDL from UML, this paper generated UML from PDDL. 
+\section{GIPO}
 \label{sec-2-4}
+\section{Pygments}
+\label{sec-2-5}
+\section{ModPlan}
+\label{sec-2-6}
+Also see VEGA plan visulazation on the MODplan page
+\begin{itemize}
+\item Very interesting: \url{http://www.tzi.de/~edelkamp/modplan/}
+\end{itemize}
+
+\section{VISPLAN}
+\label{sec-2-7}
 \chapter{Planning Basics and PDDL}
 \label{sec-3}
 \begin{center}
@@ -181,8 +214,13 @@ instances of problems are created in the problem files.
 These two files shell be investigated further in the following
 sections.
 
-\section{Format of the Domain File}
+
+\section{Domain File}
 \label{sec-3-1}
+
+The domain file contains the frame for planning tasks and determines,
+which types, predicates and actions are possible
+
 Domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
@@ -204,29 +242,32 @@ Include simple plan -> not yet in \LaTeX{}
 
 \subsection{Define}
 \label{sec-3-1-1}
-Every domain file start with (define (domain <domainName>) \ldots{}) where,
-<domainName> can be any string
+Every domain file starts with (define (domain <domainName>) \ldots{}) where,
+<domainName> can be any string.
 \subsection{Requirements}
 \label{sec-3-1-2}
 The requirements part is not a mandatory part of a PDDL domain file.
-However, as most planners only support a subset of PDDL they are
-useful for determining if a planner is able to act on a given problem.
-They are declared by the (:requirements \ldots{}) part. Some often used
-requirements include \ldots{}
+However, PDDL supports different "levels of expressivity", that means
+subsets of PDDL features \textcite[1]{mcdermott1998pddl}. As most
+planners only support a subset of PDDL the requirements part is useful
+for determining if a planner is able to act on a given problem. They
+are declared by the \verb~(:requirements ...)~ part. Some often used
+requirements include \verb~:strips~ 
+For a list of current requirement flags and their meaning, see \ldots{}
+
 \subsection{Types}
 \label{sec-3-1-3}
 
 If order to be able to use types in a domain file, the
-requirement :typing should be declared.
+requirement :typing should be declared (TODO: is :adl enough?).
 
-In order to assign to assign categories of objects, PDDL allows for
+In order to assign categories to objects, PDDL allows for
 type definitions. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
 classes in Object Orientated Programming (OOP). Adding to the
 (:requirement \ldots{}) part of the file guarantees, that typing can be
 correctly used. Strips (no types) vs ADL (types).
-
 
 \subsection{Functions}
 \label{sec-3-1-4}
@@ -238,12 +279,30 @@ It is notable that before PDDL 3.0 the keyword functors was used instead
 \label{sec-3-1-5}
 PDDL 3.1 supports two types of actions: durative-action and the
 'regular' action.
-\section{Format of the Problem File}
+\section{Problem File}
 \label{sec-3-2}
-\section{Format of the Solution File (Plan)}
+
+Problems are designed with respect to a domain. Domains usually have
+multiple problems p01.pddl, p02.pddl, \ldots{} Problems declare the initial
+world state and the goal state to be reached. They instantiate types,
+in they way that they create objects 
+\section{Planning}
 \label{sec-3-3}
-\section{Planning Process}
-\label{sec-3-4}
+
+A planning solution is a sequence of actions that lead from the
+initial state to the goal state. PDDL itself does not declare any
+uniform plan layout.
+
+The input to the planning software is a domain and a belonging
+problem, the output is usually a totally or partially ordered plan.
+are software tools that Due to the yearly ICAPS, there is a broad
+range of available planners. This thesis uses the planner SGPLAN\(_{\text{6}}\)
+\textcite{hsu2008sgplan}, a 'extensive' (in the sense of its
+supporting features) planner for both temporal and non-temporal
+planning problems.
+
+An overview of different planners is given at
+\url{http://ipc.informatik.uni-freiburg.de/Planners}.
 \chapter{Software Engineering Tools for AI Planning}
 \label{sec-4}
 \begin{center}
@@ -308,27 +367,27 @@ Ace Files.
 For Mac user, TextMate (TM) is very similar to ST and the syntax
 highlighting file can be used there, too. Besides, the general
 principles (e.g. regular expressions) outlined here, apply to most of
-other editors as well.  
+other editors as well. So, a Pygments extension was written, that
+allows for syntax highlighting in \LaTeX documents.
+
 
 \subsection{Implementation}
 \label{sec-4-2-1}
-ST syntax definitions are written in property lists in the XML format. 
+ST syntax definitions are written in property lists in the XML format.
 
-The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
-written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
-following features:
+The syntax definition is implemented by the use of the ST plug-in
+\textcite{aaapackagedev}. So, the definitions can be written in YAML
+in converted to Plist XML later on.
+AAAPackageDEV\textcite{aaapackagedev} is a ST plugin, that helps to
+create, amongst others, ST packages, syntax definitions and 'snippets'
+(re-usable code).
 
-\begin{quote}
-AAAPackageDev is a Sublime Text 2 and 3 plug-in
-that helps to create and edit syntax definitions, snippets,
-completions files, build systems and other Sublime Text extensions.
-\end{quote}
-
-By means of Oniguruma regular expressions \parencite{kosako}, scopes are
-defined, that determine the meaning of the PDDL code block. The scope naming
-conventions mentioned in the \citetitle{textmate} are applied here. By the means
-of the name, the colors are assigned. Different ST themes
-display different colors (not all themes support all naming conventions).
+By means of Oniguruma regular expressions \parencite{kosako}, scopes
+are defined, that determine the meaning of the PDDL code block. The
+scope naming conventions mentioned in the \citetitle{textmate} are
+applied here. By the means of the name, the colors are assigned.
+Different ST themes display different colors (not all themes support
+all naming conventions).
 
 The syntax highlighting is intended for PDDL 3.1, but is downward
 compatible, as previous versions are subsets of later versions.
@@ -342,78 +401,71 @@ Are later versions really subsets?
 nil\end{minipage}
 }
 \end{center}
-Like that, the PDDL file is parsed 
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-Is it really parsed, or are just parts highlighted?
 
-\rule[.8em]{\textwidth}{2pt}
+The pattern matching heuristic that is implemented by the use of
+regular expressions is used for assigning scopes to the parts of the
+file. This heuristic is quite sophisticated, as it recognizes
+sub-parts of PDDL files and chooses the color accordingly. 
 
-nil\end{minipage}
-}
-\end{center}
-into different parts. 
+\includegraphics[width=.9\linewidth]{/home/pold/Pictures/ba.png}
+
 \subsection{Usage and Customization}
 \label{sec-4-2-2}
-By using ST as editor, language independent ST features are supported, like auto
-completion, code folding and column selection, described in the
-Sublime Text 2 Documentation.
+To enable syntax highlighting and code snippets in ST, the files of
+the repository have to be placed in the ST packages folder
+(\url{http://www.sublimetext.com/docs/3/packages.html}). The first part of the
+PDDL.YAML-tmlanguage describes the parts of the PDDL task that should
+be highlighted. By removing (or commenting) include statements, the
+syntax highlighter is adjustable the user's need.
 
-To enable syntax highlighting and code snippets, the files of the
-repository have to be placed in the ST packages folder. The first part
-of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
-should be highlighted. By removing (or commenting) include statements,
-the syntax highlighter is adjustable the user's need.
+By using ST as editor, language independent ST features are supported,
+like auto completion, code folding and column selection, described in
+the Sublime Text 2 Documentation.
+
+
+
+The PDDL.YAML-tmlanguage file is split in two parts:
 
 By default, all scopes are included.
-
-\begin{enumerate}
-\item Related Work
-\label{sec-4-2-2-1}
-\begin{enumerate}
-\item PDDL Studio
-\label{sec-4-2-2-1-1}
-PDDL Studio \parencite{plch2012inspect} is an Integrated Development Environment (IDE) for
-creating PDDL tasks. 
-
-\item PDDL Mode
-\label{sec-4-2-2-1-2}
-Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
-\item itSIMPLE
-\label{sec-4-2-2-1-3}
-
-\item Pygments
-\label{sec-4-2-2-1-4}
-\item ModPlan
-\label{sec-4-2-2-1-5}
-\begin{itemize}
-\item Very interesting: \url{http://www.tzi.de/~edelkamp/modplan/}
-\end{itemize}
-\end{enumerate}
-\end{enumerate}
 
 \subsection{Evaluation}
 \label{sec-4-2-3}
 
 \section{Clojure Interface}
 \label{sec-4-3}
+
+PDDL, as planning language modeling capabilities are limited, a
+interface with a programming is handy a can reduce dramatically the
+modeling time. In IPC, task generators are used write extensive domain
+and problem files. 
+
 As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
 using a LISP dialect for the interface seems reasonable. This thesis
-uses Clojure \parencite{hickey2008clojure}, a relatively modern LISP
+uses Clojure \parencite{hickey2008clojure}, a modern LISP
 dialect that runs on the Java Virtual Machine.
 
-In this section, a kitchen domain will be presented, whereby PDDL
-structures are presented that will be also useful in other domains. I
-will start with a rather simple domain, present possible limitations
-and then extend the file by more sophisticated constructs.
-\subsection{Functions}
+In this section, I will not only show a method for generating PDDL
+constructs, but also for reading in PDDL files are handling the input.
+
+\subsection{Basics}
 \label{sec-4-3-1}
+Through the higher-order filter method in Clojure, parts of PDDL files
+can be easily extracted. Like that, one can extract parts of the file
+and handle the constructs in a Clojure intern way.
+
+As an example, the type handling will be represented here, but the
+basic approach is similar for all PDDL constructs.
+
+The here developed tools should be platform independent with a
+development focus in UNIX/Linux systems, as most planners (source!)
+run on Linux.
+\subsection{Functions}
+\label{sec-4-3-2}
 As functions have a return value, the modeling possibilities
 dramatically increase.
 
 \subsection{Numerical Expressiveness}
-\label{sec-4-3-2}
+\label{sec-4-3-3}
 One might assume that the distance could be modeled as follows:
 
 \begin{verbatim}
@@ -437,7 +489,7 @@ of the Babylonian root method.
 
 \begin{enumerate}
 \item Alternative \#1: Only sqrt exists
-\label{sec-4-3-2-1}
+\label{sec-4-3-3-1}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 
 \begin{verbatim}
@@ -456,7 +508,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
                    (pos-y ?goal))))))
 \end{verbatim}
 \item Alternative \#2: sqrt and expt exist
-\label{sec-4-3-2-2}
+\label{sec-4-3-3-2}
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 \begin{verbatim}
 :duration (= ?duration 
@@ -473,7 +525,7 @@ Assuming that a function sqrt would actually exist, the duration could be modele
 \end{verbatim}
 
 \item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-\label{sec-4-3-2-3}
+\label{sec-4-3-3-3}
 
 \begin{itemize}
 \item Distance Matrix
@@ -503,7 +555,7 @@ and calculate only the half of the matrix (as it is symmetric, that
 mean distance from A to B is the same as the distance from B to A).
 
 \item Alternative \#4: Use the Manhattan distance
-\label{sec-4-3-2-4}
+\label{sec-4-3-3-4}
 
 Allowing the agent to move only vertically and horizontally would be
 that one can use the so called Taxicab geometry (or Manhattan length)
@@ -535,9 +587,6 @@ TODO Human Planner Interaction
 }
 \end{center}
 \end{enumerate}
-\subsection{PDDL Parsing}
-\label{sec-4-3-3}
-
 \section{Type Diagram Generator}
 \label{sec-4-4}
 \begin{center}
@@ -552,10 +601,39 @@ Add actions to the Type Diagram?
 }
 \end{center}
 
+Graphical notations, have some advantages compared to textual
+notations, as they simplify the communication between developers and
+help to quickly grasp the connection of related system units. 
+
+But for all that one disadvantage has to be accepted: 
+
+The UML was invented in order to standardize modeling in software
+engineering (SE). The UML consists of several part notations, the here
+presented tool uses the 'class diagram' notation, as PDDL types and
+classes in OOP have strong resemblance (see Tiago 2006, p 535). 
+
 Types play a major role in the PDDL design process: they are involved,
 besides their definition, in the constants, predicates and actions
 part. So, a fine grasp of their hierarchy, as well as their involved
-predicates becomes handy and assists the KE in the planning process. 
+predicates becomes handy and assists the KE in the planning process.
+Types strongly resemble classes in object oriented programming
+As mentioned in chapter (\ldots{}), the type definitions follow a specific
+syntax. For example \verb~truck car - vehicle~ would indicate, that both
+\verb~truck~ and \verb~car~ are subtypes of the super-type vehicle. 
+
+Subtypes and corresponding super-types can be extracted using regular
+expressions. \#"(\ldots{}.)" matches every kind of that form and a
+Clojure-friendly representation in form of a hash-map can be created.
+
+PDDL side ----------------------------------------------- Clojure side
+
+'(:types \ldots{} \ldots{} --- \ldots{})                      \{\ldots{} [\ldots{} \ldots{} \ldots{}], \ldots{}\}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{/home/pold/Documents/BA/org-ba/diagram.png}
+\caption{Part of a PDDL domain and the corresponding, generated UML diagram}
+\end{figure}
 
 \chapter{Analysis}
 \label{sec-5}
@@ -576,14 +654,28 @@ The participants had to
 
 \section{Procedure}
 \label{sec-5-4}
-\chapter{Discussion and Outlook}
+\chapter{Conclusion and Outlook}
 \label{sec-6}
-\chapter{Bibliography}
-\label{sec-7}
+The tools presented in this thesis have been designed to support
+knowledge engineers in planning tasks. They can support engineers in
+the early planning design process, as well as in the maintenance of
+existing domains and problems. The communication between engineers can
+be facilitated and 
+
+
+\section{Outlook}
+\label{sec-6-1}
+Besides ICKEPS, as mentioned in the introduction, also the yearly
+workshop Knowledge Engineering for Planning and Scheduling (KEPS) will
+promote the research in planning and scheduling technology. Potentially, the main effort of
+for implementing models in planning will be shifted from the manual KE
+to the automated knowledge acquisition (KA). Perception systems,
+Nevertheless, a engineer who double-checks the generated tasks will be
+irreplaceable.  
 \printbibliography
 
 \chapter{Appendix}
-\label{sec-8}
+\label{sec-7}
 \(\alpha\)
 % Emacs 24.3.1 (Org mode 8.2.5h)
 \end{document}

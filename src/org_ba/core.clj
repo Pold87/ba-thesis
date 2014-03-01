@@ -3,9 +3,9 @@
   (:require [clojure.tools.reader.edn :as edn]
             [clojure.java.io :as io]
             [clojure.pprint :as pprint]
-            ;[speech-synthesis.say :as say]
-            ;[speech-recognition.hear :as hear]
-            ))
+            [dorothy.core :as doro]
+            [rhizome.viz :as rhi])
+  (:import [javax.swing JPanel JButton JLabel]))
 
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
@@ -77,7 +77,7 @@
                (rest coll)
                coll)]
     ;; REVIEW: insert (\w) for trimming?
-    (re-seq #"((?:\s*\w+\s*)+)-\s*(\w+)\s*"
+    (re-seq #"((?:\s*\w+\s+)+)-\s+(\w+)\s*"
             (clojure.string/join " " coll))))
 
 
@@ -161,12 +161,12 @@ to the dot language notation"
   e.g. '(at ?x - location ?y - object)
   and returns the involved types, e.g.
   '(location object)"
- [pddl-pred]
- (remove
-  (fn [s]
-    (let [first-char (first (name s))]
-    (or (= \- first-char)
-        (= \? first-char)))) (rest pddl-pred)))
+  [pddl-pred]
+  (remove
+   (fn [s]
+     (let [first-char (first (name s))]
+       (or (= \- first-char)
+           (= \? first-char)))) (rest pddl-pred)))
 
 (defn pddl-pred->hash-map-long
   "Takes a PDDL predicate, e.g.
@@ -177,9 +177,9 @@ to the dot language notation"
    object [(at ?x - location ?y - object)]}"
   [pddl-pred]
   (reduce (fn [h-map pddl-type]
-          (assoc h-map
-                 pddl-type
-                 (list pddl-pred)))
+            (assoc h-map
+              pddl-type
+              (list pddl-pred)))
           {}
           (get-types-in-predicate pddl-pred)))
 
@@ -196,8 +196,8 @@ to the dot language notation"
   (let [pddl-preds (if (= :predicates (first pddl-preds))
                      (rest pddl-preds)
                      pddl-preds)]
-  (apply merge-with concat
-              (map pddl-pred->hash-map-long pddl-preds))))
+    (apply merge-with concat
+           (map pddl-pred->hash-map-long pddl-preds))))
 
 (defn hash-map->dot
   "Converts a hash-map to
@@ -206,11 +206,11 @@ to the dot language notation"
   [h-map]  
   (map (fn [map-entry]
          (str (key map-entry)
-             "[label = \"{"
-             (key map-entry)
-             "|"
-             (clojure.string/join "\\l" (val map-entry))
-             "}\"]\n"))
+              "[label = \"{"
+              (key map-entry)
+              "|"
+              (clojure.string/join "\\l" (val map-entry))
+              "}\"]\n"))
        h-map))
 
 (defn hash-map->dot-with-style
@@ -244,9 +244,9 @@ edge[dir=back, arrowtail=empty]
 ;;; Example for Predicate:
 (def predicates 
   '(:predicates (at ?x - location ?y - object)
-	              (have ?x - object) 
-	              (hot ?x - object)
-	              (on ?f - furniture ?o - object)))
+                (have ?x - object) 
+                (hot ?x - object)
+                (on ?f - furniture ?o - object)))
 
 ;;; Example invocation:
 (hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
@@ -263,14 +263,14 @@ belong to the PDDL keyword."
           pddl-file))
 
 
-; TODO: Throw error if length != 1
+                                        ; TODO: Throw error if length != 1
 (defn get-PDDL-predicates
   "Get all predicates in a PDDL file"
   [pddl-file]
   (first (get-PDDL-construct 'predicates pddl-file)))
 
 
-; TODO: Throw error if length != 1
+                                        ; TODO: Throw error if length != 1
 (defn get-PDDL-types
   "Get all types in a PDDL file"
   [pddl-file]
@@ -283,7 +283,7 @@ and generates a UML type diagram"
   (PDDL->dot-with-style (get-PDDL-predicates pddl-file)
                         (get-PDDL-types pddl-file)))
 
-(defn PDDL->dot-commandline
+(defn PDDL->dot-commandline-input
   "Assumes that the PDDL input is
 a string and 'reads' this string"
   [pddl-file]
@@ -291,8 +291,16 @@ a string and 'reads' this string"
   (PDDL->dot (edn/read-string pddl-file)))
 
 
+(defn PDDL->dot-file-input
+  "Reads PDDL file"
+  [pddl-file-name]
+  (PDDL->dot (read-lispstyle-edn pddl-file-name)))
+
 (defn -main
   "Runs the input/output scripts"
-  [& args]
-  (print
-   (PDDL->dot-commandline (first args))))
+  [& args]  
+  #_(-> (PDDL->dot-file-input (first args))
+      rhi/dot->image
+      rhi/view-image)
+  (print (PDDL->dot-file-input (first args))))
+
