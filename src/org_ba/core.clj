@@ -30,6 +30,8 @@
         (clojure.string/split objs #"\s")
         (map #(str % " - " object-type) objs)))
 
+
+
 (defn create-pddl
   "Creates a PDDL file from a list of objects and locations"
   [objs-file objs-type]

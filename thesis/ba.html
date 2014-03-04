@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework</title>
-<!-- 2014-02-24 Mon 11:36 -->
+<!-- 2014-03-04 Tue 18:11 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Volker Strobel" />
@@ -185,153 +185,101 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">1. Abstract</a>
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. Related Work</a>
 <ul>
-<li><a href="#sec-1-1">1.1. <span class="todo TODO">TODO</span> Insert somewhere</a></li>
-<li><a href="#sec-1-2">1.2. Abstract</a>
-<ul>
-<li><a href="#sec-1-2-1">1.2.1. v<sub>1</sub></a></li>
-<li><a href="#sec-1-2-2">1.2.2. v<sub>2</sub></a></li>
+<li><a href="#sec-2-1">2.1. PDDL Studio</a></li>
+<li><a href="#sec-2-2">2.2. PDDL Mode for Emacs</a></li>
+<li><a href="#sec-2-3">2.3. itSIMPLE</a></li>
+<li><a href="#sec-2-4">2.4. GIPO</a></li>
+<li><a href="#sec-2-5">2.5. ModPlan</a></li>
+<li><a href="#sec-2-6">2.6. VISPLAN</a></li>
+<li><a href="#sec-2-7">2.7. Conclusion</a></li>
 </ul>
 </li>
-<li><a href="#sec-1-3">1.3. Zusammenfassung</a></li>
-</ul>
-</li>
-<li><a href="#sec-2">2. Introduction</a>
+<li><a href="#sec-3">3. Planning Basics and PDDL</a>
 <ul>
-<li><a href="#sec-2-1">2.1. <span class="todo TODO">TODO</span> Notes</a></li>
-<li><a href="#sec-2-2">2.2. Intro</a></li>
-<li><a href="#sec-2-3">2.3. Intro v<sub>2</sub></a></li>
-</ul>
-</li>
-<li><a href="#sec-3">3. PDDL and Planning Basics</a>
+<li><a href="#sec-3-1">3.1. Domain File</a>
 <ul>
-<li><a href="#sec-3-1">3.1. <span class="todo TODO">TODO</span> Notes</a></li>
-<li><a href="#sec-3-2">3.2. Basics</a></li>
-<li><a href="#sec-3-3">3.3. Format of the Domain File</a>
+<li><a href="#sec-3-1-1">3.1.1. Define</a></li>
+<li><a href="#sec-3-1-2">3.1.2. Requirements</a></li>
+<li><a href="#sec-3-1-3">3.1.3. Types</a></li>
+<li><a href="#sec-3-1-4">3.1.4. Functions</a></li>
+<li><a href="#sec-3-1-5">3.1.5. Actions</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-2">3.2. Problem File</a></li>
+<li><a href="#sec-3-3">3.3. Planning</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Software Engineering Tools for AI Planning</a>
 <ul>
-<li><a href="#sec-3-3-1">3.3.1. <span class="todo TODO">TODO</span> Include simple domain -&gt; LaTeX</a></li>
-<li><a href="#sec-3-3-2">3.3.2. <span class="todo TODO">TODO</span> Include simple problem -&gt; LaTeX</a></li>
-<li><a href="#sec-3-3-3">3.3.3. <span class="todo TODO">TODO</span> Include simple plan -&gt; not yet in LaTeX</a></li>
-<li><a href="#sec-3-3-4">3.3.4. Define</a></li>
-<li><a href="#sec-3-3-5">3.3.5. Requirements</a></li>
-<li><a href="#sec-3-3-6">3.3.6. Types</a></li>
-<li><a href="#sec-3-3-7">3.3.7. Functions</a></li>
-<li><a href="#sec-3-3-8">3.3.8. Actions</a></li>
-</ul>
-</li>
-<li><a href="#sec-3-4">3.4. Format of the Problem File</a></li>
-<li><a href="#sec-3-5">3.5. Format of the Solution File (Plan)</a></li>
-<li><a href="#sec-3-6">3.6. Planning Process</a></li>
-</ul>
-</li>
-<li><a href="#sec-4">4. Possibilities and Limitations</a>
+<li><a href="#sec-4-1">4.1. Statement of Problem</a></li>
+<li><a href="#sec-4-2">4.2. Syntax Highlighting and Code Snippets</a>
 <ul>
-<li><a href="#sec-4-1">4.1. Kitchen Domain</a>
+<li><a href="#sec-4-2-1">4.2.1. Implementation</a></li>
+<li><a href="#sec-4-2-2">4.2.2. Usage and Customization</a></li>
+<li><a href="#sec-4-2-3">4.2.3. Evaluation</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">4.3. Clojure Interface</a>
 <ul>
-<li><a href="#sec-4-1-1">4.1.1. Functions</a></li>
-<li><a href="#sec-4-1-2">4.1.2. Numerical Expressiveness</a></li>
+<li><a href="#sec-4-3-1">4.3.1. Basics</a></li>
+<li><a href="#sec-4-3-2">4.3.2. Functions</a></li>
+<li><a href="#sec-4-3-3">4.3.3. Numerical Expressiveness</a></li>
 </ul>
 </li>
+<li><a href="#sec-4-4">4.4. Type Diagram Generator</a></li>
 </ul>
 </li>
-<li><a href="#sec-5">5. Software Engineering Tools for AI Planning</a>
+<li><a href="#sec-5">5. Analysis</a>
 <ul>
-<li><a href="#sec-5-1">5.1. <span class="todo TODO">TODO</span> Ideas</a></li>
-<li><a href="#sec-5-2">5.2. Statement of Problem</a></li>
-<li><a href="#sec-5-3">5.3. Implementation</a>
+<li><a href="#sec-5-1">5.1. Participants</a></li>
+<li><a href="#sec-5-2">5.2. Material</a></li>
+<li><a href="#sec-5-3">5.3. Design</a></li>
+<li><a href="#sec-5-4">5.4. Procedure</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Conclusion and Outlook</a>
 <ul>
-<li><a href="#sec-5-3-1">5.3.1. Integrated Design</a></li>
-<li><a href="#sec-5-3-2">5.3.2. Syntax Highlighting and Code Snippets</a></li>
+<li><a href="#sec-6-1">6.1. Outlook</a></li>
 </ul>
 </li>
-<li><a href="#sec-5-4">5.4. Evaluation</a></li>
-</ul>
-</li>
-<li><a href="#sec-6">6. Discussion</a></li>
-<li><a href="#sec-7">7. Conclusion</a></li>
-<li><a href="#sec-8">8. Bibliography</a></li>
-<li><a href="#sec-9">9. Appendix</a></li>
+<li><a href="#sec-7">7. Appendix</a></li>
 </ul>
 </div>
+</div>
+<div class="abstract">
+<p>
+Automated planning and scheduling blazes a trail for artificial
+intelligent behavior. PDDL, a planning language widely used for AI
+task specifications requires extensive knowledge engineering effort.
+After giving an overview of PDDL syntax and planning basics, a plug-in
+(including syntax highlighting) for the code editor Sublime Text and
+related editors will be given. A type diagram generator will be
+presented that supports modeling of the environment. The usability of
+these tools will be evaluated by subjects without prior knowledge in
+PDDL. By the use of these tool, the average modeling time of a shorter
+task specification could be improved by &#x2026; percent and the error rate
+could be reduced from &#x2026; to &#x2026; . Furthermore, this thesis will
+present approaches for the automatic generation of task specifications
+and provide a basic interface between the functional programming
+language Clojure and PDDL. The proposed tools can assist knowledge
+engineers in the design process.
+</p>
+
+<p>
+<a href="https://www.ece.cmu.edu/~koopman/essays/abstract.html">https://www.ece.cmu.edu/~koopman/essays/abstract.html</a>
+</p>
+
 </div>
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Abstract</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="section-number-3">1.1</span> <span class="todo TODO">TODO</span> Insert somewhere</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-A introduction to the syntax of PDDL will be given, as well as
-Potential applications in real life environments could be &#x2026; And a
-way for writing proper.
-</p>
-</div>
-</div>
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Abstract</h3>
-<div class="outline-text-3" id="text-1-2">
-</div><div id="outline-container-sec-1-2-1" class="outline-4">
-<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> v<sub>1</sub></h4>
-<div class="outline-text-4" id="text-1-2-1">
-<p>
-This thesis presents the Planvning Domain Definition Language (PDDL)
-and debates possibilities and limitations of its use with reference to
-household robots. Furthermore, a syntax highlighter for the text
-editor Sublime Text and an online code editor is presesented and ways
-of visualizing the found plan are discussed. (more concrete!)
-</p>
-
-
-<p>
-The purpose of this thesis is to explore the possibilities and
-limitations of modeling real life household domains by the Planning
-Domain Definition Language (PDDL). Thereto all steps for developing a
-new planning problem with will be given, from necessary software, over
-syntax to convenient PDDL constructs. That means that a widespread
-overview will be given, whereas the topic's main focus are household
-domains (``household'').  A introduction to the syntax of PDDL will be
-given, as well as  Potential applications in real life environments
-could be   And a way for writing proper
-</p>
-</div>
-</div>
-<div id="outline-container-sec-1-2-2" class="outline-4">
-<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> v<sub>2</sub></h4>
-</div>
-</div>
-
-<div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Zusammenfassung</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-Diese Arbeit untersucht die Möglichkeiten und Grenzen der
-Planungssprache Planning Domain Definition Language (PDDL) im Hinblick
-auf die Anwendung bei Haushaltsrobotern. Dazu wird ein umfassender
-Einblick in die Syntax dieser Sprache gegeben und Anwendungsbereiche
-werden anhand praktischer Beispiele untersucht. Für die Konstruktion
-der Pläne wird eine Entwicklungsumgebung präsentiert, die Python,
-Spracherfassung und PDDL vereint. Weiterhin werden ein Plugin für den
-Texteditor Sublime Text (Version 2 und 3) und ein PDDL-Onlineeditor
-vorgestellt. Um P\"ane besser zu fassen, werden Möglichkeiten der
-Visualisierung mit der Robotersimulation MORSE und dem
-Planvisuialisierungsprogramm VISPlan angesprochen.
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Introduction</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Notes</h3>
-<div class="outline-text-3" id="text-2-1">
+<div class="inlinetask">
+<b>TODO:</b><br  />
 <ul class="org-ul">
 <li>Scope of the article (What did I miss out, what is included?)
-<ul class="org-ul">
-<li>Learning Algorithms
-</li>
-</ul>
 </li>
 <li>Name Tools and provide found possibilities and limitations
 </li>
@@ -347,63 +295,163 @@ convenient
 </li>
 <li>ICAPS
 </li>
-<li>Alex: Do not write: I'll do this, because it does not exist yet
+<li>Handicapped people -&gt; Planning Interaction
 </li>
-<li>Do write: I'll do this because this is interesting, because it can
-do xyz, etc.
+<li>Why is something interesting? -&gt; reasons! (and not because it does
+not exist yet)
 </li>
 </ul>
 </div>
-</div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Intro</h3>
-<div class="outline-text-3" id="text-2-2">
+
 <p>
-The Planning Domain Definition Language (PDDL), firstly invented by
-Drew McDermott et al. (1998) has emerged to the standard language for
-modeling planning tasks (source!). Planning is about what to do and in
-which order for a given problem. While the scope of applications is
-enormous, there are several limitations and drawbacks that have to be
-considered. After giving a general introduction to PDDL, this thesis
-explores the scope of PDDL with respect to household domains. Possible
-applications exist in the construction of household robots, that are
-especially relevant for people with disabilities. A package that
-includes amongst other a syntax highlighter and code snippets for the
-text editor Sublime Text is presented and the functionality is
-transferred to a on-line editor with instant access.
+Planning is one the the classic Artificial Intelligence (AI) tasks.
+Knowledge engineering (KE), that means representing world information
+in a computer system, is the crucial step for utilizing AI planning
+systems to solve problems. By definition (TODO: &#x2026;), it requires an
+human expert who knows the underlying syntax and models the
+information manually. This process is naturally error-prone and
+time-consuming. While planning systems are improving steadily (&#x2026;),
+the main work for useful systems lies on the representing language.
+The Planning Domain Definition Language (PDDL)
+\parencite{mcdermott1998pddl} allows for a standardized way of
+specifying planning tasks. While on the one hand, recent PDDL
+extensions \parencite{fox2003pddl2,kovacs2011bnf} extended the
+expressiveness of PDDL and tackle a route for real-world applications,
+they also demand a higher level of knowledge and attention of the
+knowledge engineer. Particularly with the start in 2005 of the
+International Competition on Knowledge Engineering for Planning and
+Scheduling (ICKEPS), new tools for the shift from at the modeling
+process from a text based 'programming paradigm' to a user-friendly
+graphical design tool exist, however, they also arouse drawbacks:
+limited functionality, expenditure of time, editing difficulty, to
+name a few. As in other computer languages, so far, there is no real
+way around diving into the 'code paradigm'. Despite recent advances in
+the area, the performance of planning &amp; scheduling systems is still
+dependent to a large extent on how problems and domains are
+formulated, resulting in the need for careful system fine-tuning
+(copied 1:1). This thesis will, after introducing the basic terms and
+definitions of PDDL, focus on the software support for knowledge
+engineers. A package for the text and source code editor Sublime Text
+(ST) will be introduced, that provides syntax highlighting and PDDL
+templates. And the functionality is transferred to a on-line editor
+with instant access. Together with this package, a basic interface
+between the functional programming language Clojure and PDDL is
+developed. In this process, a UML 'type diagram' generator, derived
+from UML class diagrams for Object Oriented Programming, is presented
+that supports the knowledge engineer in keeping in keeping track
+during the design process and gain a fast overview of existing domains
+and problems.
 </p>
 
 <p>
 The main focus of this thesis is about real world applications and the
 development of handy tools that support (and partially automatize) the
-planning process. On the basis of a `kitchen domain' several
-possibilities and limitations are examined, while for each drawback an
-alternative route is provided.
+planning process. 
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Related Work</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> PDDL Studio</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+PDDL Studio \parencite{plch2012inspect} is an Integrated Development
+Environment (IDE) for creating PDDL tasks (domains and problems) with
+supporting editing features that are based on a PDDL parser, like
+syntax highlighting, code collapsing and code completion. It provides
+a sophisticated on the fly error detection, that splits errors in
+syntax errors, semantic errors and errors found during parsing. The
+code completion feature allows completion for standard PDDL constructs
+and dynamic list completions, that were used in the current project
+(TODO: technical terms!).
 </p>
 
 <p>
-Planning is one the the classic Artificial Intelligence (AI) tasks. 
+Tasks are organized into project, that means a project is composed of
+a domain and associated problem(s).
+</p>
+
+<p>
+An interface allows the integration of command line planners in order
+to run and compare different planning software.
+</p>
+
+<p>
+Furthermore it provides a XML Export/Import feature (i.e. XML-&gt;PDDL,
+PDDL-&gt;XML) and further common editor features like a line counter,
+bracket matcher and a auto-save feature.
+</p>
+
+<p>
+that means syntax and semantic checking, syntax highlighting, code
+completion and project management. While colors for highlighted code
+can be customized, the background color of the tool is always white.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> PDDL Mode for Emacs</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+PDDL-mode is a major Emacs mode for browsing and editing PDDL 2.2
+files. It supports syntax highlighting by basic pattern matching,
+regardless of the current semantic, automatic indentation and
+completions. Code snippets for the insertion of domains, problems and
+actions are provided. A declaration menu shows all actions and
+problems in the current PDDL file.
 </p>
 </div>
 </div>
 <div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Intro v<sub>2</sub></h3>
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> itSIMPLE</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-The Planning Domain Definition Language (PDDL), firstly invented by
-Drew McDermott et al. (1998) has emerged to the standard language for
-modeling planning tasks. Despite the process in AI planning, knowledge
-engineering is still a 
+The itSIMPLE project is a tool that supports the knowledge engineer in
+designing a PDDL domain by the use of UML diagrams. This approach is
+reversed to the approach mentioned in this paper: while itSIMPLE
+generates PDDL from UML, this paper generated UML from PDDL. 
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> GIPO</h3>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> ModPlan</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+Also see VEGA plan visulazation on the MODplan page
+</p>
+<ul class="org-ul">
+<li>Very interesting: <a href="http://www.tzi.de/~edelkamp/modplan/">http://www.tzi.de/~edelkamp/modplan/</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> VISPLAN</h3>
+</div>
+
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> Conclusion</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+As it can be seen, there is need for an up-to-date, customizable, text
+editor with PDDL support, that supports the current standard PDDL 3.1. 
 </p>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> PDDL and Planning Basics</h2>
+<h2 id="sec-3"><span class="section-number-2">3</span> Planning Basics and PDDL</h2>
 <div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> <span class="todo TODO">TODO</span> Notes</h3>
-<div class="outline-text-3" id="text-3-1">
+<div class="inlinetask">
+<b></b><br  />
 <ul class="org-ul">
 <li>Brief summary at start
 </li>
@@ -421,29 +469,26 @@ engineering is still a
 <ul class="org-ul">
 <li>It should be mentioned, that almost no planner supports every part
 of PDDL. And, additionally, the quality of error messages is very
-diversified. While some simple state: error occured, other list
-the problem and the line.
+diversified. While some simple state: error occured, other list the
+problem and the line.
 </li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Basics</h3>
-<div class="outline-text-3" id="text-3-2">
+
+
 <p>
-Planning in terms of PDDL
+Introduction to planing:
+<a href="http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false">http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false</a>
 </p>
 
 <p>
-<a href="../img/pddl-workflow.pdf">../img/pddl-workflow.pdf</a>
+AI planning describes &#x2026;
 </p>
 
-
 <p>
-Two files are needed for planning with PDDL: a domain file and a
-problem file. A planner and use the generated solution file (<i>plan</i>).
+A planner and use the generated solution file (<i>plan</i>).
 </p>
 
 <p>
@@ -453,20 +498,25 @@ This thesis makes use of \textcite{pddl3.1} if not otherwise stated.
 </p>
 
 <p>
-Every planning task in PDDL is composed of two separate files:
+PDDL planning task specifications are composed of two separate text files:
 </p>
 
 <ul class="org-ul">
-<li>Domain file: description of general types, predicates, functions and actions 
+<li>Domain file: description of general types, predicates, functions
+and actions -&gt; uninstanciated problem independent
 </li>
-<li>Problem file: description of a concrete problem environment.
+<li>Problem file: description of a concrete problem environment -&gt; instance speciﬁc
 </li>
 </ul>
 
 <p>
 This separation allows for an intuitive process of task modeling:
-While general instances are described in the domain file, a specific
-instance of a problem is created in the problem file.
+While general instances are described in the domain file, specific
+instances of problems are created in the problem files.
+</p>
+
+<p>
+<a href="../img/pddl-workflow.pdf">../img/pddl-workflow.pdf</a>
 </p>
 
 <p>
@@ -474,17 +524,15 @@ These two files shell be investigated further in the following
 sections.
 </p>
 </div>
-</div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Format of the Domain File</h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-The description of the task files is deliberately performed without
-the use of the BNF notation. Fox et al. describe the BNF notation for
-PDDL 2.1 in \cite{fox2003pddl2} as well as in Kovacs' (unpublished)
-paper \cite{kovacs2011bnf}.
-</p>
 
+
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Domain File</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The domain file contains the frame for planning tasks and determines,
+which types, predicates and actions are possible
+</p>
 
 <p>
 Domain files have a strict format: All keyword arguments must appear
@@ -492,73 +540,78 @@ in the order specified in the manual (an argument may be omitted) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
 file. \cite[6]{fox2003pddl2}.
 </p>
+
+<div class="inlinetask">
+<b></b><br  />
+<p>
+Include simple domain -&gt; LaTeX
+Include simple problem -&gt; LaTeX
+Include simple plan -&gt; not yet in LaTeX
+</p>
+</div>
 </div>
 
-<div id="outline-container-sec-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1"><span class="section-number-4">3.3.1</span> <span class="todo TODO">TODO</span> Include simple domain -&gt; LaTeX</h4>
-</div>
-<div id="outline-container-sec-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2"><span class="section-number-4">3.3.2</span> <span class="todo TODO">TODO</span> Include simple problem -&gt; LaTeX</h4>
-</div>
-<div id="outline-container-sec-3-3-3" class="outline-4">
-<h4 id="sec-3-3-3"><span class="section-number-4">3.3.3</span> <span class="todo TODO">TODO</span> Include simple plan -&gt; not yet in LaTeX</h4>
-</div>
-<div id="outline-container-sec-3-3-4" class="outline-4">
-<h4 id="sec-3-3-4"><span class="section-number-4">3.3.4</span> Define</h4>
-<div class="outline-text-4" id="text-3-3-4">
+<div id="outline-container-sec-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1"><span class="section-number-4">3.1.1</span> Define</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <p>
-Every domain file start with (define (domain &lt;domainName&gt;) &#x2026;) where,
-&lt;domainName&gt; can be any string
+Every domain file starts with (define (domain &lt;domainName&gt;) &#x2026;) where,
+&lt;domainName&gt; can be any string.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3-5" class="outline-4">
-<h4 id="sec-3-3-5"><span class="section-number-4">3.3.5</span> Requirements</h4>
-<div class="outline-text-4" id="text-3-3-5">
+<div id="outline-container-sec-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2"><span class="section-number-4">3.1.2</span> Requirements</h4>
+<div class="outline-text-4" id="text-3-1-2">
 <p>
 The requirements part is not a mandatory part of a PDDL domain file.
-However, as most planners only support a subset of PDDL they are
-useful for determining if a planner is able to act on a given problem.
-They are declared by the (:requirements &#x2026;) part. Some often used
-requirements include &#x2026;
+However, PDDL supports different "levels of expressivity", that means
+subsets of PDDL features \textcite[1]{mcdermott1998pddl}. As most
+planners only support a subset of PDDL the requirements part is useful
+for determining if a planner is able to act on a given problem. They
+are declared by the <code>(:requirements ...)</code> part. Some often used
+requirements include <code>:strips</code> 
+For a list of current requirement flags and their meaning, see &#x2026;
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3-6" class="outline-4">
-<h4 id="sec-3-3-6"><span class="section-number-4">3.3.6</span> Types</h4>
-<div class="outline-text-4" id="text-3-3-6">
+
+<div id="outline-container-sec-3-1-3" class="outline-4">
+<h4 id="sec-3-1-3"><span class="section-number-4">3.1.3</span> Types</h4>
+<div class="outline-text-4" id="text-3-1-3">
 <p>
-In order to assign to assign categories of objects, PDDL allows for
-type definition. Like that, parameters in actions can be typed, as
+If order to be able to use types in a domain file, the
+requirement :typing should be declared (TODO: is :adl enough?).
+</p>
+
+<p>
+In order to assign categories to objects, PDDL allows for
+type definitions. Like that, parameters in actions can be typed, as
 well as arguments in predicates, functions [extra source!]. Later, in
 the problem file, objects will be assigned to types, like objects to
-classes in Object Orientated Programming (OOP). Adding to the (:requirement &#x2026;) part of
-the file guarantees, that typing can be correctly used.
-Strips (no types) vs ADL (types).
+classes in Object Orientated Programming (OOP). Adding to the
+(:requirement &#x2026;) part of the file guarantees, that typing can be
+correctly used. Strips (no types) vs ADL (types).
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3-7" class="outline-4">
-<h4 id="sec-3-3-7"><span class="section-number-4">3.3.7</span> Functions</h4>
-<div class="outline-text-4" id="text-3-3-7">
+
+<div id="outline-container-sec-3-1-4" class="outline-4">
+<h4 id="sec-3-1-4"><span class="section-number-4">3.1.4</span> Functions</h4>
+<div class="outline-text-4" id="text-3-1-4">
 <p>
 Functions are not supported by many planners (source!) and, before
 PDDL 3.1 they could only be modeled as 
 </p>
-
-<div class="inlinetask">
-<b>Complete that!</b><br  />
-nil</div>
-
 
 <p>
 It is notable that before PDDL 3.0 the keyword functors was used instead
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3-8" class="outline-4">
-<h4 id="sec-3-3-8"><span class="section-number-4">3.3.8</span> Actions</h4>
-<div class="outline-text-4" id="text-3-3-8">
+<div id="outline-container-sec-3-1-5" class="outline-4">
+<h4 id="sec-3-1-5"><span class="section-number-4">3.1.5</span> Actions</h4>
+<div class="outline-text-4" id="text-3-1-5">
 <p>
 PDDL 3.1 supports two types of actions: durative-action and the
 'regular' action.
@@ -566,32 +619,261 @@ PDDL 3.1 supports two types of actions: durative-action and the
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> Format of the Problem File</h3>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Problem File</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Problems are designed with respect to a domain. Domains usually have
+multiple problems p01.pddl, p02.pddl, &#x2026; Problems declare the initial
+world state and the goal state to be reached. They instantiate types,
+in they way that they create objects 
+</p>
 </div>
-<div id="outline-container-sec-3-5" class="outline-3">
-<h3 id="sec-3-5"><span class="section-number-3">3.5</span> Format of the Solution File (Plan)</h3>
 </div>
-<div id="outline-container-sec-3-6" class="outline-3">
-<h3 id="sec-3-6"><span class="section-number-3">3.6</span> Planning Process</h3>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Planning</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+A planning solution is a sequence of actions that lead from the
+initial state to the goal state. PDDL itself does not declare any
+uniform plan layout.
+</p>
+
+<p>
+The input to the planning software is a domain and a belonging
+problem, the output is usually a totally or partially ordered plan.
+are software tools that Due to the yearly ICAPS, there is a broad
+range of available planners. This thesis uses the planner SGPLAN<sub>6</sub>
+\textcite{hsu2008sgplan}, a 'extensive' (in the sense of its
+supporting features) planner for both temporal and non-temporal
+planning problems.
+</p>
+
+<p>
+An overview of different planners is given at
+<a href="http://ipc.informatik.uni-freiburg.de/Planners">http://ipc.informatik.uni-freiburg.de/Planners</a>.
+</p>
+</div>
 </div>
 </div>
 <div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Possibilities and Limitations</h2>
+<h2 id="sec-4"><span class="section-number-2">4</span> Software Engineering Tools for AI Planning</h2>
 <div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Kitchen Domain</h3>
+<div class="inlinetask">
+<b></b><br  />
+<ul class="org-ul">
+<li>PDDL type hierarchy and object instantiation to UML / TikZ, store
+predicates (and action?) in same box as type 
+</li>
+<li>Research Knowledge Engineering in Planning
+</li>
+<li>Human Computer Interaction
+<ul class="org-ul">
+<li><a href="http://hci.waznelle.com/checklist.php">http://hci.waznelle.com/checklist.php</a>
+</li>
+</ul>
+</li>
+<li>Write Tiago (itSimple) regarding PDDL -&gt; UML (and knowledge
+engineering in general
+</li>
+<li>ICKEPS (International Competition on Knowledge Engineering for
+Planning and Scheduling)
+</li>
+<li>Orient on "How to Design Classes"
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Statement of Problem</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-In this section, a kitchen domain will be presented, whereby PDDL
-structures are presented that will be also useful in other domains. I
-will start with a rather simple domain, present possible limitations
-and then extend the file by more sophisticated constructs.
+Writing and maintaining PDDL files can be time-consuming and
+cumbersome \textcite{li2012translating}. So, the following development
+tools shell support and facilitate the PDDL task design process and
+reduce potential errors.
+</p>
+
+<p>
+Below, methods are presented for
+</p>
+
+<dl class="org-dl">
+<dt> Syntax Highlighting and Code Snippets </dt><dd>Environment for Editing
+PDDL files
+</dd>
+<dt> Class Diagram Generator </dt><dd>The automation of the PDDL task design process. File
+input and output and dynamic generation (design level)
+</dd>
+<dt> Human Planner Interaction </dt><dd>An interactive PDDL environment: speech synthesis and
+recognition.
+</dd>
+<dt> Domain Generator </dt><dd>Mathematical limitations (design level)
+</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Syntax Highlighting and Code Snippets</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+<a id="sec:syntax"></a>
+</p>
+
+<p>
+Writing extensive domain and problem files is a cumbersome task:
+longer files can get quickly confusing. Therefore, it is convenient to
+have a tool that supports editing these files. Syntax highlighting
+describes the feature of text editors of displaying code in different
+colors and fonts according to the category of terms (source: Wiki). A
+syntax highlighting plug-in for the text and source code editors
+\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
+transferred to the on-line text editor Ace are used to implement this
+feature, as ST Syntax Highlighting files can easily be converted to
+Ace Files. 
+</p>
+
+<p>
+For Mac user, TextMate (TM) is very similar to ST and the syntax
+highlighting file can be used there, too. Besides, the general
+principles (e.g. regular expressions) outlined here, apply to most of
+other editors as well. So, a Pygments extension was written, that
+allows for syntax highlighting in \LaTeX documents.
 </p>
 </div>
-<div id="outline-container-sec-4-1-1" class="outline-4">
-<h4 id="sec-4-1-1"><span class="section-number-4">4.1.1</span> Functions</h4>
-<div class="outline-text-4" id="text-4-1-1">
+
+
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Implementation</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+ST syntax definitions are written in property lists in the XML format.
+</p>
+
+<p>
+The syntax definition is implemented by the use of the ST plug-in
+\textcite{aaapackagedev}. So, the definitions can be written in YAML
+in converted to Plist XML later on.
+AAAPackageDEV\textcite{aaapackagedev} is a ST plugin, that helps to
+create, amongst others, ST packages, syntax definitions and 'snippets'
+(re-usable code).
+</p>
+
+<p>
+By means of Oniguruma regular expressions \parencite{kosako}, scopes
+are defined, that determine the meaning of the PDDL code block. The
+scope naming conventions mentioned in the \citetitle{textmate} are
+applied here. By the means of the name, the colors are assigned.
+Different ST themes display different colors (not all themes support
+all naming conventions).
+</p>
+
+<p>
+The syntax highlighting is intended for PDDL 3.1, but is downward
+compatible, as previous versions are subsets of later versions.
+</p>
+<div class="inlinetask">
+<b>Are later versions really subsets?</b><br  />
+nil</div>
+
+<p>
+The pattern matching heuristic that is implemented by the use of
+regular expressions is used for assigning scopes to the parts of the
+file. This heuristic is quite sophisticated, as it recognizes
+sub-parts of PDDL files and chooses the color accordingly. 
+</p>
+
+
+<div id="Screenshot-in-Sublime-Text-3" class="figure">
+<p><img src="file:///home/pold/Pictures/ba.png" alt="ba.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> Usage and Customization</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+To enable syntax highlighting and code snippets in ST, the files of
+the repository have to be placed in the ST packages folder
+(<a href="http://www.sublimetext.com/docs/3/packages.html">http://www.sublimetext.com/docs/3/packages.html</a>). The first part of the
+PDDL.YAML-tmlanguage describes the parts of the PDDL task that should
+be highlighted. By removing (or commenting) include statements, the
+syntax highlighter is adjustable the user's need.
+</p>
+
+<p>
+By using ST as editor, language independent ST features are supported,
+like auto completion, code folding and column selection, described in
+the Sublime Text 2 Documentation.
+</p>
+
+
+
+<p>
+The PDDL.YAML-tmlanguage file is split in two parts:
+</p>
+
+<p>
+By default, all scopes are included.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-3" class="outline-4">
+<h4 id="sec-4-2-3"><span class="section-number-4">4.2.3</span> Evaluation</h4>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Clojure Interface</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+PDDL, as planning language modeling capabilities are limited, a
+interface with a programming is handy a can reduce dramatically the
+modeling time. In IPC, task generators are used write extensive domain
+and problem files. 
+</p>
+
+<p>
+As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
+using a LISP dialect for the interface seems reasonable. This thesis
+uses Clojure \parencite{hickey2008clojure}, a modern LISP
+dialect that runs on the Java Virtual Machine.
+</p>
+
+<p>
+In this section, I will not only show a method for generating PDDL
+constructs, but also for reading in PDDL files are handling the input.
+</p>
+</div>
+
+<div id="outline-container-sec-4-3-1" class="outline-4">
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> Basics</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+Through the higher-order filter method in Clojure, parts of PDDL files
+can be easily extracted. Like that, one can extract parts of the file
+and handle the constructs in a Clojure intern way.
+</p>
+
+<p>
+As an example, the type handling will be represented here, but the
+basic approach is similar for all PDDL constructs.
+</p>
+
+<p>
+The here developed tools should be platform independent with a
+development focus in UNIX/Linux systems, as most planners (source!)
+run on Linux.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-3-2" class="outline-4">
+<h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> Functions</h4>
+<div class="outline-text-4" id="text-4-3-2">
 <p>
 As functions have a return value, the modeling possibilities
 dramatically increase.
@@ -599,9 +881,9 @@ dramatically increase.
 </div>
 </div>
 
-<div id="outline-container-sec-4-1-2" class="outline-4">
-<h4 id="sec-4-1-2"><span class="section-number-4">4.1.2</span> Numerical Expressiveness</h4>
-<div class="outline-text-4" id="text-4-1-2">
+<div id="outline-container-sec-4-3-3" class="outline-4">
+<h4 id="sec-4-3-3"><span class="section-number-4">4.3.3</span> Numerical Expressiveness</h4>
+<div class="outline-text-4" id="text-4-3-3">
 <p>
 One might assume that the distance could be modeled as follows:
 </p>
@@ -630,53 +912,49 @@ of the Babylonian root method.
 </p>
 </div>
 
-<ol class="org-ol"><li>Alternative #1: Only sqrt exists<br  /><div class="outline-text-5" id="text-4-1-2-1">
+<ol class="org-ol"><li>Alternative #1: Only sqrt exists<br  /><div class="outline-text-5" id="text-4-3-3-1">
 <p>
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 </p>
 
-<div class="org-src-container">
-
-<pre class="src src-elisp"><span style="color: #b0c4de;">:duration</span> <span style="color: #7f7f7f;">(</span>= ?duration 
-             <span style="color: #7f7f7f;">(</span>sqrt
-              <span style="color: #7f7f7f;">(</span>+
-               <span style="color: #7f7f7f;">(</span>*
-                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                   <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">))</span>
-                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                   <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">)))</span>
-               <span style="color: #7f7f7f;">(</span>*
-                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                   <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))</span>
-                <span style="color: #7f7f7f;">(</span>- <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                   <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))))))</span>
+<pre class="example">
+:duration (= ?duration 
+             (sqrt
+              (+
+               (*
+                (- (pos-x (current-pos))
+                   (pos-x ?goal))
+                (- (pos-x (current-pos))
+                   (pos-x ?goal)))
+               (*
+                (- (pos-y (current-pos))
+                   (pos-y ?goal))
+                (- (pos-y (current-pos))
+                   (pos-y ?goal))))))
 </pre>
 </div>
-</div>
 </li>
-<li>Alternative #2: sqrt and expt exist<br  /><div class="outline-text-5" id="text-4-1-2-2">
+<li>Alternative #2: sqrt and expt exist<br  /><div class="outline-text-5" id="text-4-3-3-2">
 <p>
 Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-elisp"><span style="color: #b0c4de;">:duration</span> <span style="color: #7f7f7f;">(</span>= ?duration 
-             <span style="color: #7f7f7f;">(</span>sqrt
-              <span style="color: #7f7f7f;">(</span>+
-               <span style="color: #7f7f7f;">(</span>expt
-                <span style="color: #7f7f7f;">(</span>- 
-                 <span style="color: #7f7f7f;">(</span>pos-x <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                 <span style="color: #7f7f7f;">(</span>pos-x ?goal<span style="color: #7f7f7f;">)))</span>
-               <span style="color: #7f7f7f;">(</span>expt
-                <span style="color: #7f7f7f;">(</span>- 
-                 <span style="color: #7f7f7f;">(</span>pos-y <span style="color: #7f7f7f;">(</span>current-pos<span style="color: #7f7f7f;">))</span>
-                 <span style="color: #7f7f7f;">(</span>pos-y ?goal<span style="color: #7f7f7f;">))))))</span>
+<pre class="example">
+:duration (= ?duration 
+             (sqrt
+              (+
+               (expt
+                (- 
+                 (pos-x (current-pos))
+                 (pos-x ?goal)))
+               (expt
+                (- 
+                 (pos-y (current-pos))
+                 (pos-y ?goal))))))
 </pre>
-</div>
 </div>
 </li>
 
-<li>Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9<br  /><div class="outline-text-5" id="text-4-1-2-3">
+<li>Alternative #3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9<br  /><div class="outline-text-5" id="text-4-3-3-3">
 <ul class="org-ul">
 <li>Distance Matrix
 </li>
@@ -707,7 +985,7 @@ mean distance from A to B is the same as the distance from B to A).
 </div>
 </li>
 
-<li>Alternative #4: Use the manhattan distance<br  /><div class="outline-text-5" id="text-4-1-2-4">
+<li>Alternative #4: Use the Manhattan distance<br  /><div class="outline-text-5" id="text-4-3-3-4">
 <p>
 Allowing the agent to move only vertically and horizontally would be
 that one can use the so called Taxicab geometry (or Manhattan length)
@@ -727,554 +1005,156 @@ as follows:
 \end{figure}
 \section
 </pre>
-</div>
-</li>
-<li><span class="todo TODO">TODO</span> Human Planner Interaction<br  /></li>
 
-
-<li><span class="todo TODO">TODO</span> World State - Plan Stepper<br  /><div class="outline-text-5" id="text-4-1-2-6">
-<ul class="org-ul">
-<li>EMail + SMS connection
-</li>
-<li>Very interesting: <a href="http://www.tzi.de/~edelkamp/modplan/">http://www.tzi.de/~edelkamp/modplan/</a>
-</li>
-</ul>
-</div>
-</li>
-
-<li><span class="todo TODO">TODO</span> Plan verification<br  /><div class="outline-text-5" id="text-4-1-2-7">
+<div class="inlinetask">
+<b>TODO:</b><br  />
 <p>
-% Reuse existing plans (VAL!). If a plan is not reusable, find
-problems  (e.g. step 13 and 17) and try to find solutions for that
+TODO Human Planner Interaction
 </p>
 </div>
-</li>
-<li><span class="todo TODO">TODO</span> Summary<br  /><div class="outline-text-5" id="text-4-1-2-8">
-<p>
-List all limits and possibilities and write 5 sentences for each
-statement (my idea -&gt; ask Alexandra).
-</p>
 </div>
 </li></ol>
+</div>
+</div>
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> Type Diagram Generator</h3>
+<div class="outline-text-3" id="text-4-4">
+<div class="inlinetask">
+<b></b><br  />
+<p>
+Add actions to the Type Diagram?
+</p>
+</div>
+
+<p>
+Graphical notations, have some advantages compared to textual
+notations, as they simplify the communication between developers and
+help to quickly grasp the connection of related system units. 
+</p>
+
+<p>
+But for all that one disadvantage has to be accepted: 
+</p>
+
+<p>
+The UML was invented in order to standardize modeling in software
+engineering (SE). The UML consists of several part notations, the here
+presented tool uses the 'class diagram' notation, as PDDL types and
+classes in OOP have strong resemblance (see Tiago 2006, p 535). 
+</p>
+
+<p>
+Types play a major role in the PDDL design process: they are involved,
+besides their definition, in the constants, predicates and actions
+part. So, a fine grasp of their hierarchy, as well as their involved
+predicates becomes handy and assists the KE in the planning process.
+Types strongly resemble classes in object oriented programming
+As mentioned in chapter (&#x2026;), the type definitions follow a specific
+syntax. For example <code>truck car - vehicle</code> would indicate, that both
+<code>truck</code> and <code>car</code> are subtypes of the super-type vehicle. 
+</p>
+
+<p>
+Subtypes and corresponding super-types can be extracted using regular
+expressions. #"(&#x2026;.)" matches every kind of that form and a
+Clojure-friendly representation in form of a hash-map can be created.
+</p>
+
+<p>
+PDDL side &#x2013;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014;&#x2014; Clojure side
+</p>
+
+<p>
+'(:types &#x2026; &#x2026; &#x2014; &#x2026;)                      {&#x2026; [&#x2026; &#x2026; &#x2026;], &#x2026;}
+</p>
+
+
+<div class="figure">
+<p><img src="file:///home/pold/Documents/BA/org-ba/diagram.png" alt="diagram.png" />
+</p>
+<p><span class="figure-number">Figure 1:</span> Part of a PDDL domain and the corresponding, generated UML diagram</p>
+</div>
 </div>
 </div>
 </div>
 <div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Software Engineering Tools for AI Planning</h2>
+<h2 id="sec-5"><span class="section-number-2">5</span> Analysis</h2>
 <div class="outline-text-2" id="text-5">
 </div><div id="outline-container-sec-5-1" class="outline-3">
-<h3 id="sec-5-1"><span class="section-number-3">5.1</span> <span class="todo TODO">TODO</span> Ideas</h3>
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Participants</h3>
 <div class="outline-text-3" id="text-5-1">
-<ul class="org-ul">
-<li>PDDL type hierarchy and object instantiation to UML / TikZ, store
-predicates (and action?) in same box as type 
-</li>
-<li>Research Knowledge Engineering in Planning
-</li>
-<li>Human Computer Interaction
-<ul class="org-ul">
-<li><a href="http://hci.waznelle.com/checklist.php">http://hci.waznelle.com/checklist.php</a>
-</li>
-</ul>
-</li>
-<li>Write Tiago (itSimple) regarding PDDL -&gt; UML (and knowledge
-engineering in general
-</li>
-<li>ICKEPS (International Competition on Knowledge Engineering for
-Planning and Scheduling)
-</li>
-<li>Orient on "How to Design Classes"
-</li>
-</ul>
+<p>
+Ten non-paid students (six female) took part in the experiment. All
+had knowledge about LISP syntax, but neither one had faced PDDL prior
+to this study. 
+</p>
 </div>
 </div>
 <div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Statement of Problem</h3>
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Material</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
-Writing and maintaining PDDL files can be time-consuming and
-cumbersome. However, handy development tools can support and
-facilitate the task design process and reduce potential errors.
+The usability of the Syntax Highlighter (see <a href="#sec:syntax">4.2</a>) and the Type
+Diagram Generator (see <i>Type Diagram Generator</i>) were
+tested.
 </p>
-
-<p>
-Below, methods are presented for
-</p>
-
-<dl class="org-dl">
-<dt> Section 1 </dt><dd>The automation of the PDDL task design process. File
-input and output and dynamic generation (design level)
-</dd>
-<dt> Section 2 </dt><dd>An interactive PDDL environment: speech synthesis and
-recognition.
-</dd>
-<dt> Section 3 </dt><dd>Mathematical limitations (design level)
-</dd>
-</dl>
 </div>
 </div>
 <div id="outline-container-sec-5-3" class="outline-3">
-<h3 id="sec-5-3"><span class="section-number-3">5.3</span> Implementation</h3>
+<h3 id="sec-5-3"><span class="section-number-3">5.3</span> Design</h3>
 <div class="outline-text-3" id="text-5-3">
-</div><div id="outline-container-sec-5-3-1" class="outline-4">
-<h4 id="sec-5-3-1"><span class="section-number-4">5.3.1</span> Integrated Design</h4>
-<div class="outline-text-4" id="text-5-3-1">
 <p>
-The code is written in Clojure, a LISP dialect. As PDDL has a
-'LISP-like syntax', using a LISP dialect for the interface is
-convenient. This thesis uses Clojure[TODO: src], a relatively modern
-LISP dialect that runs on the Java Virtual Machine. 
-</p>
-
-<p>
-In order to start the document, a namespace has to be defined. The
-required packages are:
-</p>
-<dl class="org-dl">
-<dt> clojure.tools.reader.edn </dt><dd>Safe file input. I will use this
-method for entirely replacing the tools in clojure.core/read
-</dd>
-<dt> clojure.java.io </dt><dd>Methods for file input and output (IO)
-</dd>
-</dl>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">ns</span> org-ba.core
-  <span style="color: #7f7f7f;">(</span><span style="color: #90a959;">:gen-class</span><span style="color: #7f7f7f;">)</span>
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">require</span> [clojure.tools.reader.edn <span style="color: #90a959;">:as</span> edn]
-           [clojure.java.io <span style="color: #90a959;">:as</span> io]<span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<p>
-And we use a main method that allows for testing and running the
-script. 
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">-main</span>
-  <span style="color: #90a959;">"Runs the input/output scripts"</span>
-  [&amp; args]
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">println</span> <span style="color: #90a959;">"Running..."</span><span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<pre class="example">
-#'user/a
-</pre>
-
-<p>
-As PDDL files and 'information' will be in stored externally, a reader
-method is needed. Edn reader provides functionality and guarantees
-that no harmful commands can be read in through the reader
-interface.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">read-lispstyle-edn</span>
-  <span style="color: #90a959;">"Read one s-expression from a file"</span>
-  [filename]
-  <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">with-open</span> [rdr <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">java.io.PushbackReader.</span> <span style="color: #7f7f7f;">(</span>clojure.java.io/reader filename<span style="color: #7f7f7f;">))</span>]
-    <span style="color: #7f7f7f;">(</span>edn/read rdr<span style="color: #7f7f7f;">)))</span>
-</pre>
-</div>
-
-<p>
-Next, a macro is provided for writing to files. It rebinds <b>out</b> to a
-writer (that open a file for writing). Therefore, print statements
-(print, prn, etc.) that normally would be send to the standard out,
-are redirected to the file.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defmacro</span> <span style="color: #6a9fb5;">write-&gt;file</span>
-  <span style="color: #90a959;">"Writes body to the given file name"</span>
-  [filename &amp; body]
-  `<span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">with-open</span> [w# <span style="color: #7f7f7f;">(</span>writer ~filename<span style="color: #7f7f7f;">)</span>]
-     <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">binding</span> [*out* w#]
-       ~@body<span style="color: #7f7f7f;">))</span>
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">println</span> <span style="color: #90a959;">"Written to file: "</span> ~filename<span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<p>
-Desired objects that belong to a type for a domain are sometimes
-provided in a plain list, like the following:
-</p>
-
-<pre class="example">
-vw-passat
-opel-corsa
-chevrolet-volt
-</pre>
-
-<p>
-It would be convenient to add a type to these objects, for two
-reasons:
-</p>
-<ul class="org-ul">
-<li>Add a super-type to the subtypes in the list
-</li>
-<li>Add a type to a list of objects for the problem file
-</li>
-</ul>
-
-<p>
-The following method affords that:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">read-objs</span>
-  <span style="color: #90a959;">"Read PDDL objects from a file and add type</span>
-<span style="color: #90a959;">  (e.g. 'table bed' -&gt; (list table - furniture</span>
-<span style="color: #90a959;">                        bed - furniture))"</span>
-  [file object-type]
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">as-&gt;</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">slurp</span> file<span style="color: #7f7f7f;">)</span> objs
-        <span style="color: #7f7f7f;">(</span>clojure.string/split objs #<span style="color: #90a959;">"\s"</span><span style="color: #7f7f7f;">)</span>
-        <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">map</span> #<span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span> % <span style="color: #90a959;">" - "</span> object-type<span style="color: #7f7f7f;">)</span> objs<span style="color: #7f7f7f;">)))</span>
-</pre>
-</div>
-
-<p>
-By the help of these methods, you can create PDDL templates, for
-example for a domain file:
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">create-pddl</span>
-  <span style="color: #90a959;">"Creates a PDDL file from a list of objects and locations"</span>
-  [objs-file objs-type]
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
-<span style="color: #90a959;">"(define (domain domainName)</span>
-
-<span style="color: #90a959;">  (:requirements</span>
-<span style="color: #90a959;">     :durative-actions</span>
-<span style="color: #90a959;">     :equality</span>
-<span style="color: #90a959;">     :negative-preconditions</span>
-<span style="color: #90a959;">     :numeric-fluents</span>
-<span style="color: #90a959;">     :object-fluents</span>
-<span style="color: #90a959;">     :typing)</span>
-
-<span style="color: #90a959;">  (:types\n"</span>
-   <span style="color: #7f7f7f;">(</span>clojure.pprint/cl-format nil <span style="color: #90a959;">"~{~&amp;~5@T~a~}"</span> <span style="color: #7f7f7f;">(</span>read-objs objs-file objs-type<span style="color: #7f7f7f;">))</span>
-        <span style="color: #90a959;">")</span>
-
-<span style="color: #90a959;">  (:constants</span>
-
-<span style="color: #90a959;">  )</span>
-
-<span style="color: #90a959;">  (:predicates</span>
-
-<span style="color: #90a959;">  )</span>
-
-<span style="color: #90a959;">  (:functions</span>
-
-<span style="color: #90a959;">  )</span>
-
-<span style="color: #90a959;">  (:durative-action actionName</span>
-<span style="color: #90a959;">     :parameters (?x - &lt;objectType&gt;)</span>
-<span style="color: #90a959;">     :duration (= ?duration #duration)</span>
-<span style="color: #90a959;">     :condition (at start &lt;effects&gt;)</span>
-<span style="color: #90a959;">     :effect (at end &lt;effects&gt;))</span>
-<span style="color: #90a959;">)"</span>
-<span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<p>
-PDDL widely supports 'types'. These define possible shapes for objects
-(similar to 'classes' in object oriented programming (OOP)). Types are
-defined in the ':types' section of the PDDL domain file:
-</p>
-<pre class="example">
-....
-(:types man woman - human
-        human - agent
-        robot - agent)
-...
-</pre>
-
-<p>
-A meaning-full type hierarchy is the basis for clean, well-written
-domains. Type definitions constitute the first part in the PDDL
-domain design process, as they determine, on which possible objects
-actions can be performed. 
-</p>
-
-<p>
-In order to further work with the specified types, they have to be
-extracted from the PDDL file. For this task, a regular expression is
-used, that splits the types in subtypes and belonging types.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">split-up</span>
-  <span style="color: #90a959;">"Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)</span>
-<span style="color: #90a959;">  into strings of subtypes and associated types,</span>
-<span style="color: #90a959;">  [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"</span>
-  [coll]
-  <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">let</span> [coll <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">if</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">=</span> <span style="color: #90a959;">:types</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">first</span> coll<span style="color: #7f7f7f;">))</span>
-                 <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">rest</span> coll<span style="color: #7f7f7f;">)</span>
-                 coll<span style="color: #7f7f7f;">)</span>]
-    <span style="color: #b0b0b0;">;; </span><span style="color: #b0b0b0;">REVIEW: insert (\w) for trimming?</span>
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">re-seq</span> #<span style="color: #90a959;">"</span><span style="color: #90a959; font-weight: bold;">(</span><span style="color: #90a959; font-weight: bold;">(?:</span><span style="color: #90a959;">\s*\w+\s*</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">+</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">-\s*</span><span style="color: #90a959; font-weight: bold;">(</span><span style="color: #90a959;">\w+</span><span style="color: #90a959; font-weight: bold;">)</span><span style="color: #90a959;">\s*"</span>
-        <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">" "</span> coll<span style="color: #7f7f7f;">))))</span>
-</pre>
-</div>
-
-<p>
-The resulting list can be used for creating a hash-map, where every
-type from the PDDL type declaration is the hash-key and the subtypes
-are the values. 
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">types-&gt;hash-map</span>
-  <span style="color: #90a959;">"Convert splitted type list (['&lt;expr&gt;' '&lt;subtype1.1&gt; &lt;subtype1.2&gt; ...' '&lt;type1&gt;']</span>
-<span style="color: #90a959;">  to a hash-map {'&lt;type1&gt;': ['&lt;subtype1.1&gt;' '&lt;subtype1.2&gt;' ...], '&lt;type2&gt;': ...}"</span>
-  [coll]
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">reduce</span> <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">fn</span> [h-map [_ objs obj-type]]
-           <span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">let</span> [key-obj-type <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">keyword</span> obj-type<span style="color: #7f7f7f;">)</span>
-                 existing-vals <span style="color: #7f7f7f;">(</span>key-obj-type h-map<span style="color: #7f7f7f;">)</span>]
-          <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">assoc</span> h-map
-                 key-obj-type
-                 <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">concat</span> existing-vals
-                       <span style="color: #7f7f7f;">(</span>clojure.string/split objs #<span style="color: #90a959;">"\s"</span><span style="color: #7f7f7f;">)))))</span>
-          {}
-          coll<span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<p>
-Now, as these information is present in a 'native' Clojure data
-structure, it can be used for various purposes. A desirable purpose
-would be to display the type hierarchy in kind of a 'class' diagram:
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure" id="map-entry-TikZ-seq"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">map-entry-&gt;TikZ-seq</span>
-  <span style="color: #90a959;">"Converts a hashmap entry (:key [val1 val2 ...])</span>
-<span style="color: #90a959;">to a TikZ string (key -- { val1, val2 })"</span>
-  [entry]
-<span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
- <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">name</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">key</span> entry<span style="color: #7f7f7f;">))</span>
-        <span style="color: #90a959;">" -- "</span>
-        <span style="color: #90a959;">"{"</span> <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">", "</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">val</span> entry<span style="color: #7f7f7f;">))</span> <span style="color: #90a959;">"}"</span><span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<pre class="example">
-#'user/map-entry-&gt;TikZ-seq
-</pre>
-
-<p>
-This method can now be used in order to create a TikZ standalone LaTeX
-file, that is converted to a png file by the use of lualatex.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-clojure" id="hash-map-TikZ-out"><span style="color: #7f7f7f;">(</span><span style="color: #aa759f;">defn</span> <span style="color: #6a9fb5;">hash-map-&gt;TikZ-out</span>
-  <span style="color: #90a959;">"Converts complete PDDL type hash-map to TikZ file"</span>
-  [h-map]
-  <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">str</span>
-<span style="color: #90a959;">"\\documentclass[tikz]{standalone}</span>
-
-<span style="color: #90a959;">\\usepackage[utf8]{inputenc}</span>
-
-<span style="color: #90a959;">\\usepackage{tikz}</span>
-
-<span style="color: #90a959;">\\usetikzlibrary{graphdrawing}</span>
-<span style="color: #90a959;">\\usetikzlibrary{graphs}</span>
-<span style="color: #90a959;">\\usegdlibrary{layered,trees}</span>
-
-<span style="color: #90a959;">\\begin{document}</span>
-
-<span style="color: #90a959;">\\begin{tikzpicture}</span>
-
-<span style="color: #90a959;">\\graph[layered layout, nodes={draw,circle,fill=blue!20,font=\\bfseries}]</span>
-<span style="color: #ac4142; font-weight: bold;">{</span>
-<span style="color: #90a959;">  "</span> <span style="color: #7f7f7f;">(</span>clojure.string/<span style="color: #b0c4de;">join</span> <span style="color: #90a959;">",\n  "</span> <span style="color: #7f7f7f;">(</span><span style="color: #b0c4de;">map</span> map-entry-&gt;TikZ-seq h-map<span style="color: #7f7f7f;">))</span>
-<span style="color: #90a959;">"</span>
-<span style="color: #90a959;">};</span>
-
-<span style="color: #90a959;">\\end{tikzpicture}</span>
-<span style="color: #90a959;">\\end{document}"</span><span style="color: #7f7f7f;">))</span>
-</pre>
-</div>
-
-<p>
-A resulting example image would look like this:
-</p>
-
-<p>
-<a href="../img/tikz-file.pdf">../img/tikz-file.pdf</a>
-</p>
-
-<p>
-This look can be further extended in order to create a 
-UML class diagram for PDDL domains and problems:
+The participants had to 
 </p>
 </div>
 </div>
-<div id="outline-container-sec-5-3-2" class="outline-4">
-<h4 id="sec-5-3-2"><span class="section-number-4">5.3.2</span> Syntax Highlighting and Code Snippets</h4>
-<div class="outline-text-4" id="text-5-3-2">
-</div><ol class="org-ol"><li>Problem Statement<br  /><div class="outline-text-5" id="text-5-3-2-1">
-<p>
-Writing extensive domain and problem files is a cumbersome task:
-longer files can get quickly confusing. Therefore, it is convenient to
-have a tool that supports editing these files. Syntax highlighting
-describes the feature of text editors of displaying code in different
-colors and fonts according to the category of terms (source: Wiki). A
-syntax highlighting plug-in for the text and source code editors
-\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
-transferred to the on-line text editor Ace are used to implement this
-feature, as ST Syntax Highlighting files can easily be converted to
-Ace Files. 
-</p>
 
-<p>
-For Mac user, TextMate (TM) is very similar to ST and the syntax
-highlighting file can be used there, too. Besides, the general
-principles (e.g. regular expressions) outlined here, apply to most of
-other editors as well.  
-</p>
-</div>
-</li>
-<li>Implementation<br  /><div class="outline-text-5" id="text-5-3-2-2">
-<p>
-ST syntax definitions are written in property lists in the XML format. 
-</p>
-
-<p>
-The syntax definition is implemented by the use of the ST plug-in \textcite{aaapackagedev}. So, the definitions can be
-written in YAML in converted to Plist XML later on. AAAPackageDEV provides the
-following features:
-</p>
-
-<blockquote>
-<p>
-AAAPackageDev is a Sublime Text 2 and 3 plug-in
-that helps to create and edit syntax definitions, snippets,
-completions files, build systems and other Sublime Text extensions.
-</p>
-</blockquote>
-
-<p>
-By means of Oniguruma regular expressions \parencite{kosako}, scopes are
-defined, that determine the meaning of the PDDL code block. The scope naming
-conventions mentioned in the \citetitle{textmate} are applied here. By the means
-of the name, the colors are assigned. Different ST themes
-display different colors (not all themes support all naming conventions).
-</p>
-
-<p>
-The syntax highlighting is intended for PDDL 3.1, but is downward
-compatible, as previous versions are subsets of later versions.
-</p>
-<div class="inlinetask">
-<b><span class="todo TODO">TODO</span> Are later versions really subsets?</b><br  />
-nil</div>
-<p>
-Like that, the PDDL file is parsed 
-</p>
-<div class="inlinetask">
-<b><span class="todo TODO">TODO</span> Is it really parsed, or are just parts highlighted?</b><br  />
-nil</div>
-<p>
-into different parts. 
-</p>
-</div>
-</li>
-<li>Usage and Customization<br  /><div class="outline-text-5" id="text-5-3-2-3">
-<p>
-By using ST as editor, language independent ST features are supported, like auto
-completion, code folding and column selection, described in the
-Sublime Text 2 Documentation.
-</p>
-
-<p>
-To enable syntax highlighting and code snippets, the files of the
-repository have to be placed in the ST packages folder. The first part
-of the PDDL.YAML-tmlanguage describes the parts of the PDDL task that
-should be highlighted. By removing (or commenting) include statements,
-the syntax highlighter is adjustable the user's need.
-</p>
-
-<pre class="example">
-</pre>
-
-<p>
-By default, all scopes are included.
-</p>
-</div>
-</li>
-<li>Related Work<br  /><ol class="org-ol"><li>PDDL Studio<br  /><div class="outline-text-6" id="text-5-3-2-4-1">
-<p>
-PDDL Studio is an Integrated Development Environment (IDE) for
-creating PDDL tasks. 
-</p>
-</div>
-</li>
-
-<li>PDDL Mode<br  /><div class="outline-text-6" id="text-5-3-2-4-2">
-<p>
-Announced 2005 in a mailing list entry, PDDL mode supports PDDL 2.2. 
-</p>
-</div>
-</li>
-<li>itSIMPLE<br  /></li></ol>
-</li></ol>
-</div>
-</div>
 <div id="outline-container-sec-5-4" class="outline-3">
-<h3 id="sec-5-4"><span class="section-number-3">5.4</span> Evaluation</h3>
+<h3 id="sec-5-4"><span class="section-number-3">5.4</span> Procedure</h3>
 </div>
 </div>
-
 <div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> Discussion</h2>
-</div>
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Conclusion</h2>
-<div class="outline-text-2" id="text-7">
-<div class="org-src-container">
-
-<pre class="src src-PDDL">(<span style="color: #aa759f;">define</span> (<span style="color: #aa759f;">domain</span> xyz)
-  (<span style="color: #b0c4de;">:requirements</span>
-   <span style="color: #90a959;">:strips</span>))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> Bibliography</h2>
-<div class="outline-text-2" id="text-8">
+<h2 id="sec-6"><span class="section-number-2">6</span> Conclusion and Outlook</h2>
+<div class="outline-text-2" id="text-6">
 <p>
+The tools presented in this thesis have been designed to support
+knowledge engineers in planning tasks. They can support engineers in
+the early planning design process, as well as in the maintenance of
+existing domains and problems. The communication between engineers can
+be facilitated and 
+</p>
+</div>
+
+
+<div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Outlook</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Besides ICKEPS, as mentioned in the introduction, also the yearly
+workshop Knowledge Engineering for Planning and Scheduling (KEPS) will
+promote the research in planning and scheduling technology.
+Potentially, the main effort of for implementing models in planning
+will be shifted from the manual KE to the automated knowledge
+acquisition (KA). Perception systems, Nevertheless, a engineer who
+double-checks the generated tasks will be irreplaceable.
 \printbibliography
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> Appendix</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Appendix</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+&alpha;
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Volker Strobel</p>
-<p class="date">Created: 2014-02-24 Mon 11:36</p>
+<p class="date">Created: 2014-03-04 Tue 18:11</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.5h)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
