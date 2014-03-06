@@ -317,11 +317,13 @@ create, amongst others, ST packages, syntax definitions and 'snippets'
 (re-usable code).
 
 By means of Oniguruma regular expressions \parencite{kosako}, scopes
-are defined, that determine the meaning of the PDDL code block. The
-scope naming conventions mentioned in the \citetitle{textmate} are
-applied here. By the means of the name, the colors are assigned.
-Different ST themes display different colors (not all themes support
-all naming conventions).
+are defined, that determine the meaning of the PDDL code block. ST
+themes highlight different parts of the code through by the use of
+scopes. Scopes are defined by the use of regular expressions (regexes)
+in a tmLanguage file. The scope naming conventions mentioned in the
+\citetitle{textmate} are applied here. By the means of the name, the
+colors are assigned. Different ST themes display different colors (not
+all themes support all naming conventions).
 
 The syntax highlighting is intended for PDDL 3.1, but is downward
 compatible, as previous versions are subsets of later versions.

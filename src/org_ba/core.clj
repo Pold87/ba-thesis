@@ -1,11 +1,17 @@
 (ns org-ba.core
-  (:gen-class)
+  (:gen-class :main true)
   (:require [clojure.tools.reader.edn :as edn]
             [clojure.java.io :as io]
             [clojure.pprint :as pprint]
             [dorothy.core :as doro]
-            [rhizome.viz :as rhi])
-  (:import [javax.swing JPanel JButton JLabel]))
+            [rhizome.viz :as rhi]
+            [clojure.math.numeric-tower :as math]
+            [quil.core :as quil]
+            [clojure.java.shell :as shell]
+            [me.raynes.conch :as conch]
+            [me.raynes.conch.low-level :as conch-sh])
+  (:import [javax.swing JPanel JButton JFrame JLabel]
+           [java.awt.image BufferedImage BufferedImageOp]))
 
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
@@ -16,10 +22,11 @@
 (defmacro write->file
   "Writes body to the given file name"
   [filename & body]
-  `(with-open [w# (writer ~filename)]
+  `(do
+     (with-open [w# (io/writer ~filename)]
      (binding [*out* w#]
        ~@body))
-  (println "Written to file: " ~filename))
+  (println "Written to file: " ~filename)))
 
 (defn read-objs
   "Read PDDL objects from a file and add type
@@ -262,7 +269,7 @@ belong to the PDDL keyword."
   (filter #(and (seq? %)
                 (= (keyword pddl-keyword)
                    (first %)))
-          pddl-file))
+          (read-lispstyle-edn pddl-file)))
 
 
                                         ; TODO: Throw error if length != 1
@@ -296,13 +303,121 @@ a string and 'reads' this string"
 (defn PDDL->dot-file-input
   "Reads PDDL file"
   [pddl-file-name]
-  (PDDL->dot (read-lispstyle-edn pddl-file-name)))
+  (PDDL->dot pddl-file-name))
 
-(defn -main
-  "Runs the input/output scripts"
-  [& args]  
+;;;; math helper functions
+
+(defn sqr
+  "Square of a number"
+  [x]
+  (* x x))
+
+(defn round-places [number decimals]
+  "Round to decimal places"
+  (let [factor (math/expt 10 decimals)]
+    (double (/ (math/round (* factor number)) factor))))
+
+(defn euclidean-squared-distance
+  "Computes the Euclidean squared distance between two sequences"
+  [a b]
+  (reduce + (map (comp sqr -) a b)))
+
+(defn euclidean-distance
+  "Computes the Euclidean distance between two sequences"
+  [a b]
+  (math/sqrt (euclidean-squared-distance a b)))
+
+;;;; End math helper functions
+
+(defn distance-delete
+  [a b]
+  10)
+
+(defn calc-distance-good
+  "Calculates the distance and writes
+the calculated distances to a string
+IS VERY GOOD !!!"
+  [locations]
+  (for [[ _ loc1 & xyz-1] locations
+        [ _ loc2 & xyz-2] locations]
+    ;; Euclidean distance rounded to 4 decimal places.
+    (list 'distance loc1 loc2 (euclidean-distance xyz-1 xyz-2))))
+
+(defn get-specified-predicates-in-pddl-file
+  "Extracts all locations in the predicates part
+(by the specified name) in a PDDL file"
+  [pddl-file predicate-name]
+  (filter #(and (seq? %)
+                (= predicate-name (first %)))
+          (get-PDDL-predicates pddl-file)))
+
+
+(defn calc-distance
+  "Calculate distances of PDDL objects"
+  [locations]
+  (for [[ _ loc1 & xyz-1] locations
+        [ _ loc2 & xyz-2] locations]
+    ;; Euclidean distance rounded to 4 decimal places.
+    `(~'distance ~loc1 ~loc2
+                 ~(euclidean-distance xyz-1 xyz-2))))
+
+; LOOK UP: extended equality: 'hello = :hello
+
+(defn add-part-to-PDDL
+  "Takes a PDDL domain or problem
+and add the specified part to the
+specified position"
+  [pddl-file position part]
+  
+  (map #(if (and (seq? %)
+                 (= (keyword position) (first %)))
+          (concat % part)
+          %)
+       (read-lispstyle-edn pddl-file)))
+
+; Example invocation:
+#_(pprint (add-part-to-PDDL "read-domain.pddl" 'predicates (calc-distance (get-specified-predicates-in-pddl-file "read-domain.pddl" 'location))))
+
+
+(def img (ref nil))
+
+(defn setup []
+  (quil/background 0)
+  (dosync (ref-set img (quil/load-image "gen-graph.png"))))
+
+(def img-size
+  (with-open [r (java.io.FileInputStream. "gen-graph.png")]
+    (let [image (javax.imageio.ImageIO/read r)
+          img-width (.getWidth image)
+          img-height (.getHeight image)]
+      [img-width img-height])))
+
+(defn draw []
+  (quil/image @img 0 0))
+
+; Was in main:
   #_(-> (PDDL->dot-file-input (first args))
       rhi/dot->image
       rhi/view-image)
-  (print (PDDL->dot-file-input (first args))))
 
+#_(print (PDDL->dot-file-input (first args)))
+
+;;; https://www.refheap.com/9034
+(defn exit-on-close [sketch]
+  (let [frame (-> sketch .getParent .getParent .getParent .getParent)]
+    (.setDefaultCloseOperation frame javax.swing.JFrame/EXIT_ON_CLOSE)))
+
+(defn -main
+  "Runs the input/output scripts"
+  [& args]
+  ;; Write dot graph to file
+  (doall
+   (write->file "tmp.dot" (print (PDDL->dot-file-input (first args)))))
+  (doall (conch-sh/stream-to-out
+          (conch-sh/proc "dot" "-Tpng" "-o" "gen-graph.png" "tmp.dot") :out))
+  (exit-on-close
+   (quil/sketch
+    :title "PDDL UML Diagram"
+    :setup setup
+    :draw draw
+    :size (vec img-size))))
