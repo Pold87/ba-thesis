@@ -228,7 +228,7 @@ hash-map>dot"
   [h-map]
   (str
    "digraph hierarchy {
-node[shape=Mrecord,style=filled,fillcolor=gray92]
+node[shape=record,style=filled,fillcolor=gray92]
 edge[dir=back, arrowtail=empty]
 \n"
    (clojure.string/join (hash-map->dot h-map))
@@ -241,7 +241,7 @@ hash-map>dot"
   [preds types]
   (str
    "digraph hierarchy {
-node[shape=Mrecord,style=filled,fillcolor=gray92]
+node[shape=record,style=filled,fillcolor=gray92]
 edge[dir=back, arrowtail=empty]
 \n"
    
@@ -379,21 +379,6 @@ specified position"
 #_(pprint (add-part-to-PDDL "read-domain.pddl" 'predicates (calc-distance (get-specified-predicates-in-pddl-file "read-domain.pddl" 'location))))
 
 
-(def img (ref nil))
-
-(defn setup []
-  (quil/background 0)
-  (dosync (ref-set img (quil/load-image "gen-graph.png"))))
-
-(def img-size
-  (with-open [r (java.io.FileInputStream. "gen-graph.png")]
-    (let [image (javax.imageio.ImageIO/read r)
-          img-width (.getWidth image)
-          img-height (.getHeight image)]
-      [img-width img-height])))
-
-(defn draw []
-  (quil/image @img 0 0))
 
 ; Was in main:
   #_(-> (PDDL->dot-file-input (first args))
@@ -414,7 +399,24 @@ specified position"
   (doall
    (write->file "tmp.dot" (print (PDDL->dot-file-input (first args)))))
   (doall (conch-sh/stream-to-out
-          (conch-sh/proc "dot" "-Tpng" "-o" "gen-graph.png" "tmp.dot") :out))
+            (conch-sh/proc "dot" "-Tpng" "-o" "gen-graph.png" "tmp.dot") :out))
+
+  (def img (ref nil))
+
+  (defn setup []
+    (quil/background 0)
+    (dosync (ref-set img (quil/load-image "gen-graph.png"))))
+  
+  (def img-size
+    (with-open [r (java.io.FileInputStream. "gen-graph.png")]
+      (let [image (javax.imageio.ImageIO/read r)
+            img-width (.getWidth image)
+            img-height (.getHeight image)]
+        [img-width img-height])))
+
+  (defn draw []
+    (quil/image @img 0 0))
+  
   (exit-on-close
    (quil/sketch
     :title "PDDL UML Diagram"

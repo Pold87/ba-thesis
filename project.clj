@@ -11,8 +11,6 @@
                  [quil "1.7.0-SNAPSHOT"]
                  [net.mikera/imagez "0.3.1"]
                  [me.raynes/conch "0.5.0"]]
-  ;:main ^:skip-aot org-ba.core
-  :main org-ba.core
+  :main ^:skip-aot org-ba.core
   :target-path "target/%s"
-  ;:profiles {:uberjar {:aot :all}}
-  )
+  :profiles {:uberjar {:aot :all}})
