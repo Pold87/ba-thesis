@@ -9,7 +9,10 @@
             [quil.core :as quil]
             [clojure.java.shell :as shell]
             [me.raynes.conch :as conch]
-            [me.raynes.conch.low-level :as conch-sh])
+            [me.raynes.conch.low-level :as conch-sh]
+            [fipp.printer :as p]
+            [fipp.edn :refer (pprint) :rename {pprint fipp}]
+            [me.raynes.fs :as fs])
   (:import [javax.swing JPanel JButton JFrame JLabel]
            [java.awt.image BufferedImage BufferedImageOp]))
 
@@ -278,6 +281,11 @@ belong to the PDDL keyword."
   [pddl-file]
   (first (get-PDDL-construct 'predicates pddl-file)))
 
+(defn get-PDDL-init
+  "Get all predicates in a PDDL file"
+  [pddl-file]
+  (first (get-PDDL-construct 'init pddl-file)))
+
 
                                         ; TODO: Throw error if length != 1
 (defn get-PDDL-types
@@ -329,10 +337,6 @@ a string and 'reads' this string"
 
 ;;;; End math helper functions
 
-(defn distance-delete
-  [a b]
-  10)
-
 (defn calc-distance-good
   "Calculates the distance and writes
 the calculated distances to a string
@@ -341,7 +345,7 @@ IS VERY GOOD !!!"
   (for [[ _ loc1 & xyz-1] locations
         [ _ loc2 & xyz-2] locations]
     ;; Euclidean distance rounded to 4 decimal places.
-    (list 'distance loc1 loc2 (euclidean-distance xyz-1 xyz-2))))
+    (list 'distance loc1 loc2 (round-places (euclidean-distance xyz-1 xyz-2) 4))))
 
 (defn get-specified-predicates-in-pddl-file
   "Extracts all locations in the predicates part
@@ -351,6 +355,13 @@ IS VERY GOOD !!!"
                 (= predicate-name (first %)))
           (get-PDDL-predicates pddl-file)))
 
+(defn get-specified-inits-in-pddl-file
+  "Extracts all locations in the init part
+(by the specified name) in a PDDL problem"
+  [pddl-file predicate-name]
+  (filter #(and (seq? %)
+                (= predicate-name (first %)))
+          (get-PDDL-init pddl-file)))
 
 (defn calc-distance
   "Calculate distances of PDDL objects"
@@ -375,51 +386,91 @@ specified position"
           %)
        (read-lispstyle-edn pddl-file)))
 
-; Example invocation:
-#_(pprint (add-part-to-PDDL "read-domain.pddl" 'predicates (calc-distance (get-specified-predicates-in-pddl-file "read-domain.pddl" 'location))))
+(defn find-new-file-name
+  "Take a filename and determines, the new number
+that has to be added to create a new file. E.g.
+file1.img file2.img file3.img means that, file4.img
+has to be created"
+  [filename extension]
+  (loop [n 0]
+    (if-not (io/.exists (io/as-file
+                         (str filename n extension)))
+      (str filename n extension)
+      (recur (inc n)))))
 
 
-
-; Was in main:
-  #_(-> (PDDL->dot-file-input (first args))
-      rhi/dot->image
-      rhi/view-image)
-
-#_(print (PDDL->dot-file-input (first args)))
-
-;;; https://www.refheap.com/9034
+;;; Copied from https://www.refheap.com/9034
 (defn exit-on-close [sketch]
+  "Guarantees that Clojure script will be
+exited after the JFrame is closed"
   (let [frame (-> sketch .getParent .getParent .getParent .getParent)]
     (.setDefaultCloseOperation frame javax.swing.JFrame/EXIT_ON_CLOSE)))
 
+
+;; Main method
+;; TODO: Command line options
 (defn -main
   "Runs the input/output scripts"
   [& args]
-  ;; Write dot graph to file
-  (doall
-   (write->file "tmp.dot" (print (PDDL->dot-file-input (first args)))))
-  (doall (conch-sh/stream-to-out
-            (conch-sh/proc "dot" "-Tpng" "-o" "gen-graph.png" "tmp.dot") :out))
 
-  (def img (ref nil))
+  (cond
+   ;; Create a new PDDL project
+   (= "new" (first args))
+   (let [project-name (second args)]
+     (fs/mkdir project-name)
+     (fs/mkdir (str project-name "/dot"))
+     (fs/mkdir (str project-name "/uml"))
+     (fs/create (io/file (str project-name "/domain.pddl")))
+     (fs/create (io/file (str project-name "/p01.pddl"))))
 
-  (defn setup []
-    (quil/background 0)
-    (dosync (ref-set img (quil/load-image "gen-graph.png"))))
-  
-  (def img-size
-    (with-open [r (java.io.FileInputStream. "gen-graph.png")]
-      (let [image (javax.imageio.ImageIO/read r)
-            img-width (.getWidth image)
-            img-height (.getHeight image)]
-        [img-width img-height])))
+   ;; -l flag for adding locations in PDDL file
+   (= (second args) "-l")
+   (let [content (add-part-to-PDDL (first args)
+                                   'init
+                                   (calc-distance-good
+                                    (get-specified-inits-in-pddl-file (first args)
+                                                                      'location)))
+         new-filename (clojure.string/replace-first (first args)
+                                                    #"(.+).pddl"
+                                                    "$1-locations.pddl")] ; TODO: location as arg
+     
+     (write->file new-filename (pprint/pprint content)))
 
-  (defn draw []
-    (quil/image @img 0 0))
-  
-  (exit-on-close
-   (quil/sketch
-    :title "PDDL UML Diagram"
-    :setup setup
-    :draw draw
-    :size (vec img-size))))
+   
+   ;; Write dot graph to file
+   :else
+   (let [new-dot-filename (find-new-file-name "dot/dot-diagram" ".dot")
+         new-png-filename (find-new-file-name "uml/png-diagram" ".png")]
+     (doall
+      (write->file new-dot-filename
+                   (print (PDDL->dot-file-input (first args)))))
+     (doall (conch-sh/stream-to-out
+             (conch-sh/proc "dot"
+                            "-Tpng"
+                            "-o"
+                            new-png-filename
+                            new-dot-filename)
+             :out))
+     
+     (def img (ref nil))
+     
+     (defn setup []
+       (quil/background 0)
+       (dosync (ref-set img (quil/load-image new-png-filename))))
+     
+     (def img-size
+       (with-open [r (java.io.FileInputStream. new-png-filename)]
+         (let [image (javax.imageio.ImageIO/read r)
+               img-width (.getWidth image)
+               img-height (.getHeight image)]
+           [img-width img-height])))
+     
+     (defn draw []
+       (quil/image @img 0 0))
+     
+     (exit-on-close
+      (quil/sketch
+       :title "PDDL UML Diagram"
+       :setup setup
+       :draw draw
+       :size (vec img-size))))))
