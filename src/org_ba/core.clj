@@ -14,7 +14,8 @@
             [fipp.edn :refer (pprint) :rename {pprint fipp}]
             [me.raynes.fs :as fs])
   (:import [javax.swing JPanel JButton JFrame JLabel]
-           [java.awt.image BufferedImage BufferedImageOp]))
+           [java.awt.image BufferedImage BufferedImageOp]
+           [java.io File]))
 
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
@@ -85,11 +86,13 @@
   into strings of subtypes and associated types,
   [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
   [coll]
+  ;; Remove ':types' if it is present.
   (let [coll (if (= :types (first coll))
                (rest coll)
                coll)]
-    ;; REVIEW: insert (\w) for trimming?
-    (re-seq #"((?:\s*\w+\s+)+)-\s+(\w+)\s*"
+    ;; Capturing group 1 is type1.1 type1.2.
+    ;; Capturing group 1 is type1.
+    (re-seq #"((?:(?:\b[a-zA-Z](?:\w|-|_)+)\s+)+)-\s+(\b[a-zA-Z](?:\w|-|_)+)"
             (clojure.string/join " " coll))))
 
 
@@ -153,9 +156,9 @@ to a TikZ string (key -- { val1, val2 })"
 to the dot language"
   [entry]
   (str
-   (name (key entry))
+   "\"" (name (key entry)) "\""
    " -> "
-   "{" (clojure.string/join " " (val entry)) "}"))
+   "{" (clojure.string/join " " (map #(str "\"" % "\"")  (val entry))) "}"))
 
 
 (defn types-hash-map->dot-language
@@ -164,10 +167,7 @@ to the dot language notation"
   [pddl-types-map]
   (clojure.string/join "\n" (map types-map-entry->dot-language pddl-types-map)))
 
-;;;; Read PDDL predicates and generate UML 'type' diagram
-
-
-
+;;; Read PDDL predicates and generate UML 'type' diagram
 (defn get-types-in-predicate
   "Takes a PDDL predicate,
   e.g. '(at ?x - location ?y - object)
@@ -221,7 +221,7 @@ to the dot language notation"
               "[label = \"{"
               (key map-entry)
               "|"
-              (clojure.string/join "\\l" (val map-entry))
+              (clojure.string/join "\\l"  (val map-entry))
               "}\"]\n"))
        h-map))
 
@@ -407,6 +407,26 @@ exited after the JFrame is closed"
     (.setDefaultCloseOperation frame javax.swing.JFrame/EXIT_ON_CLOSE)))
 
 
+(defn extract-locations-from-file
+  "Read a Blender LISP file and write object positions to out-file"
+  [file-in file-out]
+  (let [map-destructorer-local (fn [[_addgv _furniture object
+                                      [_make-instance _object-detail
+                                          _pose [_tfmps
+                                                _type-name
+                                                _type-num
+                                                [_vector-3d x y z & more]
+                                                & _more1]
+                                       & _more2]]] (list "location" (name object) x y z))]
+    (with-open [rdr (java.io.PushbackReader. (io/reader file-in))]
+      (println
+      (doall
+          (map map-destructorer-local
+               (filter #(and (seq? %) (= 'addgv (first %)))
+                       (take-while #(not= % :end)
+                                   (repeatedly  #(edn/read {:eof :end} rdr))))))))))
+
+
 ;; Main method
 ;; TODO: Command line options
 (defn -main
@@ -419,7 +439,9 @@ exited after the JFrame is closed"
    (let [project-name (second args)]
      (fs/mkdir project-name)
      (fs/mkdir (str project-name "/dot"))
-     (fs/mkdir (str project-name "/uml"))
+     (fs/mkdir (str project-name "/diagrams"))
+     (fs/mkdir (str project-name "/domains"))
+     (fs/mkdir (str project-name "/problems"))
      (fs/create (io/file (str project-name "/domain.pddl")))
      (fs/create (io/file (str project-name "/p01.pddl"))))
 
@@ -437,21 +459,31 @@ exited after the JFrame is closed"
      (write->file new-filename (pprint/pprint content)))
 
    
-   ;; Write dot graph to file
+   ;; Write dot graph to file.
    :else
-   (let [new-dot-filename (find-new-file-name "dot/dot-diagram" ".dot")
-         new-png-filename (find-new-file-name "uml/png-diagram" ".png")]
+   (let [input-domain (first args)
+         new-dot-filename (find-new-file-name "dot/dot-diagram" ".dot")
+         new-png-filename (find-new-file-name "diagrams/png-diagram" ".png")
+         input-domain-filename (fs/name input-domain)
+         domain-version (find-new-file-name
+                         (str "domains/" input-domain-filename) (fs/extension input-domain))]
+
+     ;; Save input domain version in folder domains.
+     (fs/copy+ input-domain domain-version)     
+
+     ;; Create folders for dot files and png diagrams
+     (fs/mkdir "dot")
+     (fs/mkdir "diagrams")
+     
+     ;; Create dot language file in dot folder.
      (doall
       (write->file new-dot-filename
-                   (print (PDDL->dot-file-input (first args)))))
-     (doall (conch-sh/stream-to-out
-             (conch-sh/proc "dot"
-                            "-Tpng"
-                            "-o"
-                            new-png-filename
-                            new-dot-filename)
-             :out))
-     
+                   (print (PDDL->dot-file-input input-domain))))
+
+     ;; Create a png file from dot
+     (fs/exec "dot" "-Tpng" "-o" new-png-filename new-dot-filename)
+
+     ;; Settings for displaying the generated diagram.
      (def img (ref nil))
      
      (defn setup []
@@ -467,10 +499,11 @@ exited after the JFrame is closed"
      
      (defn draw []
        (quil/image @img 0 0))
-     
+
+     ;; Display png file in JFrame.
      (exit-on-close
       (quil/sketch
-       :title "PDDL UML Diagram"
+       :title (str "PDDL Type Diagram - " input-domain-filename)
        :setup setup
        :draw draw
        :size (vec img-size))))))
