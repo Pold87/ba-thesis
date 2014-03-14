@@ -3,13 +3,8 @@
   (:require [clojure.tools.reader.edn :as edn]
             [clojure.java.io :as io]
             [clojure.pprint :as pprint]
-            [dorothy.core :as doro]
-            [rhizome.viz :as rhi]
             [clojure.math.numeric-tower :as math]
             [quil.core :as quil]
-            [clojure.java.shell :as shell]
-            [me.raynes.conch :as conch]
-            [me.raynes.conch.low-level :as conch-sh]
             [fipp.printer :as p]
             [fipp.edn :refer (pprint) :rename {pprint fipp}]
             [me.raynes.fs :as fs])
@@ -29,8 +24,7 @@
   `(do
      (with-open [w# (io/writer ~filename)]
      (binding [*out* w#]
-       ~@body))
-  (println "Written to file: " ~filename)))
+       ~@body))))
 
 (defn read-objs
   "Read PDDL objects from a file and add type
@@ -41,6 +35,22 @@
         (clojure.string/split objs #"\s")
         (map #(str % " - " object-type) objs)))
 
+(defn create-readme
+  "Create README.md markdown file with some dummy text"
+  [path]
+  (spit
+   (str path "README.md")
+"# FIXME: PDDL Project 
+
+PDDL domain and problem files for ... 
+
+## Description
+
+FIXME
+
+## License
+
+Copyright © 2014 FIXME"))
 
 
 (defn create-pddl
@@ -433,17 +443,22 @@ exited after the JFrame is closed"
   "Runs the input/output scripts"
   [& args]
 
+  ; TODO: Check is folder already exists
+
   (cond
    ;; Create a new PDDL project
    (= "new" (first args))
-   (let [project-name (second args)]
-     (fs/mkdir project-name)
-     (fs/mkdir (str project-name "/dot"))
-     (fs/mkdir (str project-name "/diagrams"))
-     (fs/mkdir (str project-name "/domains"))
-     (fs/mkdir (str project-name "/problems"))
-     (fs/create (io/file (str project-name "/domain.pddl")))
-     (fs/create (io/file (str project-name "/p01.pddl"))))
+   (let [project-dir (str (second args) "/")]
+     (fs/mkdir project-dir)
+     (fs/mkdir (str project-dir "dot"))
+     (fs/mkdir (str project-dir "diagrams"))
+     (fs/mkdir (str project-dir "domains"))
+     (fs/mkdir (str project-dir "plans"))
+     (fs/mkdir (str project-dir "problems"))
+     (create-readme (str project-dir))
+     ; TODO: add skeleton to domain.pddl and po1.pddl
+     (fs/create (io/file (str project-dir "domain.pddl")))
+     (fs/create (io/file (str project-dir "p01.pddl"))))
 
    ;; -l flag for adding locations in PDDL file
    (= (second args) "-l")
@@ -453,7 +468,7 @@ exited after the JFrame is closed"
                                     (get-specified-inits-in-pddl-file (first args)
                                                                       'location)))
          new-filename (clojure.string/replace-first (first args)
-                                                    #"(.+).pddl"
+                                                    #"(.+)\.pddl"
                                                     "$1-locations.pddl")] ; TODO: location as arg
      
      (write->file new-filename (pprint/pprint content)))

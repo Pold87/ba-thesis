@@ -1,4 +1,4 @@
-% Created 2014-03-13 Thu 18:08
+% Created 2014-03-14 Fri 03:25
 \documentclass[11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -17,12 +17,13 @@
 \usepackage{hyperref}
 \tolerance=1000
 \usepackage{minted}
-\usepackage{minted}
 \usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
 \addbibresource{bibliography.bib}
 \usepackage[]{hyperref}
+\usepackage[]{keystroke}
 \hypersetup{hidelinks}
 \usepackage[]{nomencl}
+\usepackage{dirtree}
 \author{Volker Strobel}
 \date{\today}
 \title{Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework}
@@ -249,7 +250,6 @@ Also see VEGA plan visulazation on the MODplan page
 \label{sec-2-7}
 As it can be seen, there is need for an up-to-date, customizable, text
 editor with PDDL support, that supports the current standard PDDL 3.1. 
-
 \chapter{Planning Basics and PDDL}
 \label{sec-3}
 
@@ -393,6 +393,7 @@ An overview of different planners is given at
 \label{sec-4}
 \section{Statement of Problem}
 \label{sec-4-1}
+
 Writing and maintaining PDDL files can be time-consuming and
 cumbersome \textcite{li2012translating}. So, the following development
 tools shell support and facilitate the PDDL task design process and
@@ -407,10 +408,181 @@ PDDL files
 input and output and dynamic generation (design level)
 \item[{Human Planner Interaction}] An interactive PDDL environment: speech synthesis and
 recognition.
-\item[{Domain Generator}] Mathematical limitations (design level)
+\item[{Problem Generator}] Mathematical limitations (design level)
 \end{description}
-\section{Syntax Highlighting and Code Snippets}
+
+\section{Clojure Interface}
 \label{sec-4-2}
+
+PDDL, as planning language modeling capabilities are limited, a
+interface with a programming is handy a can reduce dramatically the
+modeling time. In IPC, task generators are used write extensive domain
+and problem files. As PDDL is used to create more and more complex domains
+(SOURCE1, SOURCE2, SOURCE3, \ldots{}). 
+
+While it seems to be reasonable to further extend PDDL's modeling
+capability to at planning time instead of modeling time, a modeling
+support tool as preprocessor is appropriate in any case
+(\url{http://orff.uc3m.es/bitstream/handle/10016/14914/proceedings-WS-IPC2012.pdf?sequence=1#page=47})
+
+As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
+using a LISP dialect for the interface seems reasonable as file input
+and output methods can use s-expressions instead of regular
+expressions. This thesis uses Clojure \parencite{hickey2008clojure}, a
+modern LISP dialect that runs on the Java Virtual Machine. So, PDDL
+expressions can be extracted and written back in a similar manner, and
+parts of PDDL files can be accessed in a natural way.
+
+In this section, a general approach for generating PDDL
+constructs, but also for reading in PDDL files, handling, using and
+modifying the input, and generating PDDL files as output.
+
+\subsection{Create}
+\label{sec-4-2-1}
+
+
+\subsection{Basics}
+\label{sec-4-2-2}
+Through the higher-order filter method in Clojure, parts of PDDL files
+can be easily extracted. Like that, one can extract parts of the file
+and handle the constructs in a Clojure intern way.
+
+As an example, the type handling will be represented here, but the
+basic approach is similar for all PDDL constructs.
+
+The here developed tools should be platform independent with a
+development focus in UNIX/Linux systems, as most planners (source!)
+run on Linux.
+\subsection{Functions}
+\label{sec-4-2-3}
+As functions have a return value, the modeling possibilities
+dramatically increase.
+
+\subsection{Numerical Expressiveness}
+\label{sec-4-2-4}
+One might assume that the distance could be modeled as follows:
+
+\begin{verbatim}
+(durative action ...
+...
+  :duration (= ?duration (sqrt (coord-x )))
+...
+\end{verbatim}
+
+However, PDDL does only support basic arithmetic operations (+, -, /, *).
+
+An Euclidean distance function that uses the square root would be
+convenient for distance modeling and measurement. However, PDDL 3.1
+supports only four arithmetic operators (+, -, /, *). These
+operators can be used in preconditions, effects
+(normal/continuous/conditional) and durations.
+\textcite{parkinson2012increasing} describe a workaround for this
+drawback. By declaring an action `calculate-sqrt', they bypass the
+lack of this function and rather write their own action that makes use
+of the Babylonian root method.
+
+\begin{enumerate}
+\item Alternative \#1: Only sqrt exists
+\label{sec-4-2-4-1}
+Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
+
+\begin{verbatim}
+:duration (= ?duration 
+             (sqrt
+              (+
+               (*
+                (- (pos-x (current-pos))
+                   (pos-x ?goal))
+                (- (pos-x (current-pos))
+                   (pos-x ?goal)))
+               (*
+                (- (pos-y (current-pos))
+                   (pos-y ?goal))
+                (- (pos-y (current-pos))
+                   (pos-y ?goal))))))
+\end{verbatim}
+\item Alternative \#2: sqrt and expt exist
+\label{sec-4-2-4-2}
+Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
+\begin{verbatim}
+:duration (= ?duration 
+             (sqrt
+              (+
+               (expt
+                (- 
+                 (pos-x (current-pos))
+                 (pos-x ?goal)))
+               (expt
+                (- 
+                 (pos-y (current-pos))
+                 (pos-y ?goal))))))
+\end{verbatim}
+
+\item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
+\label{sec-4-2-4-3}
+
+\begin{itemize}
+\item Distance Matrix
+\item \url{http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities}
+\item Scipy.spatial.distance (-> Clojure?)
+\item Mention that the Taxicab geometry allows different ways that have an equal length
+\end{itemize}
+
+Another alternative is to make use of an external helper and, instead
+of calculating every entry of the distance matrix. the distance only
+if needed, incorporate every possible combination of two locations.
+This approach has certainly a major drawback: With an increasing
+amount of locations, the number of combinations increases
+exponentially. That means, if there are 100 locations, there will be
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+TODO: Calculate possibilities
+
+\rule[.8em]{\textwidth}{2pt}
+
+nil\end{minipage}
+}
+\end{center}
+\ldots{} . The native approach would be to iterate over the cities twice
+and calculate only the half of the matrix (as it is symmetric, that
+mean distance from A to B is the same as the distance from B to A).
+
+\item Alternative \#4: Use the Manhattan distance
+\label{sec-4-2-4-4}
+
+Allowing the agent to move only vertically and horizontally would be
+that one can use the so called Taxicab geometry (or Manhattan length)
+as distance measurement.  In the Kitchen domain, this could be modeled
+as follows:
+
+\begin{verbatim}
+% => Metric: reduce duration
+
+% dKitchenware.pddl 
+\begin{figure}[t]
+\inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
+            {csharp}
+            {Code/dKitchenware.pddl}
+\caption{The basic kitchenware domain}
+\end{figure}
+\section
+\end{verbatim}
+
+\begin{center}
+\fbox{
+\begin{minipage}[c]{.6\textwidth}
+TODO:
+
+\rule[.8em]{\textwidth}{2pt}
+
+TODO Human Planner Interaction
+\end{minipage}
+}
+\end{center}
+\end{enumerate}
+\section{Syntax Highlighting and Code Snippets}
+\label{sec-4-3}
 \label{sec:syntax}
 
 
@@ -433,7 +605,7 @@ allows for syntax highlighting in \LaTeX documents.
 
 
 \subsection{Implementation and Customization}
-\label{sec-4-2-1}
+\label{sec-4-3-1}
 ST syntax definitions are written in property lists in the XML format.
 
 For the ease of creation, the PDDL syntax highlighter is is
@@ -480,12 +652,41 @@ adjustable the user's need.
 \includegraphics[width=.9\linewidth]{/home/pold/Pictures/ba.png}
 
 \subsection{Usage and Customization}
-\label{sec-4-2-2}
+\label{sec-4-3-2}
+New PDDL projects can be generated by invoking the following command:
+\begin{minted}[]{bash}
+$ java -jar path/to/pddl.jar new NAME
+\end{minted}
+This will create a new structured project folder, consisting of a
+domain and problem file with basic skeletons, a domain and problem
+folder for offline version control and a png and dot folder for the
+generated dot language and png type diagrams respectively. 
+
+\dirtree{%
+.1 NAME.
+.2 dot.
+.2 diagrams.
+.2 domains.
+.2 problems.
+.2 solutions
+.2 domain.pddl.
+.2 p01.pddl.
+.2 README.md.
+}
+
+
+
+After invoking pddl.jar twice with 
+
+
 To enable syntax highlighting and code snippets in ST, the files of
 this repository have to be placed in the ST packages folder
 (\url{http://www.sublimetext.com/docs/3/packages.html}). Following, the
 features can be activated by changing ST's syntax to PDDL
 (\texttt{View->Syntax->PDDL}).
+
+
+
 
 By using ST as editor, language independent ST features are supported,
 like auto completion of words already used in this file, code folding
@@ -497,165 +698,164 @@ The PDDL.YAML-tmlanguage file is split in two parts:
 
 By default, all scopes are included.
 
-\subsection{Evaluation}
-\label{sec-4-2-3}
-
-\section{Clojure Interface}
-\label{sec-4-3}
-
-PDDL, as planning language modeling capabilities are limited, a
-interface with a programming is handy a can reduce dramatically the
-modeling time. In IPC, task generators are used write extensive domain
-and problem files. 
-
-As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
-using a LISP dialect for the interface seems reasonable. This thesis
-uses Clojure \parencite{hickey2008clojure}, a modern LISP
-dialect that runs on the Java Virtual Machine.
-
-In this section, I will not only show a method for generating PDDL
-constructs, but also for reading in PDDL files are handling the input.
-
-\subsection{Basics}
-\label{sec-4-3-1}
-Through the higher-order filter method in Clojure, parts of PDDL files
-can be easily extracted. Like that, one can extract parts of the file
-and handle the constructs in a Clojure intern way.
-
-As an example, the type handling will be represented here, but the
-basic approach is similar for all PDDL constructs.
-
-The here developed tools should be platform independent with a
-development focus in UNIX/Linux systems, as most planners (source!)
-run on Linux.
-\subsection{Functions}
-\label{sec-4-3-2}
-As functions have a return value, the modeling possibilities
-dramatically increase.
-
-\subsection{Numerical Expressiveness}
+\subsection{Use case}
 \label{sec-4-3-3}
-One might assume that the distance could be modeled as follows:
-
-\begin{verbatim}
-(durative action ...
-...
-  :duration (= ?duration (sqrt (coord-x )))
-...
-\end{verbatim}
-
-However, PDDL does only support basic arithmetic operations (+, -, /, *).
-
-An Euclidean distance function that uses the square root would be
-convenient for distance modeling and measurement. However, PDDL 3.1
-supports only four arithmetic operators (+, -, /, *). These
-operators can be used in preconditions, effects
-(normal/continuous/conditional) and durations.
-\textcite{parkinson2012increasing} describe a workaround for this
-drawback. By declaring an action `calculate-sqrt', they bypass the
-lack of this function and rather write their own action that makes use
-of the Babylonian root method.
+Following, a small use case will be presented, that should represent a
+typical work flow using the tools presented in this paper.
 
 \begin{enumerate}
-\item Alternative \#1: Only sqrt exists
+\item Initial Situation (Domain)
 \label{sec-4-3-3-1}
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-
-\begin{verbatim}
-:duration (= ?duration 
-             (sqrt
-              (+
-               (*
-                (- (pos-x (current-pos))
-                   (pos-x ?goal))
-                (- (pos-x (current-pos))
-                   (pos-x ?goal)))
-               (*
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))))))
-\end{verbatim}
-\item Alternative \#2: sqrt and expt exist
+Our world consists of two types of persons: hackers and non-hackers.
+Hackers can be further divided into \emph{white hats} (seeking
+vulnerabilities on behalf of the system owner), \emph{black hats}
+(compromise security holes without permission) and \emph{gray hats}
+(sometimes act legally, other times not). \emph{Software} can be
+\emph{application} software, \emph{system} software or programming \emph{tools}.
+System software can be further divided into drivers and operating
+systems. A hacker must not be hungry (and in that case need some needs
+some pizza) in order to exploit vulnerable software.
+\item Problem
 \label{sec-4-3-3-2}
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-\begin{verbatim}
-:duration (= ?duration 
-             (sqrt
-              (+
-               (expt
-                (- 
-                 (pos-x (current-pos))
-                 (pos-x ?goal)))
-               (expt
-                (- 
-                 (pos-y (current-pos))
-                 (pos-y ?goal))))))
-\end{verbatim}
-
-\item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
+\emph{Gary} is a \emph{hungry} \emph{white-hat} hacker who should exploit Gisela's vulnerable
+\emph{application} software \emph{MysteriousTexMexMix} on behalf of her. In order to
+plan the sequence of required actions, Gary uses the tools presented
+in this paper and the planning software SGPlan\(_{\text{6}}\).
+\item Workflow
 \label{sec-4-3-3-3}
+Gary creates a new PDDL project using the command line, to this end he
+types
+\begin{minted}[]{bash}
+$ java -jar pddl.jar new hacker-world
+\end{minted}
+changes into that directory 
+\begin{minted}[]{bash}
+$ cd bulb-world
+\end{minted}
+and renames the file domain.pddl to 
+\begin{minted}[]{bash}
+$ mv domain.pddl garys-hacker-world.pddl
+\end{minted}
 
-\begin{itemize}
-\item Distance Matrix
-\item \url{http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities}
-\item Scipy.spatial.distance (-> Clojure?)
-\item Mention that the Taxicab geometry allows different ways that have an equal length
-\end{itemize}
+To get an overview over the world structure, Gary doodles a quick type
+diagram with the freely available graph editor and layout program yEd
+(yFiles software, Tübingen, Germany) that represents the world and its
+structure. Of course, he could also do this by pen and paper or using
+any other graph editor.
 
-Another alternative is to make use of an external helper and, instead
-of calculating every entry of the distance matrix. the distance only
-if needed, incorporate every possible combination of two locations.
-This approach has certainly a major drawback: With an increasing
-amount of locations, the number of combinations increases
-exponentially. That means, if there are 100 locations, there will be
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-TODO: Calculate possibilities
+[./gary\(_{\text{sketch.svg}}\) ]
 
-\rule[.8em]{\textwidth}{2pt}
+He then opens this domain file in the Sublime Text 2 editor
+\begin{minted}[]{bash}
+$ sublime gary-hacker-world.pddl
+\end{minted}
+and starts to model his world. To this end, he uses the code snippets
+\texttt{domain} for creating the domain skeleton, navigates inside the domain
+file with \Tab, creates new type definitions with the snippets \texttt{t2}
+and \texttt{t3}. After completing his first draft, he presses
+\keystroke{f8}, for saving his file and displaying the PDDL type
+diagram and sees the following diagram:
 
-nil\end{minipage}
-}
-\end{center}
-\ldots{} . The native approach would be to iterate over the cities twice
-and calculate only the half of the matrix (as it is symmetric, that
-mean distance from A to B is the same as the distance from B to A).
+[.././hacker-world/diagrams/png-diagram3.png ]
 
-\item Alternative \#4: Use the Manhattan distance
-\label{sec-4-3-3-4}
+He recognizes, that he forgot to model that system software can be
+sub-divided into drivers and operating systems. Therefore he closes
+the diagram and adds the missing type declaration. He continues to
+write the PDDL domain and adds the required predicates with \texttt{p1} and
+\texttt{p2}, for example he types
 
-Allowing the agent to move only vertically and horizontally would be
-that one can use the so called Taxicab geometry (or Manhattan length)
-as distance measurement.  In the Kitchen domain, this could be modeled
-as follows:
+\keystroke{p}\keystroke{2}\Tab\keystroke{h}\keystroke{a}\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{p}\Tab\keystroke{p}\Tab
 
+And gets \texttt{(has ?s - software ?p - person)} and \texttt{action} for the action
+definition.
+
+The syntax highlighter shows Gary, if the uses incorrect PDDL syntax
+or if the forgets to close a parenthesis, as then parts don't get
+highlighted. 
+
+A final check show that everything is as expected:
+
+[.././hacker-world/diagrams/png-diagram3.png]
+
+Gary knows, that the type diagram generator uses the Clojure
+interface. So, adding \texttt{\#\_} just before the predicates s-expression
+(that means \texttt{\#\_(:predicates ...)} excludes the predicates from the
+type diagram, as this is the Clojure notation for commenting out
+s-expressions (and more convenient than commenting every single line).
+However, the \texttt{\#\_} construct is \emph{not} correct PDDL, so Gary generates
+the diagram without the predicates, checks and sees that everything is
+fine, removes the \texttt{\#\_}, saves and closes the file. 
+
+The final version in the ST editor now looks like this:
+[./domain2.pdf ]
+
+In the command line, he now opens the PDDL problem file p01.pddl
+\begin{minted}[]{bash}
+$ sublime p01.pddl
+\end{minted}
+and adds the problem skeleton by typing \texttt{problem} and pressing \Tab.
+
+The relevant output lines of the output file are
+
+The planner SGPlan\(_{\text{5}}\) can be invoked by
+\begin{minted}[]{bash}
+$ ./sgplan -o garys-hacker-world.pddl \
+           -f p01.pddl \
+           -out plans/solution0.soln
+\end{minted}
+where -o specifies the domain file, -f the problem file and -out the
+output file. 
+The extension \texttt{.soln} for \texttt{solution0.soln} is used to show that solution
+files are not specified by PDDL per se, however,
+\cite[91]{fox2003pddl2} specifies plan syntax as a sequence of timed
+actions. 
+
+TODO: Possibly change planner to one that does not use time stamps.
 \begin{verbatim}
-% => Metric: reduce duration
-
-% dKitchenware.pddl 
-\begin{figure}[t]
-\inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
-            {csharp}
-            {Code/dKitchenware.pddl}
-\caption{The basic kitchenware domain}
-\end{figure}
-\section
+0.001: (EAT-PIZZA BIG-PEPPERONI-PIZZA GARY) [1]
+1.002: (EXPLOIT GARY MYSTERIOUS-TEX-MEX-MIX GISELA) [1]
 \end{verbatim}
 
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-TODO:
+Gary now definitely knows, that he first has to eat the pepperoni
+pizza, before he can exploit Gisela's application
+\emph{MysteriousTexMexMix}.
+The numbers to the left of the actions (\texttt{0.001}, \texttt{1.002}) and to the
+right (both \texttt{[1]}) specify the start time and the duration of the
+actions, respectively. They are dispensable in this case, as only the
+sequence of actions is relevant.
 
-\rule[.8em]{\textwidth}{2pt}
-
-TODO Human Planner Interaction
-\end{minipage}
+The result directory tree looks as follows:
+\dirtree{%
+.1 NAME.
+.2 dot.
+.3 dot-diagram0.dot.
+.3 dot-diagram1.dot.
+.3 dot-diagram2.dot.
+.2 diagrams.
+.3 png-diagram0.png.
+.3 png-diagram1.png.
+.3 png-diagram2.png.
+.2 domains.
+.3 garys-hacker-world0.pddl.
+.3 garys-hacker-world1.pddl.
+.3 garys-hacker-world2.pddl.
+.2 problems.
+.2 plans
+.3 plan0.soln
+.2 domain.pddl.
+.2 p01.pddl.
+.2 README.md.
 }
-\end{center}
+
+The generated files (\texttt{dot-diagram[0-2].dot}, \texttt{png-diagram[0-2].png},
+\texttt{garys-hacker-world[0-2].pddl}) are the revision control versions,
+generated each time the Clojure script is invoked (by pressing \keystrokes{F8}).
+
+It can probably be seen, that this rather short description of the
+world and in problem results in rather extensive PDDL files.
 \end{enumerate}
+\subsection{Evaluation}
+\label{sec-4-3-4}
 \section{Type Diagram Generator}
 \label{sec-4-4}
 Graphical notations, have some advantages compared to textual
@@ -679,8 +879,12 @@ syntax. For example \verb~truck car - vehicle~ would indicate, that both
 \verb~truck~ and \verb~car~ are subtypes of the super-type vehicle. 
 
 Subtypes and corresponding super-types can be extracted using regular
-expressions. \#"(\ldots{}.)" matches every kind of that form and a
-Clojure-friendly representation in form of a hash-map can be created.
+expressions (regex). The regex
+\begin{verbatim}
+#"((?:(?:\b[a-zA-Z](?:\w|-|_)+)\s+)+)-\s+(\b[a-zA-Z](?:\w|-|_)+)
+\end{verbatim}
+matches every kind of that form and a Clojure-friendly representation
+in form of a hash-map can be created.
 
 PDDL side ----------------------------------------------- Clojure side
 
@@ -745,7 +949,7 @@ double-checks the generated tasks will be irreplaceable.
 \chapter{Appendix}
 \label{sec-7}
 
-\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{clojure}
+\begin{minted}[]{clojure}
 (ns org-ba.core
   (:gen-class :main true)
   (:require [clojure.tools.reader.edn :as edn]
@@ -1256,7 +1460,7 @@ exited after the JFrame is closed"
        :draw draw
        :size (vec img-size))))))
 \end{minted}
-\begin{minted}[frame=lines,fontsize=\scriptsize,linenos]{YAML}
+\begin{minted}[]{YAML}
 # [PackageDev] target_format: plist, ext: tmLanguage
 ---
 name: PDDL
