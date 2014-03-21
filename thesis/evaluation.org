@@ -1,0 +1,856 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE: 
+
+* Design
+*** Gruppenaufteilung
+#+NAME: order
+|   | *Gruppe* | *Task Sequence* |                  |                  |                  | *VP_n* |
+|---+----------+------------------+------------------+------------------+------------------+--------|
+| / | >        |                  |                  |                  |                  |      < |
+|   | A        | /Planet Splisus/ | /Logistics/      | Store            | Coffee           |      2 |
+|   | B        | Store            | Coffee           | /Planet Splisus/ | /Logistics/      |      3 |
+|   | C        | Planet Splisus   | Logistics        | /Store/          | /Coffee/         |      9 |
+|   | D        | /Store/          | /Coffee/         | Planet Splisus   | Logistics        |      8 |
+|   | E        | /Logistics/      | /Planet Splisus/ | Coffee           | Store            |      7 |
+|   | F        | Coffee           | Store            | /Logistics/      | /Planet Splisus/ |      6 |
+|   | G        | Logistics        | Planet Splisus   | /Coffee/         | /Store/          |      4 |
+|   | H        | /Coffee/         | /Store/          | Logistics        | Planet Splisus   |      5 |
+
+/Kursiv/: Mit Tool
+
+*** Tool und zugehörige Domains
+| *Typendiagrammgenerator* | Planet Splisus |
+|                          | Store          |
+|--------------------------+----------------|
+| *Syntax Highlighting*    | Logistics      |
+|                          | Coffee         |
+
+\newpage
+* Rohdaten
+** Code                                                            :noexport:
+#+BEGIN_SRC emacs-lisp
+  (defun org-timer-hms-to-secs (hms)
+    "Convert h:mm:ss string to an integer time.
+        If the string starts with a minus sign, the integer will be negative."
+    (if (not (string-match
+              "\\([-+]?[0-9]+\\):\\([0-9]\\{2\\}\\):\\([0-9]\\{2\\}\\)"
+              hms))
+        0
+      (let* ((h (string-to-number (match-string 1 hms)))
+             (m (string-to-number (match-string 2 hms)))
+             (s (string-to-number (match-string 3 hms)))
+             (sign (equal (substring (match-string 1 hms) 0 1) "-")))
+        (setq h (abs h))
+        (* (if sign -1 1) (+ s (* 60 (+ m (* 60 h))))))))
+  
+  (defun org-timer-secs-to-hms (s)
+    "Convert integer S into h:mm:ss.
+        If the integer is negative, the string will start with \"-\"."
+    (let (sign m h)
+      (setq sign (if (< s 0) "-" "")
+            s (abs s)
+            m (/ s 60) s (- s (* 60 m))
+            h (/ m 60) m (- m (* 60 h)))
+      (format "%s%d:%02d:%02d" sign h m s)))
+    
+  (defun apply-to-first (l)
+    (org-time-string-to-seconds (first l)))
+  
+  (defun my-map (fun ls)
+    (if ls
+        (cons (funcall fun (car ls))
+              (my-map fun (cdr ls)))
+        (first ls)))
+  
+  (defun adda (ls)
+    (apply '+ (mapcon '1+ ls)))
+  
+  (defun convert-and-add (x y)
+    "Convert y to seconds and add to x"
+    (+ (string-to-number x) (org-time-string-to-seconds y)))
+  
+  (defun sum-up-string-time (ls)
+    "Convert a list of h:mm:ss to seconds, add the seconds
+        and reconvert to h:mm:ss"
+    (if ls
+        (+ (org-time-string-to-seconds (car ls))
+           (sum-up-string-time (cdr ls)))
+      0))
+  
+  (defun mean (&rest ls)
+    "Calculate the mean of a list of numbers"
+    (/ (* (apply '+ ls) 1.0)
+       (length ls)))
+  
+  
+        
+#+End_SRC
+
+#+RESULTS:
+: mean
+** Template                                                        :noexport:
+*** Design:
+| X: | /Planet Splisus/ | /Logistics/ | /Store/ | /Coffee/ |
+
+*** Planet Splisus - mit/ohne Generator
+| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+---------+------------+----------+-----------|
+|         1 |         |          0 |          |           |
+|         2 |         |          0 |          |           |
+|         3 |         |          0 |          |           |
+|         4 |         |          0 |          |           |
+|         5 |         |          0 |          |           |
+|-----------+---------+------------+----------+-----------|
+| /Gesamt/: |         |          0 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** Logistics - mit/ohne Syntax Highlighter
+
+Gefundene Fehler:  \\
+Davon korrekt erkannte Fehler:
+
+*** Store - mit/ohne Generator
+| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+---------+------------+----------+-----------|
+|         1 |         |          0 |          |           |
+|         2 |         |          0 |          |           |
+|         3 |         |          0 |          |           |
+|         4 |         |          0 |          |           |
+|         5 |         |          0 |          |           |
+|-----------+---------+------------+----------+-----------|
+| /Gesamt/: |         |          0 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** Coffee - mit/ohne Syntax Highlighter
+
+Gefundene Fehler: \\
+Davon korrekt erkannte Fehler: 
+
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+|     /Frage/ | /Wertung/ | /SUS Contribution/ |
+|-------------+-----------+--------------------|
+|           1 |           |                 -1 |
+|           2 |           |                  5 |
+|           3 |           |                 -1 |
+|           4 |           |                  5 |
+|           5 |           |                 -1 |
+|           6 |           |                  5 |
+|           7 |           |                 -1 |
+|           8 |           |                  5 |
+|           9 |           |                 -1 |
+|          10 |           |                  5 |
+|-------------+-----------+--------------------|
+|         Sum |           |                  4 |
+| *SUS Score* |           |                10. |
+#+TBLFM: @2$3=@2$2-1::@3$3=5-@3$2::@4$3=@4$2-1::@5$3=5-@5$2::@6$3=@6$2-1::@7$3=5-@7$2::@8$3=@8$2-1::@9$3=5-@9$2::@10$3=@10$2-1::@11$3=5-@11$2::@12$3=vsum(@2$3..@11$3)::@13$3=@12*2.5
+\newpage
+ :exports none
+** VP_2
+*** Design:
+| A | /Planet Splisus/ | /Logistics/ | Store | Coffee | 2 |
+
+*** Vorerfahrung
+| Programmieren | 5 |
+| Sublime Text  | 1 |
+
+
+*** Planet Splisus - mit Generator
+
+#+NAME: vp2-splisus-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:00:38 |         38 |        1 |
+|         2 | 00:00:30 |         30 |        1 |
+|         3 | 00:00:07 |          7 |        1 |
+|         4 | 00:02:20 |        140 |        0 |
+|         5 | 00:00:53 |         53 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:04:28 |        268 |        4 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Logistics - mit Syntax Highlighter
+
++TBLFM: $3='(org-timer-hms-to-secs $2)
++TBLFM: @7$2='(org-timer-secs-to-hms (sum-up-string-time '(@2$2..@6$2)))
+
+Gefundene Fehler: 14-15 \\
+Davon korrekt erkannte Fehler: 14-15
+Abhängig, ob :parameters doppelt oder einfach gezählt wird
+
+*** Store - ohne Generator
+#+NAME: vp2-store-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:00:10 |         10 |        1 |
+|         2 | 00:00:24 |         24 |        1 |
+|         3 | 00:01:10 |         70 |        1 |
+|         4 | 00:01:04 |         64 |        1 |
+|         5 | 00:01:17 |         77 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:04:05 |        245 |        5 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Coffee - ohne Syntax Highlighter
+
+Gefundene Fehler: 12 \\
+Davon korrekt erkannte Fehler: 
+
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+| /Frage/ |   /Wertung/ | /SUS Contribution/ |
+|---------+-------------+--------------------|
+|       1 |           5 |                  4 |
+|       2 |           1 |                  4 |
+|       3 |           5 |                  4 |
+|       4 |           1 |                  4 |
+|       5 |           5 |                  4 |
+|       6 |           2 |                  3 |
+|       7 |           2 |                  1 |
+|       8 |           1 |                  4 |
+|       9 |           5 |                  4 |
+|      10 |           2 |                  3 |
+|---------+-------------+--------------------|
+|         |         Sum |                 35 |
+|         | *SUS Score* |               87.5 |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+
+\newpage
+
+** VP_3
+*** Design
+| B | Store | Coffee | /Planet Splisus/ | /Logistics/ | 3 |
+*** Vorerfahrung
+| Programmieren | 5 |
+| Sublime Text  | 1 |
+
+*** Store - ohne Generator
+#+NAME: vp3-store-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:01:00 |         60 |        1 |
+|         2 | 00:00:37 |         37 |        1 |
+|         3 | 00:02:43 |        163 |        0 |
+|         4 | 00:02:07 |        127 |        1 |
+|         5 | 00:01:17 |         77 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:07:44 |        464 |        4 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Coffee - ohne Syntax Highlighter
+Gefundene Fehler: 8 \\
+Davon /gewertete/ Fehler: 8
+
+*** Planet Splisus - mit Generator
+#+NAME: vp3-splisus-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:00:19 |         19 |        1 |
+|         2 | 00:00:18 |         18 |        1 |
+|         3 | 00:00:33 |         33 |        1 |
+|         4 | 00:02:22 |        142 |        0 |
+|         5 | 00:00:11 |         11 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:03:43 |        223 |        4 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Logistics - mit Syntax Highlighter
+Gefundene Fehler: 15 \\
+Davon gewertete Fehler: 15
+\newpage
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+|     /Frage/ | /Wertung/ | /SUS Contribution/ |
+|-------------+-----------+--------------------|
+|           1 |         5 |                  4 |
+|           2 |         1 |                  4 |
+|           3 |         5 |                  4 |
+|           4 |         1 |                  4 |
+|           5 |         5 |                  4 |
+|           6 |         1 |                  4 |
+|           7 |         5 |                  4 |
+|           8 |         1 |                  4 |
+|           9 |         4 |                  3 |
+|          10 |         4 |                  1 |
+|-------------+-----------+--------------------|
+|         Sum |           |                 36 |
+| *SUS Score* |           |               90.0 |
+#+TBLFM: @12$3='(+ @2$3..@11$3);N::@13$3='(* 2.5 @12$3);N::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+
+\newpage
+** VP_4
+*** Design
+
+| H: | /Coffee/ | /Store/ | Logistics | Planet Splisus | 4 |
+*** Vorerfahrung
+| Programmieren | 4 |
+| Sublime Text  | 1 |
+*** Coffee - mit Syntax Highlighter
+Gefundene Fehler: 6\\
+Davon korrekt erkannte Fehler: 6
+
+*** Store - mit Generator
+#+NAME: vp4-store-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:00:19 |         19 |        1 |
+|         2 | 00:00:15 |         15 |        1 |
+|         3 | 00:01:01 |         61 |        1 |
+|         4 | 00:02:28 |        148 |        1 |
+|         5 | 00:01:07 |         67 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:05:10 |        310 |        5 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Logistics - ohne Syntax Highlighter
+Gefundene Fehler: 5 \\
+Davon korrekt erkannte Fehler: 5
+
+*** Planet Splisus - ohne Generator
+#+NAME: vp4-splisus-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ |
+|-----------+----------+------------+----------|
+|         1 | 00:00:35 |         35 |        1 |
+|         2 | 00:02:04 |        124 |        1 |
+|         3 | 00:00:28 |         28 |        1 |
+|         4 | 00:01:26 |         86 |        1 |
+|         5 | 00:00:56 |         56 |        1 |
+|-----------+----------+------------+----------|
+|   Gesamt: | 00:05:29 |        329 |        5 |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+|     /Frage/ | /Wertung/ | /SUS Contribution/ |
+|-------------+-----------+--------------------|
+|           1 |         5 |                  4 |
+|           2 |         1 |                  4 |
+|           3 |         4 |                  3 |
+|           4 |         1 |                  4 |
+|           5 |         5 |                  4 |
+|           6 |         2 |                  3 |
+|           7 |         5 |                  4 |
+|           8 |         1 |                  4 |
+|           9 |         4 |                  3 |
+|          10 |         2 |                  3 |
+|-------------+-----------+--------------------|
+|         Sum |           |                 36 |
+| *SUS Score* |           |             #ERROR |
+
+#+TBLFM: @2$3=@2$2-1::@3$3=5-@3$2::@4$3=@4$2-1::@5$3=5-@5$2::@6$3=@6$2-1::@7$3=5-@7$2::@8$3=@8$2-1::@9$3=5-@9$2::@10$3=@10$2-1::@11$3=5-@11$2::@13$3=(* 2.5 @12$3)
+
+\newpage
+** VP_5
+*** Design
+| H | /Coffee/ | /Store/ | Logistics | Planet Splisus | 5 |
+*** Vorerfahrung
+| Programmieren | 5 |
+| Sublime Text  | 1 |
+
+*** Coffee - mit Syntax Highlighter
+Gefundene Fehler: 9\\
+Davon korrekt erkannte Fehler: 8
+\newpage
+
+*** Store - mit Generator
+#+NAME: vp5-store-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar             |
+|-----------+----------+------------+----------+-----------------------|
+|         1 | 00:00:33 |         33 |        1 |                       |
+|         2 | 00:00:46 |         46 |        1 |                       |
+|         3 | 00:00:37 |         37 |        0 |                       |
+|         4 | 00:00:48 |         48 |        1 | unrealistisch schnell |
+|         5 | 00:02:59 |        179 |        1 |                       |
+|-----------+----------+------------+----------+-----------------------|
+| /Gesamt/: | 00:05:43 |        343 |        4 |                       |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Logistics - ohne Syntax Highlighter
+Gefundene Fehler: 8\\
+Davon korrekt erkannte Fehler: 8
+
+*** Planet Splisus - ohne Generator
+#+NAME: vp5-splisus-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar             |
+|-----------+----------+------------+----------+-----------------------|
+|         1 | 00:00:50 |         50 |        1 |                       |
+|         2 | 00:00:22 |         22 |        1 |                       |
+|         3 | 00:00:36 |         36 |        1 |                       |
+|         4 | 00:00:34 |         34 |        1 | unrealistisch schnell |
+|         5 | 00:02:53 |        173 |        1 |                       |
+|-----------+----------+------------+----------+-----------------------|
+| /Gesamt/: | 00:05:15 |        315 |        5 |                       |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+\newpage
+** VP_6
+*** Design:
+| F | Coffee | Store | /Logistics/ | /Planet Splisus/ | 6 |
+
+*** Vorerfahrung
+| Programmieren | 3 |
+| Sublime Text  | 1 |
+
+*** Coffee - ohne Syntax Highlighter
+
+Gefundene Fehler: 9\\
+Davon korrekt erkannte Fehler: 8
+
+*** Store - ohne Generator
+#+NAME: vp6-store-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar             |
+|-----------+----------+------------+----------+-----------------------|
+|         1 | 00:00:15 |         15 |        1 |                       |
+|         2 | 00:00:32 |         32 |        1 |                       |
+|         3 | 00:04:58 |        298 |        1 |                       |
+|         4 | 00:02:04 |        124 |        0 | Zeile hat gefehlt     |
+|         5 | 00:01:25 |         85 |        1 | + 5 Sek. wg. Stoppuhr |
+|-----------+----------+------------+----------+-----------------------|
+| /Gesamt/: | 00:09:09 |        549 |        0 |                       |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Logistics - mit Syntax Highlighter
+
+Gefundene Fehler:  8\\
+Davon korrekt erkannte Fehler: 7
+
+*** Planet Splisus - mit Generator
+#+NAME: vp6-splisus-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:00:14 |         14 |        1 |           |
+|         2 | 00:00:35 |         35 |        1 |           |
+|         3 | 00:00:33 |         33 |        1 |           |
+|         4 | 00:00:34 |         34 |        0 |           |
+|         5 | 00:00:34 |         34 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:02:30 |        150 |        4 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+|     /Frage/ | /Wertung/ | /SUS Contribution/ |
+|-------------+-----------+--------------------|
+|           1 |         4 |                  3 |
+|           2 |         1 |                  4 |
+|           3 |         4 |                  3 |
+|           4 |         2 |                  3 |
+|           5 |         4 |                  3 |
+|           6 |         1 |                  4 |
+|           7 |         5 |                  4 |
+|           8 |         1 |                  4 |
+|           9 |         4 |                  3 |
+|          10 |         3 |                  2 |
+|-------------+-----------+--------------------|
+|         Sum |           |                 33 |
+| *SUS Score* |           |               82.5 |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+\newpage
+
+** VP_7
+*** Design:
+| E | /Logistics/ | /Planet Splisus/ | Coffee | Store | 7 |
+
+*** Logistics - mit Syntax Highlighter
+
+Gefundene Fehler: 9  \\
+Davon korrekt erkannte Fehler: 9
+*** Planet Splisus - mit Generator
+
+#+NAME: vp7-splisus-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:00:15 |         15 |        1 |           |
+|         2 | 00:00:25 |         25 |        1 |           |
+|         3 | 00:00:36 |         36 |        1 |           |
+|         4 | 00:01:32 |         92 |        0 |           |
+|         5 | 00:00:25 |         25 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:03:13 |        193 |        4 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+
+*** Coffee - ohne Syntax Highlighter
+
+Gefundene Fehler: 7 \\
+Davon korrekt erkannte Fehler: 7 
+
+*** Store - ohne Generator
+
+#+NAME: vp7-store-no-tool
+|     /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|---------------+----------+------------+----------+-----------|
+| Typendiagramm | 00:02:20 |        140 |        1 |           |
+|             1 | 00:01:11 |         71 |        1 |           |
+|             2 | 00:00:36 |         36 |        1 |           |
+|             3 | 00:01:59 |        119 |        1 |           |
+|             4 | 00:03:13 |        193 |        1 |           |
+|             5 | 00:00:46 |         46 |        1 |           |
+|---------------+----------+------------+----------+-----------|
+|     /Gesamt/: | 00:10:05 |        605 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @8$2=vsum(@2$2..@7$2);T
+#+TBLFM: @8$3='(+ @2$3..@7$3);N
+#+TBLFM: @8$4='(+ @2$4..@7$4);N
+
+*** System Usability Scale
+
+#+NAME:
+#+PLOT: :title "SUS" :with histograms
+| /Frage/ |   /Wertung/ | /SUS Contribution/ |
+|---------+-------------+--------------------|
+|       1 |           5 |                  4 |
+|       2 |           2 |                  3 |
+|       3 |           5 |                  4 |
+|       4 |           1 |                  4 |
+|       5 |           5 |                  4 |
+|       6 |           2 |                  3 |
+|       7 |           5 |                  4 |
+|       8 |           1 |                  4 |
+|       9 |           4 |                  3 |
+|      10 |           1 |                  4 |
+|---------+-------------+--------------------|
+|         |         Sum |                 37 |
+|         | *SUS Score* |               92.5 |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+
+
+\newpage
+
+** VP_8
+*** Design:
+| D | /Store/ | /Coffee/ | Planet Splisus | Logistics | 8 |
+
+*** Store - mit Generator
+
+#+NAME: vp8-store-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar                    |
+|-----------+----------+------------+----------+------------------------------|
+|         1 | 00:00:36 |         36 |        1 |                              |
+|         2 | 00:00:20 |         20 |        1 |                              |
+|         3 | 00:05:23 |        323 |        1 | Verwirrung wg. Fragestellung |
+|         4 | 00:03:33 |        213 |        1 |                              |
+|         5 | 00:00:44 |         44 |        1 |                              |
+|-----------+----------+------------+----------+------------------------------|
+| /Gesamt/: | 00:10:36 |        636 |        0 |                              |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** Coffee - mit Syntax Highlighter
+
+Gefundene Fehler: 11\\
+Davon korrekt erkannte Fehler: 10
+
+*** Planet Splisus - ohne Generator
+
+#+NAME: vp8-splisus-no-tool
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:01:56 |        116 |        1 |           |
+|         2 | 00:02:22 |        142 |        1 |           |
+|         3 | 00:01:22 |         82 |        1 |           |
+|         4 | 00:03:14 |        194 |        0 |           |
+|         5 | 00:01:32 |         92 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:10:26 |        626 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** System Usability Scale
+
+#+PLOT: :title "SUS" :with histograms
+| /Frage/ |   /Wertung/ | /SUS Contribution/ |
+|---------+-------------+--------------------|
+|       1 |           5 |                  4 |
+|       2 |           1 |                  4 |
+|       3 |           4 |                  3 |
+|       4 |           2 |                  3 |
+|       5 |           4 |                  3 |
+|       6 |           1 |                  4 |
+|       7 |           4 |                  3 |
+|       8 |           1 |                  4 |
+|       9 |           4 |                  3 |
+|      10 |           1 |                  4 |
+|---------+-------------+--------------------|
+|         |         Sum |                 35 |
+|         | *SUS Score* |               87.5 |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+\newpage
+
+** VP_9
+
+*** Design:
+| C | Planet Splisus | Logistics | /Store/ | /Coffee/ | 9 |
+
+*** Planet Splisus - ohne Generator
+
+#+NAME: vp9-splisus-no-tool
+| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+---------+------------+----------+-----------|
+|         1 |         |          0 |          |           |
+|         2 |         |          0 |          |           |
+|         3 |         |          0 |          |           |
+|         4 |         |          0 |          |           |
+|         5 |         |          0 |          |           |
+|-----------+---------+------------+----------+-----------|
+| /Gesamt/: |         |          0 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** Logistics - ohne Syntax Highlighter
+
+Gefundene Fehler:  \\
+Davon korrekt erkannte Fehler:
+
+*** Store - mit Generator
+#+NAME: vp9-store-tool
+| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+---------+------------+----------+-----------|
+|         1 |         |          0 |          |           |
+|         2 |         |          0 |          |           |
+|         3 |         |          0 |          |           |
+|         4 |         |          0 |          |           |
+|         5 |         |          0 |          |           |
+|-----------+---------+------------+----------+-----------|
+| /Gesamt/: |         |          0 |        0 |           |
+#+TBLFM: $3=$2;t
+#+TBLFM: @7$2=vsum(@2$2..@6$2);T
+#+TBLFM: @7$3='(+ @2$3..@6$3);N
+#+TBLFM: @7$4='(+ @2$4..@6$4);N
+*** Coffee - mit Syntax Highlighter
+
+Gefundene Fehler: \\
+Davon korrekt erkannte Fehler: 
+
+*** System Usability Scale
+#+PLOT: :title "SUS" :with histograms
+| /Frage/ | /Wertung/   | /SUS Contribution/ |
+|---------+-------------+--------------------|
+|       1 |             |                 -1 |
+|       2 |             |                  5 |
+|       3 |             |                 -1 |
+|       4 |             |                  5 |
+|       5 |             |                 -1 |
+|       6 |             |                  5 |
+|       7 |             |                 -1 |
+|       8 |             |                  5 |
+|       9 |             |                 -1 |
+|      10 |             |                  5 |
+|---------+-------------+--------------------|
+|         | Sum         |                 20 |
+|         | *SUS Score* |                50. |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+\newpage   
+
+* Auswertung
+
+#+CAPTION: Planet Splisus
+|                              |         |   Task |        |        |        |        |
+|                              |         |      1 |      2 |      3 |      4 |      5 |
+|                            / |         |      < |      < |      < |      < |      < |
+|------------------------------+---------+--------+--------+--------+--------+--------|
+| Average task completion time | tool    |        |        |        |        |        |
+|                            0 | no tool |      0 |      0 |      0 |      0 |      0 |
+|                            0 | diff    |      0 |      0 |      0 |      0 |      0 |
+|------------------------------+---------+--------+--------+--------+--------+--------|
+|   Average time until failure | tool    | #ERROR | #ERROR | #ERROR | #ERROR | #ERROR |
+|                            0 | no tool |      0 |      0 |      0 |      0 |      0 |
+|                            0 | diff    |      0 |      0 |      0 |      0 |      0 |
+|------------------------------+---------+--------+--------+--------+--------+--------|
+|   Average total time on task | tool    |   21.5 |   22.0 |  27.25 |  102.0 |  30.75 |
+|                            0 | no tool |  50.25 |   72.0 |   36.5 |   78.5 |  80.25 |
+|                            0 | diff    | -28.75 |  -45.0 |  -9.25 |   23.5 |  -49.5 |
+#+TBLR: =1+2
+#+TBLFM: @7$3..@7$7= remote(vp2-splisus-tool,@$0-1$3)
+#+TBLFM: @7$3= round(vgmean(remote(vp2-splisus-tool,@2$3),remote(vp3-splisus-tool,@2$3)))
+#+TBLFM: @10$3='(mean remote(vp2-splisus-tool,@2$3) remote(vp3-splisus-tool,@2$3) remote(vp6-splisus-tool,@2$3) remote(vp7-splisus-tool,@2$3));N
+#+TBLFM: @10$4='(mean remote(vp2-splisus-tool,@#$-1$3) remote(vp3-splisus-tool,@3$3) remote(vp6-splisus-tool,@3$3) remote(vp7-splisus-tool,@3$3));N
+#+TBLFM: @10$5='(mean remote(vp2-splisus-tool,@4$3) remote(vp3-splisus-tool,@4$3) remote(vp6-splisus-tool,@4$3) remote(vp7-splisus-tool,@4$3));N
+#+TBLFM: @10$6='(mean remote(vp2-splisus-tool,@5$3) remote(vp3-splisus-tool,@5$3) remote(vp6-splisus-tool,@5$3) remote(vp7-splisus-tool,@5$3));N
+#+TBLFM: @10$7='(mean remote(vp2-splisus-tool,@6$3) remote(vp3-splisus-tool,@6$3) remote(vp6-splisus-tool,@6$3) remote(vp7-splisus-tool,@6$3));N
+#+TBLFM: @11$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,@2$3) remote(vp8-splisus-no-tool,@2$3) remote(vp9-splisus-no-tool,@2$3));N
+#+TBLFM: @11$4='(mean remote(vp4-splisus-no-tool,@3$3) remote(vp5-splisus-no-tool,@3$3) remote(vp8-splisus-no-tool,@3$3) remote(vp9-splisus-no-tool,@3$3));N
+#+TBLFM: @11$5='(mean remote(vp4-splisus-no-tool,@4$3) remote(vp5-splisus-no-tool,@4$3) remote(vp8-splisus-no-tool,@4$3) remote(vp9-splisus-no-tool,@4$3));N
+#+TBLFM: @11$6='(mean remote(vp4-splisus-no-tool,@5$3) remote(vp5-splisus-no-tool,@5$3) remote(vp8-splisus-no-tool,@5$3) remote(vp9-splisus-no-tool,@5$3));N
+#+TBLFM: @11$7='(mean remote(vp4-splisus-no-tool,@6$3) remote(vp5-splisus-no-tool,@6$3) remote(vp8-splisus-no-tool,@6$3) remote(vp9-splisus-no-tool,@6$3));N
+#+TBLFM: @12$3..@12$7='(- @-2 @-1);N::@9$3..@9$7='(- @-2 @-1);N::@5@3..@5$7='(- @-2 @-1);N
+
+#+TBLFM: @9$3..@9$7='(mean remote(vp2-splisus-tool,$0-1) remote(vp3-splisus-tool,@#$0-1$3) remote(vp6-splisus-tool,@#$0-1$3) remote(vp7-splisus-tool,@#$0-1$3));N
+
+
+#+TBLFM: @10$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,@2$3) remote(vp8-splisus-no-tool,@2$3) remote(vp9-splisus-no-tool,@2$3));N
+
+#+TBLFM: @11$1=string ("")::@11$2=string ("diff")::@8$1=string ("")::@8$2=string ("diff")::@5$1=string ("")::@5$2=string ("diff")
+
+
+
+#+NAME: my-table
+| Header1 | Header2 |
+|---------+---------|
+|   a     |    23   |
+|   b     |    7    |
+|   c     |    13   |
+|   d     |    66   |
+|   e     |    5    |
+|---------+---------|
+| Result  |      42 |
+
+
+#+BEGIN_SRC R
+  
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+geosd(c(1,2,3))
+ 
+#+END_SRC
+
+#+RESULTS:
+
+#+NAME: total-task-completion-time-splisus-tools 
+#+HEADER: :var vp2.splisus.tool=vp2-splisus-tool vp3.splisus.tool=vp3-splisus-tool vp6.splisus.tool=vp6-splisus-tool vp7.splisus.tool=vp7-splisus-tool
+#+BEGIN_SRC R 
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+  ### Get the desired times
+  ## Convert string to numbers
+  
+  vp2.splisus.tool<-as.numeric(vp2.splisus.tool[2:6,3])
+  vp3.splisus.tool<-as.numeric(vp3.splisus.tool[2:6,3])
+  vp6.splisus.tool<-as.numeric(vp6.splisus.tool[2:6,3])
+  vp7.splisus.tool<-as.numeric(vp7.splisus.tool[2:6,3])
+  
+  ### Create a matrix from column vectors
+  mat<-matrix(c(vp2.splisus.tool,vp3.splisus.tool,vp6.splisus.tool,vp7.splisus.tool),nrow=5)
+  apply(mat,1,gmean)
+#+END_SRC
+
+#+RESULTS: total-task-completion-time-splisus-tools
+
+#+TODO: Add vp9 again!!
+#+NAME: total-task-completion-time-store-tools 
+#+HEADER: :var vp9.store.tool=vp9-store-tool vp8.store.tool=vp8-store-tool vp5.store.tool=vp5-store-tool vp4.store.tool=vp4-store-tool
+#+BEGIN_SRC R 
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+  ### Get the desired times
+  ## Convert string to numbers
+  
+#  vp9.store.tool<-as.numeric(vp9.store.tool[2:6,3])
+  vp8.store.tool<-as.numeric(vp8.store.tool[2:6,3])
+  vp5.store.tool<-as.numeric(vp5.store.tool[2:6,3])
+  vp4.store.tool<-as.numeric(vp4.store.tool[2:6,3])
+  
+  ### Create a matrix from column vectors
+# Add VP9 AGAIN!!
+  mat<-matrix(c(vp8.store.tool,vp5.store.tool,vp4.store.tool),nrow=5)
+  apply(mat,1,gmean)
+#+END_SRC
+
+#+RESULTS: total-task-completion-time-store-tools
+| 28.2611619556405 |
+| 23.9861030657984 |
+| 90.0004526726203 |
+| 114.805012993993 |
+| 80.8090814221636 |
+
+
+
+
+TBLFM: @9$3='(mean remote(vp2-splisus-tool,@2$3) remote(vp3-splisus-tool,@2$3) remote(vp6-splisus-tool,@2$3) remote(vp7-splisus-tool,@2$3));N::@11$3='(- @-2 @-1);N
+TBLFM: @10$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,@2$3) remote(vp8-splisus-no-tool,@2$3) remote(vp9-splisus-no-tool,@2$3));N
+
+|         | Tool | No Tool |
+| Splisus |      |         |
+| Store   |      |         |
+
+
+Ideas:
+Scatterplot: Total Task Completion Time vs. Points
+Prerequiste Training
+Counterbalancing to to minimize position effects
+Video Recording 
+
+* Mean
+Geometric Mean (Sauro and Lewis, 2010) in any case for task completion
+time
+TODO: Also for Completion rate - success rate?
+
+* Usability Problems:
+p.13 Quantifying the User Experience
+Level of severity
+UI problem matrix
+
+* Completion rate
+Percentage of participants performing successfully
+adjusted wald confidence interval -> very good
+** adjustments for small sample sizes
+p.25 50 - 90 %:
+     > 90 %:
+McNemar Exact Test
+Discordant Pairs
+
+* Notes
+post-test (study) questionnaire
+two-sided paired t-test p.68
+
+* Rating scale data
+
+* Summative (task completion, task time) + formative (questionnaire)
+* Do I have a within-subject, betweensubjects design or both?
+- between: chi-square test

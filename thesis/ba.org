@@ -108,7 +108,9 @@ means to this end, a small user study was conducted with subjects that
 had no prior PDDL experience. The results and their implications will
 be discussed before an outlook for future research and developments in
 the field concludes this thesis (perhaps mention results and outlook
-here).
+here). This thesis refers to deterministic planning and typed domains.
+
+TODO: Add inspecting of domains as main focus of my work
 
 ** Finding of the research topic
 During the research for this thesis, it turned out, that the tools for
@@ -140,67 +142,159 @@ new users should be able to effectively use the majority of functions
 intuitively within a short time.
 
 * Related Work
+Related work primarily compromises knowledge engineering tools,
+consisting of at least the possibility to edit PDDL files in a textual
+environment and providing supporting functionality or checking the
+correctness of PDDL.
+
 ** PDDL Studio
-PDDL Studio \parencite{plch2012inspect} is an Integrated Development
-Environment (IDE) for creating PDDL tasks (domains and problems) with
-supporting editing features that are based on a PDDL parser, like
-syntax highlighting, code collapsing and code completion. It provides
-a sophisticated on the fly error detection, that splits errors in
-syntax errors, semantic errors and errors found during parsing. The
-code completion feature allows completion for standard PDDL constructs
-and dynamic list completions, that were used in the current project
-(TODO: technical terms!).
-
-Tasks are organized into project, that means a project is composed of
-a domain and associated problem(s).
-
-An interface allows the integration of command line planners in order
-to run and compare different planning software.
-
-Furthermore it provides a XML Export/Import feature (i.e. XML->PDDL,
-PDDL->XML) and further common editor features like a line counter,
-bracket matcher and a auto-save feature.
-
-that means syntax and semantic checking, syntax highlighting, code
+PDDL Studio \parencite{plch2012inspect}, is an application for
+creating and managing PDDL projects. A project is regarded as a
+collection of PDDL files. Its IDE is inspired by Microsoft Visual
+Studio and imperative programming paradigms. Its core function is the
+PDDL project management, consisting of managing PDDL projects and
+creating, adding , so that corresponding as well as inspecting,
+analyzing and modifying the underlying domain and problem files.
+Besides general editing features like line counting, bracket matching
+and auto-save, it supports PDDL specific editing features including
+syntax highlighting, code folding (collapse code blocks to see only a
+single visible line) and context aware code completions, all based on
+a PDDL to XML parser. This parser can also be used to convert PDDL to
+XML files and vice versa for domain and problem file editing. Also
+based on this parser is a included, sophisticated on the fly error
+detection, recognizing both syntax errors (missing keywords,
+parentheses, etc.) and semantic errors (wrong type of predicate
+parameters, misspelled predicates, etc.). As semantic errors can be of
+a /interfile nature/, meaning that there is a mismatch between domain
+and problem file, PDDL Studio can detect such errors. TODO: Explain
+further. The code completion feature allows for the selection of
+completion suggestions for a for standard PDDL constructs and dynamic
+list completions, that were used in the current project (TODO:
+technical terms!). An interface allows the integration of command line
+planners in order to run and compare different planning software. that
+means syntax and semantic checking, syntax highlighting, code
 completion and project management. While colors for highlighted code
 can be customized, the background color of the tool is always white.
+In its most recent version (of 15.6.2012), PDDL Studio's parser
+supports PDDL 1.2, the official language of the first and second IPC
+in 1998 and 2000 respectively. Since then, PDDL has largely evolved,
+the most recent and most powerful version is PDDL 3.1, supporting
+amongst others durative actions. PDDL Studio does not support the
+insertion of larger code skeletons (called /snippets/ in this thesis).
+The customization features (without editing the C source code) are
+limited to the choice of font style and color of highlighted PDDL
+expressions. PDDL Studio is written as standalone program, meaning
+that there are no PDDL independent no extensions .
 
-** PDDL Mode for Emacs
-PDDL-mode is a major Emacs mode for browsing and editing PDDL 2.2
-files. It supports syntax highlighting by basic pattern matching,
-regardless of the current semantic, automatic indentation and
-completions. Code snippets for the insertion of domains, problems and
+** itSIMPLE
+The itSIMPLE project is a graphical interface that allows for
+designing planning models in an object-oriented approach, using Uniﬁed
+Modeling Language (UML) diagrams. UML was invented in order to
+standardize modeling in software engineering (SE). It consists of
+several part notations, the here presented tool uses the 'class
+diagram' notation, as PDDL types and classes in OOP have strong
+resemblance (see Tiago 2006, p 535). itSIMPLE proposes UML.P (UML in a
+Planning Approach), a UML variant that specifies a structure for Class
+(domain specification), Object (problem specification) and StateChart
+Diagrams (dynamic behavior of actions).
+
+itSIMPLE's main focus is to support knowledge engineers in the initial
+stages of the design phase by providing an opportunity for the
+transition of the informality of real world requirements to domain
+models as formal specifications. The assertive statement is to provide
+a tool for a \enquote{disciplined process of elicitation, organization
+and analysis of requirements}. Petri Nets can be generated from the
+UML model and be used to validate the planning domain's static and
+dynamic bevahior. Finally, a PDDL representation can be generated from
+the UML diagram, if required, edited, and finally used as input to a
+variety of planning systems. The generated plan can be inspected using
+the in-build plan analysis, consisting of a plan visualization and
+plan simulation (TODO: write some more info). itSIMPLE's mdoeling
+workflow is unidirectional, as changes in the PDDL domain do not
+affect the UML model and UML models have to be modeled manually,
+meaning that they cannot by generated using PDDL.
+
+Starting in version 4.0 (currently in beta status as of writing of
+this thesis) itSIMPLE expanded its features to allow the creation of
+PDDL projects from scratch (i.e. without UML to PDDL translation
+process). Thus far, the PDDL editing features are basic (see YouTube
+video). A minimal syntax highlighting feature recognizes PDDL keywords
+and variables. Furthermore, itSIMPLE provides templates for PDDL
+constructs (similar to the code snippets presented in this thesis),
+consisting of requirement specifications, predicates, actions, goals
+and initial definitions. 
+
+itSIMPLE's original and main design approach is reversed to the
+process presented in this paper. While itSIMPLE generates PDDL models
+from UML specifications, myPDDL generates type diagrams from PDDL. So,
+while itSIMPLE focuses on the initial design phase, the tools
+presented here are made for later stages.
+
+However, \textcite{tonidandel2006reading} describe a translation
+process, similar to the approach in this thesis, from a PDDL domain
+specification to an object-oriented UML.P (UML in a Planning Approach)
+model as possible integration for itSIMPLE. According to an email from
+This translation process has not been fully implemented to date /
+there is no release with this feature. 
+
+This translation process does consider the order of variables as an
+indicator for the importance.
+
+/Create_specializations/ is the function for creating the typing
+diagram. /Create_associations/ creates binary associations between
+classes, whereby the first argument is considered as the /main
+argument/. 
+This process requires semantic assumptions: the first argument of 
+
+In an e-mail to, Tiago Vaquero (one of the authors), on February 28,
+2014,, affirms that, the translation is not functional yet.
+
+Currently there exists no implementation from PDDL to UML. UML.P's
+semantic associations, 
+
+
+myPDDL allows for a representation of a arbitrary, n-ary predicates,
+without .
+On the one hand, one the other hand, this enables the visualization of
+n-ary predicates.
+
+itSIMPLE's modeling process is focused on a graphical design
+process and the newly added PDDL editing features are basic,
+consisting of highlighted keywords and variables. The templates
+primarily insert PDDL keywords, without showing the required syntax.
+It is not possible to define custom key shortcuts. itSIMPLE is not
+customizable (without editing the Java source code). There is no
+possibility to show line numbers, matching brackets or code folding.
+
+myPDDL shell support initial creating of domains (by code snippets)
+and checking for validity of domains and problem by the type
+generator.
+
+** PDDL-Mode for Emacs
+PDDL-mode (announced 2005 in a mailing list) is a major Emacs mode for
+browsing and editing PDDL 2.2 files. It provides syntax highlighting
+by basic pattern matching of keywords (and variables ?), regardless of
+the current context. automatic indentation and completions and bracket
+matching. Code snippets for the insertion of domains, problems and
 actions are provided. A declaration menu shows all actions and
 problems in the current PDDL file.
 
-** itSIMPLE
-The itSIMPLE project is a tool that supports the knowledge engineer in
-designing a PDDL domain by the use of UML diagrams. This approach is
-reversed to the approach mentioned in this paper: while itSIMPLE
-generates PDDL from UML, this paper generated UML from PDDL. 
+Being an Emacs mode, PDDL-mode is highly and easily customizable. Text
+editor features, like auto-completion, can be extended independently
+of this mode, by installing further Emacs modes.
 
-itSIMPLE is able to import and separate elements of domain and
-problems specified in a file. The itSIMPLE PDDL editor supports syntax
-highlighting by keywords and variables. 
+/myPDDL/ uses Sublime Text, an editor, that is extensible and
+customizable as well. The syntax highlighting feature of /myPDDL/
+supports all PDDL versions, up to the most recent version 3.1. in
+contrast to /PDDL-mode/, /myPDDL-h's/ syntax highlighting feature is
+context-dependent and more extensive, as it can recognize almost any
+PDDL construct and highlight it according to its semantic.
 
-It also provides templates for PDDL constructs, like predicates,
-actions, goals, initial definitions.
+By syntax highlighting, both tools can support code navigation,
+however, /PDDL-mode/ does not allow for an fast and evident error
+detection.
 
-itSIMPLE focuses on the initial states of the design process. The
-design environment is 
-
-
-** GIPO
-
-** ModPlan
-Also see VEGA plan visulazation on the MODplan page
-- Very interesting: http://www.tzi.de/~edelkamp/modplan/
-** VISPLAN
-
-
-
-
-** Conclusion
+** Conclusion & Summary
 As it can be seen, there is need for an up-to-date, customizable, text
 editor with PDDL support, that supports the current standard PDDL 3.1. 
 
@@ -209,42 +303,71 @@ editor with PDDL support, that supports the current standard PDDL 3.1.
 Introduction to planing:
 http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false
 
-AI planning describes ...
+Classical Planning!
 
-A planner and use the generated solution file (/plan/).
 
+Action planning plays a key role in artificial intelligence. Ranging
+from the control of a (intelligent) household robot (or video game
+enemy) to the operational procedure of a complex ... , instances of
+planning tasks can possibly improve and automate work sequences. AP
+provides reasons for the choice of actions and the coherent
+deliberation process. By means of a formalization of a planning world
+by the state space (predicates & actions - operations), AP's
+declared aim is to generate a sequence of these actions (a /plan/)
+that can change the predicate values, from an initial state to a goal
+state, both specified by the value of predicates.
+
+- PDDL: Levels of expressivity (level 1 .. 4)
+- Formal description of PDDL tasks
+
+Following this definition, in PDDL this there would be three parts:planner and use the generated solution file (/plan/).
+
+The planning domain definition language (PDDL) is a formal language
+and the quasi standard for the description of planning tasks.  
 PDDL was first described in PDDL-the planning domain definition
-language (1998) and has been in constant development since then.
+language (1998) and has been in constant development since then, .
 This thesis makes use of \textcite{pddl3.1} if not otherwise stated. 
 
-PDDL planning task specifications are composed of two separate text files:
+PDDL planning task specifications are composed of two separate files:
 
   - Domain file: description of general types, predicates, functions
     and actions -> uninstanciated problem independent
   - Problem file: description of a concrete problem environment -> instance speciﬁc
 
+
 This separation allows for an intuitive process of task modeling:
 While general instances are described in the domain file, specific
 instances of problems are created in the problem files.
 
+TODO: Add predicates and actions to domain, 
+init and goal to problem and sequence of actions to plan
 #+CAPTION: PDDL Planning workflow
 #+NAME: fig:workflow
 [[file:../img/pddl-workflow.pdf]]
+The PDDL worklow. domain.pddl and problem.pddl represent typical
+planning specification files, with the standard file extension /.pddl/
 
-These two files shell be investigated further in the following
-sections.
 
+This thesis is concerned with deterministic planning.
 
-** Domain File
+The syntax of basic constructs of these two files shell be investigated
+further in this section. More complete descriptions as well as a
+formulations in Backus-Naur form (BNF) can be found in
+\textcite{fox2003pddl2} for PDDL 2.2 and \textcite{kovacs2011bnf} for
+PDDL 3.1. 
+
+** Volker Domain File More scientific?
 
 #+BEGIN_EXAMPLE
 (define (domain name)
     
   (:requirements :requirement1
                  :requirement2...)
+
   (:types subsubtype1 subsubtype2 – subtype1
           subtype1 – type1
-          subtype2 – type2…
+          subtype2 – type2
+          ...
           type1 type2 …  - object)
   
   (:predicates (predicateName1 ?var1 – typeOfVar1)
@@ -264,24 +387,21 @@ sections.
 ...)
 #+END_EXAMPLE
 
-#+BEGIN_EXAMPLE
-
-
-#+END_EXAMPLE
-
-
 The domain file contains the frame for planning tasks and determines,
-which types, predicates and actions are possible
+which types and predicates are available and which actions are possible.
 
-Domain files have a strict format: All keyword arguments must appear
+(Usually, domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted,
 according to 1998, only the strict part requires this order) and
 just one PDDL definition (of a domain, problem, etc.) may appear per
-file (same here). \cite[6]{fox2003pddl2}.
+file (same here). \cite[6]{fox2003pddl2}.)
+
+The in Example 1 declared domain shell be explained by an example.
 
 *** Define
-Every domain file starts with (define (domain <domainName>) ...) where,
-<domainName> can be any string.
+Every domain file starts with (define (domain NAME) ...) where,
+NAME is a string that starts with a character, and then contains
+further characters, number, hyphens (-) or underscores (_).  
 
 *** Requirements
 The requirements part is not a mandatory part of a PDDL domain file.
@@ -290,26 +410,47 @@ subsets of PDDL features \textcite[1]{mcdermott1998pddl}. As most
 planners only support a subset of PDDL the requirements part is useful
 for determining if a planner is able to act on a given problem. They
 are declared by the ~(:requirements ...)~ part. Some often used
-requirements include ~:strips~ For a list of current requirement flags
-and their meaning, see ... It should be mentioned, that almost no
-planner supports every part of PDDL. And, additionally, the quality of
-error messages is very diversified. While some simple state: error
-occured, other list the problem and the line.
+requirements include ~:strips~ and =:typing=. Lists of requirement
+flags and their meaning can be found in \textcite{fox2003pddl2} for
+PDDL 2.1 and \textcite{kovacs2011bnf} for PDDL 3.1 It should be
+mentioned, that almost no planner supports every part of PDDL.
 
 *** Types
 
-If order to be able to use types in a domain file, the
-requirement :typing should be declared (TODO: is :adl enough?).
-
-In order to assign categories to objects, PDDL allows for
-type definitions. Like that, parameters in actions can be typed, as
-well as arguments in predicates, functions [extra source!]. Later, in
-the problem file, objects will be assigned to types, like objects to
+In the =(:typing ...)= part, PDDL allows for structuring and typing
+the domain. Typed lists are used to assign types to entity lists.
+Relations can be expressed by a type hierarchy. whereby types can be
+subtypes of Like that, parameters in actions can be typed, as well as
+arguments in predicates, functions [extra source!]. Later, in the
+problem file, objects will be assigned to types, like objects to
 classes in Object Orientated Programming (OOP). Adding to the
 (:requirement ...) part of the file guarantees, that typing can be
 correctly used. Strips (no types) vs ADL (types).
 
+Copied:
+A typed list is used to declare the types of a list of entities; the
+types are preceded by a minus sign (\-"), and every other element of
+the list is declared to be of the rst type that follows it, or
+object if there are no types that follow 
+
+If order to be able to use type hierarchys in a domain file, the
+requirement :typing should be declared (TODO: is :adl enough?).
+
+#+BEGIN_EXAMPLE
+  (:types subsubtype1 subsubtype2 – subtype1
+          subtype1 – type1
+          subtype2 – type2
+          ...
+          type1 type2 …  - object)
+#+END_EXAMPLE
+
+Every PDDL domain includes the built-in types =object= and =number=,
+whereby every defined type is subtype of =object=. 
+
 *** Actions
+
+Actions are the tools for 
+
 PDDL 3.1 supports two types of actions: durative-action and the
 'regular' action.
 
@@ -334,15 +475,19 @@ uniform plan layout.
 
 The input to the planning software is a domain and a belonging
 problem, the output is usually a totally or partially ordered plan.
-are software tools that Due to the yearly ICAPS, there is a broad
-range of available planners. This thesis uses the planner SGPLAN_6
-\textcite{hsu2008sgplan}, a 'extensive' (in the sense of its
-supporting features) planner for both temporal and non-temporal
-planning problems.
+Due to the yearly ICAPS, there is a broad range of available planners.
+This thesis uses the planner SGPLAN_6 \textcite{hsu2008sgplan}, a
+'extensive' (in the sense of its supporting features) planner for both
+temporal and non-temporal planning problems.
 
 An overview of different planners is given at
 http://ipc.informatik.uni-freiburg.de/Planners.
 
+
+
+Additionally, the
+quality of error messages is very diversified. While some simple
+state: error occured, other list the problem and the line.
 * Software Engineering Tools for AI Planning
 ** Statement of Problem
 
@@ -361,12 +506,12 @@ Below, methods are presented for
   recognition.
 - Problem Generator :: Mathematical limitations (design level)
 ** Clojure Interface
-
+*** Approach
 PDDL, as planning language modeling capabilities are limited, a
 interface with a programming is handy a can reduce dramatically the
-modeling time. In IPC, task generators are used write extensive domain
-and problem files. As PDDL is used to create more and more complex domains
-(SOURCE1, SOURCE2, SOURCE3, ...). 
+modeling time (see e.g. distance calculator). In IPC, task generators
+are used write extensive domain and problem files. As PDDL is used to
+create more and more complex domains (SOURCE1, SOURCE2, SOURCE3, ...).
 
 While it seems to be reasonable to further extend PDDL's modeling
 capability to at planning time instead of modeling time, a modeling
@@ -381,11 +526,45 @@ modern LISP dialect that runs on the Java Virtual Machine. So, PDDL
 expressions can be extracted and written back in a similar manner, and
 parts of PDDL files can be accessed in a natural way.
 
-In this section, a general approach for generating PDDL
-constructs, but also for reading in PDDL files, handling, using and
+In this section, a general approach for generating PDDL constructs,
+but also for reading in domain and problem files, handling, using and
 modifying the input, and generating PDDL files as output.
 
 *** Create 
+The functionality of sublime-PDDL is available trough a command line
+interface, which allow for an integration of ST (and every other tool
+that holds an interface for command line). Different tasks can be
+performed by passing appropriate. New PDDL projects can be generated
+by invoking the following command:
+#+BEGIN_SRC bash
+$ java -jar path/to/pddl.jar new NAME
+#+END_SRC
+This will create a new structured project folder, consisting of a
+domain and problem file with basic skeletons, a =domain= and =problem=
+folder for an offline version control and a =png= and =dot= folder for
+the generated dot language and png type diagrams respectively. This
+approach should support an structured and organized design process,
+and should finally lead to a standardized method for a PDDL project
+structure in the planning community. This directory organization is
+intended to contain just of couple of domain files in one project
+keeping domain file per project, stored in the project root directory,
+while problem files are stores in the subfolder problems. This
+organization corresponds to the PDDL 
+
+#+BEGIN_LaTeX
+\dirtree{%
+.1 NAME.
+.2 dot.
+.2 diagrams.
+.2 domains.
+.2 problems.
+.2 solutions
+.2 domain.pddl.
+.2 p01.pddl.
+.2 README.md.
+}
+#+END_LaTeX
+
 
 
 *** Basics
@@ -524,6 +703,10 @@ transferred to the on-line text editor Ace are used to implement this
 feature, as ST Syntax Highlighting files can easily be converted to
 Ace Files. 
 
+Extending a available editor.
+Furthermore, ST was used as it provides a framework for general code
+editing. Features include code folding, 
+
 For Mac user, TextMate (TM) is very similar to ST and the syntax
 highlighting file can be used there, too. Besides, the general
 principles (e.g. regular expressions) outlined here, apply to most of
@@ -547,8 +730,12 @@ themes highlight different parts of the code through by the use of
 scopes. Scopes are defined by the use of regular expressions (regexes)
 in a tmLanguage file. The scope naming conventions mentioned in the
 \citetitle{textmate} are applied here. By the means of the name, the
-colors are assigned. Different ST themes display different colors (not
-all themes support all naming conventions).
+colors are assigned according to the current used ST theme. That means
+that colors are not assigned per se, but dependently on the current
+scheme. Through that, experienced users can use their default theme
+and all can easily change the colors by changing the scheme. Different
+ST themes display different colors (not all themes support all naming
+conventions).
 
 The syntax highlighting is intended for PDDL 3.1, but is backward
 compatible to previous version. It's based on the Backus-Naur Form
@@ -574,36 +761,11 @@ describes the parts of the PDDL task that should be highlighted. By
 removing (or commenting) include statements, the syntax highlighter is
 adjustable the user's need.
 
-
 #+NAME: Screenshot in Sublime Text 3
 [[/home/pold/Pictures/ba.png]]
 
 
 *** Usage and Customization
-New PDDL projects can be generated by invoking the following command:
-#+BEGIN_SRC bash
-$ java -jar path/to/pddl.jar new NAME
-#+END_SRC
-This will create a new structured project folder, consisting of a
-domain and problem file with basic skeletons, a domain and problem
-folder for offline version control and a png and dot folder for the
-generated dot language and png type diagrams respectively. 
-
-#+BEGIN_LaTeX
-\dirtree{%
-.1 NAME.
-.2 dot.
-.2 diagrams.
-.2 domains.
-.2 problems.
-.2 solutions
-.2 domain.pddl.
-.2 p01.pddl.
-.2 README.md.
-}
-#+END_LaTeX
-
-
 
 After invoking pddl.jar twice with 
 
@@ -626,7 +788,6 @@ and column selection, described in the Sublime Text 2 Documentation.
 The PDDL.YAML-tmlanguage file is split in two parts:
 
  By default, all scopes are included.
-
 
 *** Use case
 Following, a small use case will be presented, that should represent a
@@ -784,27 +945,41 @@ It can probably be seen, that this rather short description of the
 world and in problem results in rather extensive PDDL files.
 
 *** Evaluation
+A key challenge of creating a sophisticated syntax highlighter without
+the availability of a lexical parser, is the use of regular
+expressions for creating a preferably complete PDDL identification.
+While this a not possible by the expressiveness of regexes, this
+syntax highlighter tries to come as close as possible.
+
+The consistency and capability to highlight every PDDL construct in a
+color according to its meaning, were checked by 320 (syntax
+error-free) PDDL files, consisting of 87 domain and 230 problem files
+(list of files). In that, no inconsistencies nor non-highlighted words
+could be found.
+
+While syntax highlighting can improve the time and ability to get
+along in code files, it is mainly intended to distinct language
+structures and syntax errors. 
 
 ** Type Diagram Generator
 Graphical notations, have some advantages compared to textual
 notations, as they simplify the communication between developers and
-help to quickly grasp the connection of related system units. 
+help to quickly grasp the connection of related system units (source!). 
  
 But for all that one disadvantage has to be accepted: 
 
-The UML was invented in order to standardize modeling in software
-engineering (SE). The UML consists of several part notations, the here
-presented tool uses the 'class diagram' notation, as PDDL types and
-classes in OOP have strong resemblance (see Tiago 2006, p 535). 
-
-Types play a major role in the PDDL design process: they are involved,
-besides their definition, in the constants, predicates and actions
-part. So, a fine grasp of their hierarchy, as well as their involved
-predicates becomes handy and assists the KE in the planning process.
-Types strongly resemble classes in object oriented programming
-As mentioned in chapter (...), the type definitions follow a specific
-syntax. For example ~truck car - vehicle~ would indicate, that both
-~truck~ and ~car~ are subtypes of the super-type vehicle. 
+Object types play a major role in the PDDL design process: they are
+involved, besides their definition in the =(:types ...)=, in the
+constants, =(:predicates ...) and =(:actions ...) part. So, a fine
+grasp of their hierarchy, as well as their involved predicates becomes
+handy and assists knowledge engineers in the planning process.
+Furthermore, in order to understand, use and extend available domains,
+a crucial part is the grasping of types, their hierarchy, and the
+predicates they that make use of them. Types strongly resemble classes
+in object oriented programming,  as mentioned in chapter (...), the type
+definitions follow a specific syntax. For example ~truck car -
+vehicle~ would indicate, that both ~truck~ and ~car~ are subtypes of
+the super-type vehicle.
 
 Subtypes and corresponding super-types can be extracted using regular
 expressions (regex). The regex
@@ -823,34 +998,120 @@ PDDL side ----------------------------------------------- Clojure side
 
 * Analysis
 ** Participants
-Ten non-paid students (six female) took part in the experiment. All
-had knowledge about LISP syntax, but neither one had faced PDDL prior
-to this study. 
+Eight non-paid students (two female, Mean_{age}=23, SD_{age}=2) took part
+in the experiment. All had knowledge about at least one LISP dialect,
+and therefore about program code written as parenthesized lists, but
+nobody one had faced PDDL prior to this study. One participant had
+used the ST editor.  
 
 ** Material 
-The usability of the Syntax Highlighter (see [[sec:syntax]]) and the Type
-Diagram Generator (see [[Type%20Diagram%20Generator][Type Diagram Generator]]) were
-tested.
+The usability of myPDDL-s (Syntax Highlighter, see [[sec:syntax]]) and
+myPDDL-t (Type Diagram Generator, see [[Type%20Diagram%20Generator][Type Diagram Generator]]) were
+tested. For this purpose, two domains (/Planet Splisus/, /Store/) with
+fantasy type names were created. Participants were asked to answer
+five questions that required to understand the PDDL type hierarchy.
+Subjects were asked to work on questions, while time on task (per
+question) was measured without subjects' knowledge, by asking the S to
+say out loud the regarding answer. 
+
+Furthermore, two deliberately incorrect domain files were provided to
+the S, each containing 17 errors in total (consisting of X semantic
+errors and Y syntax errors). Participants were asked to detect as many
+errors as possible in six minutes and immediately correct found errors
+in the code (as this could change the syntax highlighting of other
+code parts) and write down the line and a description or the
+correction of the error on a sheet of paper for an easy identification
+in the analysis of test results.
 
 ** Design
 
-The participants had to 
+
+|   | *S* | *Order*          |                  |                  |                  |
+|---+-----+------------------+------------------+------------------+------------------|
+| / | >   |                  |                  |                  |                  |
+|   | A   | /Planet Splisus/ | /Logistics/      | Store            | Coffee           |
+|   | B   | Store            | Coffee           | /Planet Splisus/ | /Logistics/      |
+|   | C   | Planet Splisus   | Logistics        | /Store/          | /Coffee/         |
+|   | D   | /Store/          | /Coffee/         | Planet Splisus   | Logistics        |
+|   | E   | /Logistics/      | /Planet Splisus/ | Coffee           | Store            |
+|   | F   | Coffee           | Store            | /Logistics/      | /Planet Splisus/ |
+|   | G   | Logistics        | Planet Splisus   | /Coffee/         | /Store/          |
+|   | H   | /Coffee/         | /Store/          | Logistics        | Planet Splisus   |
+
+/Italic/: Tools part
 
 
 ** Procedure
+At the earliest, 24 hours ahead testing date, participants received a
+link to a 30-minute video tutorial and were asked to watch this video
+before the test, if possible. This tutorial comprised a general
+introduction to planning and a more specific introduction to PDDL's
+domain syntax. In the video, participants were also asked to fulfill tasks
+regarding PDDL and check theirs answers with the provided solutions in
+the video. 
+
+Upon arrival participants were asked to sign a consent form and to
+take a set in front of a Laptop with a 13" display and a connected
+monitor with a 17" display. If they did not already watch the PDDL
+tutorial the participants first were asked to watch the tutorial then.
+After that, any open questions regarding PDDL and the were clarified.
+
+Immediately before the tools part, a three minute video introduction
+to the functionality of myPDDL-syn and the usage of myPDDL-gen was
+given. Subsequently, participants were asked to work on the tools
+parts, meaning that participants were not confronted with the tools
+before the actual test.
+
+** Results
+#+CAPTION: Planet Splisus *Aggregated processing time of tasks with correct answers*
+| Task | Time | Points |
+|------+------+--------|
+|    1 |      |        |
+|    2 |      |        |
+|    3 |      |        |
+|    4 |      |        |
+|    5 |      |        |
+|------+------+--------|
+|  Sum |      |        |
+
+
+
+The questionnaire used The mean System Usability Scale (SUS) score was
+XX, arguing for a high usability. 
+* General Discussion
+
+As seen in the conducted study, missing actions in the type diagram
+can confuse. So, it is possibly helpful to exclude predicates in the
+diagram and only display the plain type hierarchy (as all participants
+were faster) before actions have not been added. Nevertheless, it is
+worth noting that only PDDL novices were tested, after watching a
+introduction video, without ever writing a domain by scratch.
+
+Very likely, a learning effect will occur, so that tasks are more
+easily to fulfill if they are done for the second time.
 
 * Conclusion and Outlook
-The tools presented in this thesis have been designed to support
-knowledge engineers in planning tasks. They can support engineers in
-the early planning design process, as well as in the maintenance of
-existing domains and problems. The communication between engineers can
-be facilitated and 
+The tools (Clojure interface (I), type diagram generator (T), syntax
+highlighting (S), distance calculation (C)) presented in this thesis
+have been designed to support knowledge engineers in modeling planning
+tasks as well as in understanding, modifying, extending and using
+planning domains. The user study has been conducted to examine the
+utility of I and T. There is some evidence that they can support
+engineers in the design process, in particular in error detection and
+in keeping track of the domain structure, the type hierarchy and
+grasping predicates using these types. The faster understanding of the
+domain structure could be beneficial for the maintenance and
+application of existing domains and problems.  The communication
+between engineers can be facilitated and
+
+** Outlook
+ As
 
 The plug-in for the editor ST could be further extended to provide
 features of common integrated developing environments (IDE). A build
 script for providing input to a planner for auto-matching domain and
 matching problem(s) (or problem and matching domain) in ST could be
-convenient. 
+convenient.  
 Detecting of semantic errors besides syntactic errors (as in PDDL
 Studio) could be the next step to detecting errors fast and accurate.
 Possible semantic errors could be undeclared variables or predicates
@@ -869,6 +1130,13 @@ double-checks the generated tasks will be irreplaceable.
 
 \printbibliography
 * Appendix
+
+This code can also be found on the enclosed CD, and on the Internet
+page https://github.com/pold87/sublime-pddl (most recent
+version).
+
+The website http://pold87.github.io/sublime-pddl/ is the accompanying
+website for this project.
 
 #+BEGIN_SRC clojure
 (ns org-ba.core
@@ -1381,7 +1649,7 @@ exited after the JFrame is closed"
        :draw draw
        :size (vec img-size))))))
 #+END_SRC
-#+BEGIN_SRC YAML
+#+BEGIN_EXAMPLE
 # [PackageDev] target_format: plist, ext: tmLanguage
 ---
 name: PDDL
@@ -1912,7 +2180,7 @@ repository:
 
 
 # TODO: Metric
-#+END_SRC
+#+END_EXAMPLE
 * Export Configuration                                     :ARCHIVE:noexport:
 #+TITLE:  Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework
 #+AUTHOR: Volker Strobel
@@ -1929,6 +2197,7 @@ repository:
 #+LaTeX_HEADER: \hypersetup{hidelinks}
 #+LaTeX_HEADER: \usepackage[]{nomencl}
 #+LaTeX_HEADER: \usepackage{dirtree}
+#+LaTeX_HEADER: \usepackage[autostyle]{csquotes} 
 #+PROPERTY: :mkdirp yes
 #+OPTIONS org-export-publishing-directory "./exports"
 #+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
