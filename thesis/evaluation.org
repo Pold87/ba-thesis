@@ -7,6 +7,7 @@
 #+LANGUAGE: de
 #+TITLE: 
 #+DATE: 
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
 
 * Design
 *** Gruppenaufteilung
@@ -165,7 +166,6 @@ Davon korrekt erkannte Fehler:
 *** Vorerfahrung
 | Programmieren | 5 |
 | Sublime Text  | 1 |
-
 
 *** Planet Splisus - mit Generator
 
@@ -524,10 +524,11 @@ Davon korrekt erkannte Fehler: 7
 
 *** Store - ohne Generator
 
+| Typendiagramm | 00:02:20 | 140 | 1 |   |
+
 #+NAME: vp7-store-no-tool
 |     /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
 |---------------+----------+------------+----------+-----------|
-| Typendiagramm | 00:02:20 |        140 |        1 |           |
 |             1 | 00:01:11 |         71 |        1 |           |
 |             2 | 00:00:36 |         36 |        1 |           |
 |             3 | 00:01:59 |        119 |        1 |           |
@@ -636,11 +637,11 @@ Davon korrekt erkannte Fehler: 10
 #+NAME: vp9-splisus-no-tool
 | /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
 |-----------+---------+------------+----------+-----------|
-|         1 |         |          0 |          |           |
-|         2 |         |          0 |          |           |
-|         3 |         |          0 |          |           |
-|         4 |         |          0 |          |           |
-|         5 |         |          0 |          |           |
+|         1 |         |         30 |     1    |           |
+|         2 |         |         30 |     1    |           |
+|         3 |         |         30 |     1    |           |
+|         4 |         |        200 |     1    |           |
+|         5 |         |         30 |     1    |           |
 |-----------+---------+------------+----------+-----------|
 | /Gesamt/: |         |          0 |        0 |           |
 #+TBLFM: $3=$2;t
@@ -695,68 +696,260 @@ Davon korrekt erkannte Fehler:
 * Auswertung
 
 #+CAPTION: Planet Splisus
-|                              |         |   Task |        |        |        |        |
-|                              |         |      1 |      2 |      3 |      4 |      5 |
-|                            / |         |      < |      < |      < |      < |      < |
-|------------------------------+---------+--------+--------+--------+--------+--------|
-| Average task completion time | tool    |        |        |        |        |        |
-|                            0 | no tool |      0 |      0 |      0 |      0 |      0 |
-|                            0 | diff    |      0 |      0 |      0 |      0 |      0 |
-|------------------------------+---------+--------+--------+--------+--------+--------|
-|   Average time until failure | tool    | #ERROR | #ERROR | #ERROR | #ERROR | #ERROR |
-|                            0 | no tool |      0 |      0 |      0 |      0 |      0 |
-|                            0 | diff    |      0 |      0 |      0 |      0 |      0 |
-|------------------------------+---------+--------+--------+--------+--------+--------|
-|   Average total time on task | tool    |   21.5 |   22.0 |  27.25 |  102.0 |  30.75 |
-|                            0 | no tool |  50.25 |   72.0 |   36.5 |   78.5 |  80.25 |
-|                            0 | diff    | -28.75 |  -45.0 |  -9.25 |   23.5 |  -49.5 |
-#+TBLR: =1+2
-#+TBLFM: @7$3..@7$7= remote(vp2-splisus-tool,@$0-1$3)
-#+TBLFM: @7$3= round(vgmean(remote(vp2-splisus-tool,@2$3),remote(vp3-splisus-tool,@2$3)))
-#+TBLFM: @10$3='(mean remote(vp2-splisus-tool,@2$3) remote(vp3-splisus-tool,@2$3) remote(vp6-splisus-tool,@2$3) remote(vp7-splisus-tool,@2$3));N
-#+TBLFM: @10$4='(mean remote(vp2-splisus-tool,@#$-1$3) remote(vp3-splisus-tool,@3$3) remote(vp6-splisus-tool,@3$3) remote(vp7-splisus-tool,@3$3));N
-#+TBLFM: @10$5='(mean remote(vp2-splisus-tool,@4$3) remote(vp3-splisus-tool,@4$3) remote(vp6-splisus-tool,@4$3) remote(vp7-splisus-tool,@4$3));N
-#+TBLFM: @10$6='(mean remote(vp2-splisus-tool,@5$3) remote(vp3-splisus-tool,@5$3) remote(vp6-splisus-tool,@5$3) remote(vp7-splisus-tool,@5$3));N
-#+TBLFM: @10$7='(mean remote(vp2-splisus-tool,@6$3) remote(vp3-splisus-tool,@6$3) remote(vp6-splisus-tool,@6$3) remote(vp7-splisus-tool,@6$3));N
-#+TBLFM: @11$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,@2$3) remote(vp8-splisus-no-tool,@2$3) remote(vp9-splisus-no-tool,@2$3));N
-#+TBLFM: @11$4='(mean remote(vp4-splisus-no-tool,@3$3) remote(vp5-splisus-no-tool,@3$3) remote(vp8-splisus-no-tool,@3$3) remote(vp9-splisus-no-tool,@3$3));N
-#+TBLFM: @11$5='(mean remote(vp4-splisus-no-tool,@4$3) remote(vp5-splisus-no-tool,@4$3) remote(vp8-splisus-no-tool,@4$3) remote(vp9-splisus-no-tool,@4$3));N
-#+TBLFM: @11$6='(mean remote(vp4-splisus-no-tool,@5$3) remote(vp5-splisus-no-tool,@5$3) remote(vp8-splisus-no-tool,@5$3) remote(vp9-splisus-no-tool,@5$3));N
-#+TBLFM: @11$7='(mean remote(vp4-splisus-no-tool,@6$3) remote(vp5-splisus-no-tool,@6$3) remote(vp8-splisus-no-tool,@6$3) remote(vp9-splisus-no-tool,@6$3));N
-#+TBLFM: @12$3..@12$7='(- @-2 @-1);N::@9$3..@9$7='(- @-2 @-1);N::@5@3..@5$7='(- @-2 @-1);N
-
-#+TBLFM: @9$3..@9$7='(mean remote(vp2-splisus-tool,$0-1) remote(vp3-splisus-tool,@#$0-1$3) remote(vp6-splisus-tool,@#$0-1$3) remote(vp7-splisus-tool,@#$0-1$3));N
-
-
-#+TBLFM: @10$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,@2$3) remote(vp8-splisus-no-tool,@2$3) remote(vp9-splisus-no-tool,@2$3));N
-
+|                              |         |       Task |            |            |                 |            |
+|                              |         |          1 |          2 |          3 |               4 |          5 |
+| /                            |         |          < |          < |          < |               < |          < |
+|------------------------------+---------+------------+------------+------------+-----------------+------------|
+| Mean time to failure         | tool    | No failure | No failure | No failure |              99 | No failure |
+|                              | no tool | No failure | No failure | No failure |             194 | No failure |
+|                              | diff    |          0 |          0 |          0 |             -95 |          0 |
+|------------------------------+---------+------------+------------+------------+-----------------+------------|
+| Average task completion time | tool    |         20 |         26 |         23 | No right answer |         27 |
+|                              | no tool |         50 |         58 |         40 |              84 |         72 |
+|                              | diff    |        -25 |        -31 |        -25 |             -84 |        -40 |
+|------------------------------+---------+------------+------------+------------+-----------------+------------|
+| Average Total Task Time      | tool    |         20 |         26 |         23 |              89 |         27 |
+|                              | no tool |         50 |         58 |         40 |             103 |         72 |
+|                              | diff    |        -30 |        -32 |        -17 |             -14 |        -45 |
+#+TBLFM: @10$3..@10$7= round(vgmean(subscr(remote(vp2-splisus-tool,@2$3..@6$3), $# - 2), subscr(remote(vp3-splisus-tool,@2$3..@6$3), $# - 2), subscr(remote(vp6-splisus-tool,@2$3..@6$3), $# - 2), subscr(remote(vp7-splisus-tool,@2$3..@6$3), $# - 2)))
+#+TBLFM: @11$3..@11$7=  round(vgmean(subscr(remote(vp4-splisus-no-tool,@2$3..@6$3), $# - 2), subscr(remote(vp5-splisus-no-tool,@2$3..@6$3), $# - 2), subscr(remote(vp8-splisus-no-tool,@2$3..@6$3), $# - 2), subscr(remote(vp9-splisus-no-tool,@2$3..@6$3), $# - 2)))
+#+TBLFM: @12$3..@12$7='(- @-2 @-1);N::@9$3..@9$7='(- @-2 @-1);N::@6$3..@6$7='(- @-2 @-1);N
 #+TBLFM: @11$1=string ("")::@11$2=string ("diff")::@8$1=string ("")::@8$2=string ("diff")::@5$1=string ("")::@5$2=string ("diff")
+#+TBLFM: @7$3..@7$7= round(vgmean(if(subscr(remote(vp2-splisus-tool,@2$4..@6$4), $# - 2) == 0, "", subscr(remote(vp2-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp3-splisus-tool,@2$4..@6$4), $# -2) == 0, "", subscr(remote(vp3-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp6-splisus-tool,@2$4..@6$4), $# -2) == 0, "", subscr(remote(vp6-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp7-splisus-tool,@2$4..@6$4), $# - 2) == 0, "", subscr(remote(vp7-splisus-tool,@2$3..@6$3), $# - 2)))
+#+TBLFM: @4$3..@4$7= round(vgmean(if(subscr(remote(vp2-splisus-tool,@2$4..@6$4), $# - 2) == 1, "", subscr(remote(vp2-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp3-splisus-tool,@2$4..@6$4), $# -2) == 1, "", subscr(remote(vp3-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp6-splisus-tool,@2$4..@6$4), $# -2) == 1, "", subscr(remote(vp6-splisus-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp7-splisus-tool,@2$4..@6$4), $# - 2) == 1, "", subscr(remote(vp7-splisus-tool,@2$3..@6$3), $# - 2)))
+#+TBLFM: @8$3..@8$7= round(vgmean(if(subscr(remote(vp4-splisus-no-tool,@2$4..@6$4), $# - 2) == 0, "", subscr(remote(vp4-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp5-splisus-no-tool,@2$4..@6$4), $# -2) == 0, "", subscr(remote(vp5-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp8-splisus-no-tool,@2$4..@6$4), $# -2) == 0, "", subscr(remote(vp8-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp9-splisus-no-tool,@2$4..@6$4), $# - 2) == 0, "", subscr(remote(vp9-splisus-no-tool,@2$3..@6$3), $# - 2)))
+#+TBLFM: @5$3..@5$7= round(vgmean(if(subscr(remote(vp4-splisus-no-tool,@2$4..@6$4), $# - 2) == 1, "", subscr(remote(vp4-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp5-splisus-no-tool,@2$4..@6$4), $# -2) == 1, "", subscr(remote(vp5-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp8-splisus-no-tool,@2$4..@6$4), $# -2) == 1, "", subscr(remote(vp8-splisus-no-tool,@2$3..@6$3), $# - 2)), if(subscr(remote(vp9-splisus-no-tool,@2$4..@6$4), $# - 2) == 1, "", subscr(remote(vp9-splisus-no-tool,@2$3..@6$3), $# - 2)))
 
 
 
-#+NAME: my-table
-| Header1 | Header2 |
-|---------+---------|
-|   a     |    23   |
-|   b     |    7    |
-|   c     |    13   |
-|   d     |    66   |
-|   e     |    5    |
-|---------+---------|
-| Result  |      42 |
-
-
+#+NAME: gmean
 #+BEGIN_SRC R
   
   ### Define geometric mean
   gmean <- function(x) {
   return(exp(mean(log(x))))
   }
-geosd(c(1,2,3))
  
 #+END_SRC
 
+#+RESULTS: gmean
+
+
+#+NAME: splisus-tasks
+#+HEADER: :var vp2.splisus.tool=vp2-splisus-tool vp3.splisus.tool=vp3-splisus-tool vp6.splisus.tool=vp6-splisus-tool vp7.splisus.tool=vp7-splisus-tool
+#+HEADER: :var vp9.splisus.no.tool=vp9-splisus-no-tool vp8.splisus.no.tool=vp8-splisus-no-tool vp5.splisus.no.tool=vp5-splisus-no-tool vp4.splisus.no.tool=vp4-splisus-no-tool
+#+BEGIN_SRC R :results output graphics :file graphy.png
+library(ggplot2)
+library(reshape)
+df = melt(data.frame(Yes=c(2, 10, 7, 9, 12), No=c(3, 20, 55, 88, 9), 
+          Task=c("1", "2", "3", "4", "5")),
+          variable_name="Diagram")
+
+head(df)
+
+ggplot(df, aes(Task,value, fill=Diagram)) + 
+       geom_bar(position="dodge") + 
+       geom_errorbar(aes(ymin=10, ymax=20), width=.1)
+#+END_SRC
+
+#+RESULTS: splisus-tasks
+[[file:graphy.png]]
+
+
+#+BEGIN_SRC R :results output
+a<-c("a","b","c")
+str(a)
+#+END_SRC
+
 #+RESULTS:
+:  chr [1:3] "a" "b" "c"
+
+
+#+NAME: times
+| tool | task | time |  cr | ci.low | ci.high |
+|------+------+------+-----+--------+---------|
+| Yes  |    1 |   20 |   1 |    9.6 |    40.8 |
+| Yes  |    2 |   27 |   1 |      7 |      50 |
+| Yes  |    3 |   15 |   1 |      9 |      50 |
+| Yes  |    4 |    0 |   0 |      0 |      50 |
+| Yes  |    5 |   32 |   1 |      2 |      50 |
+| No   |    1 |   50 |   1 |     19 |     130 |
+| No   |    2 |   58 |   1 |      3 |      50 |
+| No   |    3 |   40 |   1 |      2 |      50 |
+| No   |    4 |   84 | 0.5 |      8 |      50 |
+| No   |    5 |   72 |   1 |      9 |      50 |
+
+
+#+name: r-with-ggplot2
+#+begin_src R :file a.png :results output graphics :var splisus=times
+# Create a simple example dataset
+
+library(ggplot2)
+
+#splisus <- read.csv(file="/home/pold/Desktop/time.csv",head=TRUE,sep=",")
+
+ggplot(splisus, aes(x=task, y=time,fill=tool)) + 
+    geom_bar(position=position_dodge(), stat="identity") +   
+ stat_summary(fun.data="mean_cl_boot", geom="point", size=1.1)  +
+    geom_text(aes(label = paste(cr * 100, "%", sep = ""), x = task, y = 3), size = 3,
+    #vjust = -0.2,
+    position = position_dodge(width=0.9)) +
+    geom_errorbar(aes(ymin=ci.low, ymax=ci.high),
+                  size=.3,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(0.9)) +
+    xlab("Task") +
+    ylab("Seconds") +
+    # Possibly use scale_x_discrete
+    scale_fill_hue(name="With diagram\n(myPDDL-dia)",  # Legend label, use darker colors
+                   breaks=c("No", "Yes"),
+                   labels=c("No", "Yes")) +
+    ggtitle("Task Completion Time (Geometric Mean)\nfor Planet Splisus per Subtask ") +
+    scale_y_continuous(breaks=0:30*5) +
+    theme_bw()
+    
+#+end_src
+
+#+RESULTS: r-with-ggplot2
+[[file:a.png]]
+
+#+begin_src R  :file a.png :results output graphics
+  x <- rnorm(10)
+  summary(x)
+  y <- rnorm(10)
+  plot(x, y)
+#+end_src
+
+#+RESULTS:
+[[file:a.png]]
+
+#+BEGIN_SRC R :results output
+heisenberg <- read.csv(file="/home/pold/Desktop/time.csv",head=TRUE,sep=",")
+heisenberg
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+   Tool Task Seconds ci
+1   Yes    1      20  5
+2   Yes    2      30  7
+3   Yes    3      40  9
+4   Yes    4      50  5
+5   Yes    5      30  2
+6    No    1      50  4
+7    No    2      50  3
+8    No    3      60  2
+9    No    4      60  8
+10   No    5      80  9
+#+end_example
+
+#+BEGIN_SRC R :results output graphics :file outy.png
+library(ggplot2)
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+    require(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = mean   (xx[[col]], na.rm=na.rm),
+          sd   = sd     (xx[[col]], na.rm=na.rm)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column    
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$ci <- datac$se * ciMult
+
+    return(datac)
+}
+
+df <- ToothGrowth
+dfc <- summarySE(df, measurevar="len", groupvars=c("supp","dose"))
+dfc2 <- dfc
+
+ggplot(splisus, aes(x=task, y=time, fill=supp)) + 
+    geom_bar(position=position_dodge(), stat="identity",
+          #   colour="black", # Use black outlines,
+          #   size=.3
+) +      # Thinner lines
+    geom_errorbar(aes(ymin=time-ci, ymax=time+ci),
+                  size=.3,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Task") +
+    ylab("Seconds") +
+    scale_fill_hue(name="Use of Diagram Generator\n(myPDDL-dia)", # Legend label, use darker colors
+                   breaks=c("Yes", "No"),
+                   labels=c("Yes", "No")) +
+    ggtitle("Average Task Completion Time\nfor Planet Splisus per Subtask ") +
+    scale_y_continuous(breaks=0:20*4) +
+    theme_bw()
+
+#+END_SRC
+
+#+RESULTS:
+[[file:outy.png]]
+
+
+| Task | Module  | Tool | Obs |  PPC | ATCT   | ATTF | ATTT |
+|------+----------+------+-----+------+--------+------+------|
+| /    |          | <    |     |      |        |      |      |
+|    1 | Splisus  | yes  |   4 | 100% | 30, CI |      |      |
+|    1 |          | no   |   4 | 100% |        |      |      |
+|      | combined |      |   8 |      |        |      |      |
+|      | diff     |      |     |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      |          | yes  |   4 |      |        |      |      |
+|      |          | no   |   4 |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      | combined |      |   8 |      |        |      |      |
+|      | diff     |      |     |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      |          | yes  |   4 |      |        |      |      |
+|      |          | no   |   4 |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      | combined |      |   8 |      |        |      |      |
+|      | diff     |      |     |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      |          | yes  |   4 |      |        |      |      |
+|      |          | no   |   4 |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      | combined |      |   8 |      |        |      |      |
+|      | diff     |      |     |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      |          | yes  |   4 |      |        |      |      |
+|      |          | no   |   4 |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      | combined |      |   8 |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+|      | diff     |      |     |      |        |      |      |
+|------+----------+------+-----+------+--------+------+------|
+
+
+
+
+
+
+
+
 
 #+NAME: total-task-completion-time-splisus-tools 
 #+HEADER: :var vp2.splisus.tool=vp2-splisus-tool vp3.splisus.tool=vp3-splisus-tool vp6.splisus.tool=vp6-splisus-tool vp7.splisus.tool=vp7-splisus-tool
@@ -777,8 +970,12 @@ geosd(c(1,2,3))
   mat<-matrix(c(vp2.splisus.tool,vp3.splisus.tool,vp6.splisus.tool,vp7.splisus.tool),nrow=5)
   apply(mat,1,gmean)
 #+END_SRC
-
 #+RESULTS: total-task-completion-time-splisus-tools
+| 19.7328185798802 |
+| 26.2180539751404 |
+| 22.8879610186401 |
+|  88.801598012187 |
+| 26.5321149447106 |
 
 #+TODO: Add vp9 again!!
 #+NAME: total-task-completion-time-store-tools 
@@ -801,7 +998,6 @@ geosd(c(1,2,3))
   mat<-matrix(c(vp8.store.tool,vp5.store.tool,vp4.store.tool),nrow=5)
   apply(mat,1,gmean)
 #+END_SRC
-
 #+RESULTS: total-task-completion-time-store-tools
 | 28.2611619556405 |
 | 23.9861030657984 |
@@ -810,6 +1006,99 @@ geosd(c(1,2,3))
 | 80.8090814221636 |
 
 
+#+NAME: total-task-completion-time-splisus-no-tools 
+#+HEADER: :var vp9.splisus.no.tool=vp9-splisus-no-tool vp8.splisus.no.tool=vp8-splisus-no-tool vp5.splisus.no.tool=vp5-splisus-no-tool vp4.splisus.no.tool=vp4-splisus-no-tool
+#+BEGIN_SRC R 
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+  ### Get the desired times
+  ## Convert string to numbers
+  
+ # vp9.splisus.no.tool<-as.numeric(vp9.splisus.no.tool[2:6,3])
+  vp8.splisus.no.tool<-as.numeric(vp8.splisus.no.tool[2:6,3])
+  vp5.splisus.no.tool<-as.numeric(vp5.splisus.no.tool[2:6,3])
+  vp4.splisus.no.tool<-as.numeric(vp4.splisus.no.tool[2:6,3])
+  
+  ### Create a matrix from column vectors
+
+# Add VP9 AGAIN!!
+  mat<-matrix(c(vp8.splisus.no.tool,vp5.splisus.no.tool,vp4.splisus.no.tool),nrow=5)
+  apply(mat,1,gmean)
+#+END_SRC
+#+RESULTS: total-task-completion-time-splisus-no-tools
+| 58.7713065921074 |
+|  72.897209429767 |
+| 43.5603601221913 |
+| 82.7801799355286 |
+| 96.2366845019403 |
+
+
+#+NAME: total-task-completion-time-store-no-tools 
+#+HEADER: :var vp2.store.no.tool=vp2-store-no-tool vp3.store.no.tool=vp3-store-no-tool vp7.store.no.tool=vp7-store-no-tool vp6.store.no.tool=vp6-store-no-tool
+#+BEGIN_SRC R :results output
+     ### Get the desired times
+     ## Convert string to numbers
+     
+      vp2.store.no.tool<-as.numeric(vp2.store.no.tool[2:6,3])
+      vp3.store.no.tool<-as.numeric(vp3.store.no.tool[2:6,3])
+      vp7.store.no.tool<-as.numeric(vp7.store.no.tool[2:6,3])
+      vp6.store.no.tool<-as.numeric(vp6.store.no.tool[2:6,3])
+     
+     ### Create a matrix from column vectors
+     #mat<-matrix(c(vp2.store.no.tool,vp3.store.no.tool,vp7.store.no.tool,vp6.store.no.tool),nrow=5)
+    #barplot(mat[1:5,3], main="VP2 - Store - No Tools", ylab="Seconds", yaxp  = c(0, 300, 20), ylim=c(0,300), names.arg=c("Task 1", "Task 2", "Task 3", "Task 4", "Task 5"))
+    # apply(mat,1,gmean)
+  
+  t.test(vp2.store.no.tool,vp3.store.no.tool, paired=TRUE)
+  
+#+END_SRC
+
+#+RESULTS: total-task-completion-time-store-no-tools
+#+begin_example
+
+	Paired t-test
+
+data:  vp2.store.no.tool and vp3.store.no.tool
+t = -2.5957, df = 4, p-value = 0.06032
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -90.650403   3.050403
+sample estimates:
+mean of the differences 
+                  -43.8 
+
+#+end_example
+
+
+
+#+BEGIN_SRC emacs-lisp :var total-task-completion-time-store-no-tools=total-task-completion-time-store-no-tools
+(defun tot () total-task-completion-time-store-no-tools)
+#+END_SRC
+
+#+RESULTS:
+: tot
+
+#+NAME: delete-again-store-comparision
+|       store-tool |    store-no-tool |         diff |
+|------------------+------------------+--------------|
+| 28.2611619556405 |  28.273216224343 | -0.012054269 |
+| 23.9861030657984 | 31.8028734593883 |   -7.8167704 |
+| 90.0004526726203 | 141.828077977078 |   -51.827625 |
+| 114.805012993993 | 118.097491332123 |   -3.2924783 |
+| 80.8090814221636 | 69.3888279614662 |    11.420253 |
+#+TBLFM: $2=remote(total-task-completion-time-store-no-tools,(@@#)<)
+#+TBLFM: $3=$1-$2
+
+
+|     splisus-tool |  splisus-no-tool |       diff |
+| 19.7328185798802 | 58.7713065921074 | -39.038488 |
+| 26.2180539751404 |  72.897209429767 | -46.679155 |
+| 22.8879610186401 | 43.5603601221913 | -20.672399 |
+|  88.801598012187 | 82.7801799355286 |  6.0214181 |
+| 26.5321149447106 | 96.2366845019403 | -69.704570 |
+#+TBLFM: $3=$1-$2
 
 
 TBLFM: @9$3='(mean remote(vp2-splisus-tool,@2$3) remote(vp3-splisus-tool,@2$3) remote(vp6-splisus-tool,@2$3) remote(vp7-splisus-tool,@2$3));N::@11$3='(- @-2 @-1);N
@@ -818,7 +1107,7 @@ TBLFM: @10$3='(mean remote(vp4-splisus-no-tool,@2$3) remote(vp5-splisus-no-tool,
 |         | Tool | No Tool |
 | Splisus |      |         |
 | Store   |      |         |
-
+#+TABLR: @1$1=5
 
 Ideas:
 Scatterplot: Total Task Completion Time vs. Points

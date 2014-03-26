@@ -382,7 +382,6 @@ IS VERY GOOD !!!"
     `(~'distance ~loc1 ~loc2
                  ~(euclidean-distance xyz-1 xyz-2))))
 
-; LOOK UP: extended equality: 'hello = :hello
 
 (defn add-part-to-PDDL
   "Takes a PDDL domain or problem
@@ -467,11 +466,18 @@ exited after the JFrame is closed"
                                    (calc-distance-good
                                     (get-specified-inits-in-pddl-file (first args)
                                                                       'location)))
+         ; TODO: don't write a new problem file but rather copy the
+         ; file and a specification
          new-filename (clojure.string/replace-first (first args)
                                                     #"(.+)\.pddl"
-                                                    "$1-locations.pddl")] ; TODO: location as arg
+                                                    "$1-locations.pddl")
+         old-file (first args)] ; TODO: location as arg
+
+     (fs/copy old-file new-filename)
      
-     (write->file new-filename (pprint/pprint content)))
+     
+     ;(write->file new-filename (pprint/pprint content))
+     )
 
    
    ;; Write dot graph to file.

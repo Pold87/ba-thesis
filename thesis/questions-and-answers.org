@@ -1,0 +1,294 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,10pt]
+#+LaTeX_HEADER: \usepackage[margin=1.2in]{geometry}
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE: 
+* Lösung - Planet Splisus
+
+1. Ja, =Flipsis= sind =Splis=, =Splis= sind =Gids= und =Gids= sind =Ruffisplisus=.
+2. Nein, =Schloks= sind keine =Splis=.
+3. Nein, =Merle= sind =Splis= aber keine =Splus=.
+4. Nein, =Spleus= sind zwar =Splos= und =Hurpf= sind =Splis=, weshalb
+   =Spleus= und =Hurpf= verheiratet (=married=) sein könnten,
+   aber =Hurpf= sind keine =Sipsi= und nur =Sipsi= können
+   Waffen (=has-weapon ?h - sipsi)= besitzen. Laut der Aktion =kill=
+   muss man zum Umbringen eine Waffe besitzen.
+5. 
+   - =Ruffisplisus= - Wesen
+   - =Lech= - Orte
+   - =Mak= - Nahrung
+
+* Lösung - Store
+
+1. Ja, =Lulas= sind =Nulls= und =Nulls= sind =Minis=.
+2. Nein, nur =Nulls= sind =Zahls=.
+3. Ja, =Iltre= sind vom Typ =Lala= (=Iltre=, =Nulls=, =Minis=, =Lala=)
+   und können an einem Arbeitsplatz (=workplace=) vom Typ =Knozi=
+   arbeiten, da diese wiederum =Lolas= sein können (=Lola=, =Zahls=,
+   =Knozi=)
+4. Nein, denn nur ein Objekt vom Typ =Spax= kann ein Produkt am Ende
+   eines Verkaufsvorgangs besitzen und =Kostas= sind keine =Spax=.
+5. 
+   - =Lala= - Menschen
+   - =Lila= - Produkte
+   - =Lola= - Orte
+\newpage
+* Fehlerliste - Logistics Domain
+\vspace{0.5cm}
+| \# | *Zeile* | *Fehler*      | *Korrektur*       | *Fehlertyp*         |
+|  1 |       3 | ?logistics    | logistics         | extra Zeichen       |
+|  2 |       6 | :types        | :typing           | Wortverwechslung    |
+|  3 |       8 | :typing       | :types            | Wortverwechslung    |
+|  4 |      11 | car 2         | car2              | extra Zeichen       |
+|  5 |      16 | = true        | Komplett weg      | Zusatz              |
+|  6 |      18 | ??veh         | ?veh              | extra Zeichen       |
+|  7 |      22 | ?tr           | ?t                | Variablenfehler    |
+|  8 |      24 | incity        | in-city           | fehlendes Zeichen   |
+|  9 |      31 | n0t           | not               | Tippfehler          |
+| 10 |      35 | ?to airport   | ?to – aiport      | fehlendes Zeichen   |
+| 11 |      42 | parameters:   | :parameters       | Zeichenvertauschung |
+| 12 |      43 | precondition: | :precondition     | Zeichenvertauschung |
+| 13 |      37 | ay            | at                | Tippfehler          |
+| 14 |      45 | )             | Klammer entfernen | Klammerfehler       |
+| 15 |      49 | p             | ?p                | fehlendes Zeichen   |
+| 16 |      51 | ?p ?v         | (at ?p ?v)        | fehlende Syntax     |
+| 17 |      54 | ?p - ?l       | ?p ?l             | extra Zeichen       |
+
+\newpage
+* Fehlerliste - Coffee Domain
+\vspace{0.5cm}
+| \# | *Zeile* | *Fehler*           | *Korrektur*                    | *Fehlertypen*       |
+|  1 |       3 | COFFEE             | (domain COFFEE)                | fehlende Syntax     |
+|  2 |       6 | requirements       | :requirements                  | fehlendes Zeichen   |
+|  3 |       9 | _                  | -                              | Zeichenvertauschung |
+|  4 |      10 | (at ?l – location) | location                       | Zusatz              |
+|  5 |      11 | ?coffee            | coffee                         | extra Zeichen       |
+|  6 |      20 | $k                 | ?k                             | Zeichenvertauschung |
+|  7 |      21 | :preconditions     | :precondition                  | Wortverwechslung    |
+|  8 |      25 | _furniture         | furniture                      | extra Zeichen       |
+|  9 |      27 | ?fu                | ?f                             | Variablenfehler     |
+| 10 |      32 | :parameters:       | :parameters                    | extra Zeichen       |
+| 11 |      33 | änd                | and                            | Tippfehler          |
+| 12 |      36 | location           | location wurde nicht definiert | Wortverwechselung   |
+| 13 |      42 | ?fromr             | ?from-r                        | fehlendes Zeichen   |
+| 14 |      44 | ?tor               | ?to-r                          | fehlendes Zeichen   |
+| 15 |      47 | cjp                | cup                            | Tippfehler          |
+| 16 |      52 | ?hand-over         | hand-over                      | extra Zeichen       |
+| 17 |      55 | Klammer zu viel    | Klammer entfernen              | Klammerfehler       |
+
+\newpage
+* Fehleranalyse
+\vspace{0.5cm}
+| *Fehlertyp*         | *Logistics* | *Coffee* |
+| Extra Zeichen       |           4 |        4 |
+| Fehlendes Zeichen   |           3 |        3 |
+| Tippfehler          |           2 |        2 |
+| Wortverwechslung    |           2 |        2 |
+| Zeichenvertauschung |           2 |        2 |
+| Zusatz              |           1 |        1 |
+| Variablenfehler     |           1 |        1 |
+| Klammerfehler       |           1 |        1 |
+| Fehlende Syntax     |           1 |        1 |
+|---------------------+-------------+----------|
+|---------------------+-------------+----------|
+|  Gesamt             |            17 | 17       |
+
+
+\newpage
+
+* Coffee Domain
+#+BEGIN_EXAMPLE
+  ;;;; Coffee Domain
+  
+  (define COFFEE
+    
+    (requirements
+      :typing)
+    
+    (:types room - location
+            robot human _ agent
+            furniture door - (at ?l - location)
+            kettle ?coffee cup water - movable
+            location agent movable - object)
+      
+    (:predicates (at ?l - location ?o - object)
+                 (have ?m - movable ?a - agent)
+                 (hot ?m - movable)
+                 (on ?f - furniture ?m - movable))
+    
+    (:action boil
+      :parameters (?m - movable $k - kettle ?a - agent)
+      :preconditions (have ?m ?a)
+      :effect (hot ?m))
+  
+    (:action grip-some
+      :parameters (?m - movable ?r - robot ?f - _furniture ?l - location)
+      :precondition (and (at ?l ?r)
+                         (on ?fu ?m)
+                         (at ?l ?f))
+      :effect (and (have ?m ?r)))
+  
+    (:action move
+      :parameters: (?m - movable ?a - agent ?from ?to - location)
+      :precondition (or (änd (at ?from ?a)
+                             (at ?from ?m))
+                        (and (at ?from ?m)
+                             (location ?from ?a)))
+      :effect (and (not (at ?from ?m))
+                   (at ?to ?m)))
+  
+    (:action change-room
+      :parameters (?from-r ?to-r - room ?a - agent)
+      :precondition (at ?fromr ?a) 
+      :effect (and (not (at ?from-r ?a))
+                   (at ?tor ?a)))
+  
+    (:action prep-coffee
+      :parameters (?a - agent ?c - cjp ?w - water ?cof - coffee)
+      :precondition (and (have ?c ?a)
+                         (hot ?w))
+      :effect (have ?cof ?a))
+  
+    (:action ?hand-over
+      :parameters (?m - movable ?a1 - agent ?a2 - agent)
+      :precondition (have ?m ?a1))
+      :effect (and (not (have ?m ?a1))
+                   (have ?m ?a2))))
+#+END_EXAMPLE
+
+\newpage
+* Logistics Domain
+#+BEGIN_EXAMPLE
+  ;;;; Logistics domain
+  
+  (define (domain ?logistics)
+  
+    (:requirements
+      :types) 
+  
+    (:typing truck airplane motorboat - vehicle
+             package vehicle suitcase furniture - thing
+             airport garage station - location
+             car1 car 2 car3 - vehicle
+             city location thing - object)
+    
+    (:predicates (in-city ?l - location ?c - city)
+                 (at ?obj - thing ?l - location)
+                 (key ?v - vehicle) = true
+                 (full ?v - vehicle)
+                 (in ?p - package ??veh - vehicle))
+    
+    (:action drive
+      :parameters (?t - truck ?from ?to - location ?c - city)
+      :precondition (and (at ?tr ?from)
+                         (in-city ?from ?c)
+                         (incity ?to ?c))
+      :effect (and (not (at ?t ?from))
+                   (at ?t ?to)))
+  
+    (:action fly
+      :parameters (?a - airplane ?from ?to - airport)
+      :precondition (at ?a ?from)
+      :effect (and (n0t (at ?a ?from))
+                   (at ?a ?to)))
+  
+    (:action fuel
+      :parameters (?v - vehicle ?c - city ?to airport)
+      :precondition (and (not (full ?v))
+                         (in-city ?to ?c)
+                         (at ?v ?to))
+      :effect (full ?v))                   
+  
+    (:action load
+      parameters: (?v - vehicle ?p - package ?l - location)
+      precondition: (and (?v ?l)
+                         (at ?p ?l))
+      :effect (and (ay ?p ?l)
+                   (in ?p ?v)))
+  
+    (:action unload
+      :parameters (?v - vehicle p - package ?l - location)
+      :precondition (and (at ?v ?l)
+                             ?p ?v)
+      :effects (and (not (in ?p ?v))
+                    (at ?p - ?l))))
+  
+#+END_EXAMPLE
+
+\newpage
+* Planet Splisus
+#+BEGIN_EXAMPLE
+  (define (domain splisus) 
+    
+    (:requirements :typing)
+  
+    (:types splis - gid
+            spleus - splos
+            schprok schlok - splus
+            rud mekle - lech
+            hulpf hurpf - hupf
+            sipsi flipsi hupf - splis
+            schmok schkok - splus
+            gid splos splus - ruffisplisus
+            merle - hupf
+            ruffisplisus mak lech - object)
+  
+    (:predicates (father-of ?r1 - ruffisplisus ?r2 - ruffisplisus)
+                 (married ?s1 - splos ?s2 - splis)
+                 (has-weapon ?h - sipsi)
+                 (dead ?r1 - ruffisplisus)
+                 (at ?l - lech ?r - ruffisplisus))
+  
+    (:action kill
+      :parameters (?l - lech ?r1 - ruffisplisus ?s - splis)
+      :precondition (and (at ?l ?r1)
+                         (at ?l ?s)
+                         (married ?r1 ?s)
+                         (has-weapon ?s))
+      :effect (and (dead ?r1)
+              (not (married ?r1 ?s)))))
+#+END_EXAMPLE
+
+\newpage
+* Store
+#+BEGIN_EXAMPLE
+(define (domain store)
+
+  (:requirements :typing)
+
+  (:types lala lila - zahls
+          blisis blusis - ultri
+          iltre lula - nulls
+          zahls schwinds - knozi
+          minis - lala
+          ultri sopple schmitzl - lila
+          ultres raglos wexis - lola
+          kosta - nulls
+          nulls spax - minis
+          lola - zahls
+          knozi schmus - object)
+
+  (:predicates (product ?k - knozi) ; Produkt
+               (workplace ?l1 - lola ?l2 - lala) ; Arbeitsplatz einer Person
+               (product-at ?l1 - lola ?l2 - lila) ; Ort eines Produkts
+               (cashier ?k - knozi) ; Kassierer / Verkäufer
+               (customer ?s - spax) ; Kunde
+               (owns ?l - lila ?s - spax)) ; Eigentum
+
+  (:action sell
+    :parameters (?p - lila ?z - zahls ?l - lola ?w - wexis ?s - spax)
+    :precondition (and (product ?p)
+                       (cashier ?z)
+                       (product-at ?l ?p)
+                       (customer ?s))
+    :effect (and (product-at ?w ?p)
+                 (not (product-at ?l ?p))
+                 (owns ?p ?s))))
+#+END_EXAMPLE
+
+\newpage

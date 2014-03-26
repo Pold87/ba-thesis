@@ -1,5 +1,5 @@
-% Created 2014-03-19 Wed 03:24
-\documentclass[11pt]{report}
+% Created 2014-03-26 Wed 02:14
+\documentclass[a4paper,11pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -17,7 +17,7 @@
 \usepackage{hyperref}
 \tolerance=1000
 \usepackage{minted}
-\usepackage[bibstyle=numeric,citestyle=authoryear,backend=biber]{biblatex}
+\usepackage[bibstyle=numeric,citestyle=numeric,backend=biber]{biblatex}
 \addbibresource{bibliography.bib}
 \usepackage[]{hyperref}
 \usepackage[]{keystroke}
@@ -25,9 +25,11 @@
 \usepackage[]{nomencl}
 \usepackage{dirtree}
 \usepackage[autostyle]{csquotes}
+\definecolor{dhscodebg}{rgb}{0.95,0.95,0.95}
+\usepackage{menukeys}
 \author{Volker Strobel}
 \date{\today}
-\title{Knowledge Engineering Tools for Planning in PDDL - Syntax Highlighting, Task Generation and Plan Visualization and Execution - an extensible framework}
+\title{My\textsc{pddl} - A Modular Knowledge Engineering System for the Planning Domain Definition Language}
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
@@ -38,59 +40,86 @@
 \tableofcontents
 
 \begin{abstract}
-Automated planning and scheduling is a key component of artificial
-intelligent (AI) behavior. A planning language that is widely used for
-AI task specifications is the Planning Domain Definition Language
-(PDDL). The aim of this project was to develop tools that simplify the
-extensive knowledge engineering effort required by PDDL and thus
-facilitate the construction of planning domains. For this purpose, an
-extensible interface between the programming language Clojure and PDDL
-was developed, that supports knowledge engineers in developing PDDL
-projects. A tool based on this interface visualizes the type hierarchy
-in PDDL domains, allowing knowledge engineers to keep track of the
-domain structure and others that may have to work with the domains to
-understand them at a glance. As further implementation of this
-interface, a tool that calculates the distances of objects within a
-problem file to each other was created to show the extent of this tool
-and to present a way of bypassing PDDL's limited modeling capacity.
-Lastly, a plug-in for the code editor Sublime Text was implemented to
-aid developers with efficiently creating new PDDL file, navigating
-within the code and with finding and fixing mistakes. In order to test
-the quality of the syntax highlighter and the type diagram generator,
-a user study was conducted with inexperienced PDDL users that were
-asked to develop domains with and without the tools and to
-subsequently evaluate the tools in regard to their usefulness and
-usability. Both the time on task, number of errors and a post
-questionnaire were analyzed and it was found that… All tools developed
-within the scope of this thesis are unique in some regard and they can
-all be altered very easily to work with other editors and planning
-languages. An auxiliary tool to transform PDDL code into Clojure code
-that was needed for the latter two tools, could be relevant for future
-works in the field, as there are many additional use cases such as…
-
-\url{https://www.ece.cmu.edu/~koopman/essays/abstract.html}
+myPDDL is a toolkit that helps knowledge engineers to develop,
+maintain, visualize and manipulate planning tasks, specified in the
+widely used \emph{planning domain definition language} (\textsc{PDDL}). For
+these purposes, new, structured PDDL projects can be created,
+consisting of a domain template and associated problem files. An
+additional tool visualizes the type hierarchy in \textsc{PDDL} domains
+and the object hierarchy in problems, allowing knowledge engineers to
+understand the representation structure at a glance and to keep track
+of developments by a revision control. Distances between objects
+specified by predicates in a problem file can be calculated with an
+auxiliary tool, presenting a way of bypassing \textsc{PDDL}'s limited
+modeling capacity. All these tools are based an interface that
+provides a general way for reading and writing \textsc{pddl}
+specifications by the use of the programming language Clojure. These
+tools are made accessible in the text editor Sublime Text, where two
+additional features, a syntax-highlighter and the possibility of using
+code snippets for common \textsc{pddl} constructs, were implemented. A
+small user study, conducted with eight inexperienced \textsc{pddl}
+users, shows some initial evidence that the syntax highlighting
+feature and the type diagram generator could support knowledge
+engineers in the design and analysis process. So, the users detected
+..\% more errors using the syntax highlighter in the same time as
+non-users and the average task completion time for questions on a
+hierarchical domain could be reduced by ..\%.
 \end{abstract}
+
 \chapter{Introduction}
 \label{sec-1}
-Assume you are a monkey in a cage. There are some bananas dangling
-from the ceiling and a bunch of boxes lying around on the ground. You
-are hungry and those bananas look delicious, but you just cannot reach
-them. To solve the problem at hand it is important that you figure out
-that the boxes can be stacked on top of each other and that you can
-then climb on top of the boxes and reach the bananas, i.e. you need to
-come up with a sequence of actions that take you from your initial
-state to your goal state. This famous experiment is described by
-Wolfgang Köhler in his book \citetitle{kohler1924mentality} and became
-known (in a similar form) in Artificial Intelligence (AI) research as
-the \emph{monkey and banana problem}. Importantly, with this experiment,
-Köhler demonstrated that the monkeys did not acquire the solution by
-trial and error, but rather that they actually understood the
-environment enough to devise a plan only by contemplating the problem
-in the context of their world. As can be seen from the scenario given
-above, planning is a crucial component of problem-solving. However,
-while monkeys and humans are able to create and continuously update
-their mental models of the world thanks to sensors, AI implementations
-are yet to fully master this skill (SOURCE! WHAT IS STILL MISSING?).
+Action planning plays a key role in artificial intelligence. By means
+of a formalization of a planning world, the declared aim of action
+planning is to generate a sequence of actions (a \emph{plan}) that declares
+change the predicate values, from an initial state to a goal state,
+both specified by the value of predicates. Ranging from the control of
+a video game enemy to that of a spacecraft, instances of planning
+tasks can improve and automate work sequences. Action planning
+provides reasons for the choice of actions and the coherent
+deliberation process. (Classification of Concrete Textual Syntax
+Mapping Approaches - Nice Paper
+
+
+ Obviously, the usefulness of planning largely depends on the
+formalization of the underlying problem. Yet, the
+question arises, whether it is not better to develop tools that
+facilitate text-based programming to such a degree that it is as easy
+to use as graphical interfaces while still allowing the user full
+functionality and the necessary insight into the code to edit it
+(Classification of Concrete Textual Syntax Mapping Approaches - Nice
+Paper). As can be seen from the two problems described above, tools
+that ensure greater usability of planning language editors and thus
+help in producing standardized, high-quality domains and problems that
+not only planners but also other knowledge engineers can easily work
+with are greatly needed. The main focus of this thesis is on the
+development of such handy tools that support (and partially automate)
+the planning process. At first, already existing planning tool are
+reviewed in order to put this thesis in context. The body of this
+thesis consists of three parts. The first part introduces the basics
+of planning and the \textsc{pddl} syntax. This is followed by the
+second part, which presents a extensible interface between the
+programming language Clojure \textcite{hickey2008clojure} and
+\textsc{pddl}. Based on this interface, a plug-in for the text and
+code editor Sublime Text (ST) was implemented that consists of a type
+diagram generator and a distance calculator. Furthermore, the
+development, application and customization of a sophisticated syntax
+highlighter for ST will be presented. The third part is devoted to the
+evaluation of the type diagram generator and the syntax highlighter in
+terms of their usefulness and usability. As means to this end, a small
+user study was conducted with subjects that had no prior \textsc{pddl}
+experience. The results and their implications will be discussed
+before an outlook for future research and developments in the field
+concludes this thesis (perhaps mention results and outlook here). This
+thesis refers to deterministic planning and typed domains.
+
+In the course of the development of the PDDL/Clojure interface, great
+ potential was seen for facilitating the PDDL design process and
+ thereby pushing the acceptance and usage of PDDL in real world
+ models.I needed tools to help me create the great diversity of
+ domains needed to test the possibilities and limitations of PDDL,
+ i.e. tools to implement domains faster and with less errors.
+
+\textsc{pddl} 
 Thus, the most common and extensive approach to planning in AI to this
 day is by means of knowledge engineering (KE). In KE, a human expert
 that is familiar with the underlying syntax integrates world
@@ -110,7 +139,7 @@ be ignored (SOURCE). Performances of planners are largely dependent on
 the input they receive and the manner in which it is written (SOURCE).
 Therefore, focusing on the usability of planning languages and hence
 facilitating the knowledge engineering process is worthwhile. Although
-recent PDDL extensions increased the expressiveness of PDDL and thus
+recent \textsc{pddl} extensions increased the expressiveness of \textsc{pddl} and thus
 allowed for real-world applications (SOURCE!!!), they also demand a
 higher level of knowledge and attention on the part of the knowledge
 engineer. Particularly during the first International Competition on
@@ -119,322 +148,210 @@ were made in shifting the modelling process from a text-based to a
 graphical programming environment. Even though such tools seem more
 user-friendly at first, they also demonstrated considerable drawbacks
 such as limited functionality, expenditure of time and editing
-difficulty (SOURCE). Obviously, the usefulness of such tools depends
-on the demands of the knowledge engineer. Yet, the question arises,
-whether it is not better to develop tools that facilitate text-based
-programming to such a degree that it is as easy to use as graphical
-interfaces while still allowing the user full functionality and the
-necessary insight into the code to edit it (Classification of Concrete
-Textual Syntax Mapping Approaches - Nice Paper). As can be seen from
-the two problems described above, tools that ensure greater usability
-of planning language editors and thus help in producing standardized,
-high-quality domains and problems that not only planners but also
-other knowledge engineers can easily work with are greatly needed. The
-main focus of this thesis is on the development of such handy tools
-that support (and partially automate) the planning process. At first,
-already existing planning tool are reviewed in order to put this
-thesis in context. The body of this thesis consists of three parts.
-The first part introduces the basics of planning and the PDDL syntax.
-This is followed by the second part, which presents a extensible
-interface between the programming language Clojure
-\textcite{hickey2008clojure} and PDDL. Based on this interface, a
-plug-in for the text and code editor Sublime Text (ST) was implemented
-that consists of a type diagram generator and a distance calculator.
-Furthermore, the development, application and customization of a
-sophisticated syntax highlighter for ST will be presented. The third
-part is devoted to the evaluation of the type diagram generator and
-the syntax highlighter in terms of their usefulness and usability. As
-means to this end, a small user study was conducted with subjects that
-had no prior PDDL experience. The results and their implications will
-be discussed before an outlook for future research and developments in
-the field concludes this thesis (perhaps mention results and outlook
-here). This thesis refers to deterministic planning and typed domains.
+difficulty (SOURCE).
 
 TODO: Add inspecting of domains as main focus of my work
 
 \section{Finding of the research topic}
 \label{sec-1-1}
 During the research for this thesis, it turned out, that the tools for
-writing and expanding extensive PDDL descriptions in a reasonable time
+writing and expanding extensive \textsc{pddl} descriptions in a reasonable time
 are limited, while tools for checking plans (\textcite{howey2004val} +
-second topic, \textcite{glinsky2011visplan}) and applying PDDL
+second topic, \textcite{glinsky2011visplan}) and applying \textsc{pddl}
 descriptions (broad range of planner)s, are far more matured. While
 the original research interest was concentrated on possibilities and
-limitations of artificial intelligence planning using PDDL, a focus
-shift was performed, recognizing, that the main PDDL limitation is
+limitations of artificial intelligence planning using \textsc{pddl}, a focus
+shift was performed, recognizing, that the main \textsc{pddl} limitation is
 still the \emph{basic} modeling process, meaning that efficient modeling of
 useful domains and problems \emph{by hand} is hardly possible by the
-existing tools (that's too hard!). Anymore, PDDL's general
+existing tools (that's too hard!). Anymore, \textsc{pddl}'s general
 representation ability is already limited through the missing support
 of mathematical operations besides basic arithmetics. On this account,
-a possibility for \emph{extending} PDDL was searched and found in Clojure,
-using the relatedness of both languages embellished by PDDL's
-LISP-derived notation. In the course of the development of this
-PDDL/Clojure interface between great potential was seen for
-facilitating the PDDL design process and thereby push the acceptance
-and usage of PDDL in real world models. The customizability and
+a possibility for \emph{extending} \textsc{pddl} was searched and found in Clojure,
+using the relatedness of both languages embellished by \textsc{pddl}'s
+\textsc{lisp}-derived notation. In the course of the development of this
+\textsc{pddl}/Clojure interface between great potential was seen for
+facilitating the \textsc{pddl} design process and thereby push the acceptance
+and usage of \textsc{pddl} in real world models. The customizability and
 extensibility of the ST editor as well as the broad variety of
 build-in editing features, constituted a convenient basis for the
-design of a development environment for PDDL. A large variety of
+design of a development environment for \textsc{pddl}. A large variety of
 language-independent plug-ins exist and is constantly developed, like
 package managers, git connection . This project focuses the 
 A key concept for the development was the ease of application, so that
 new users should be able to effectively use the majority of functions
 intuitively within a short time.
-\chapter{Related Work}
-\label{sec-2}
-Related work primarily compromises knowledge engineering tools,
-consisting of at least the possibility to edit PDDL files in a textual
-environment and providing supporting functionality or checking the
-correctness of PDDL.
 
-\section{PDDL Studio}
-\label{sec-2-1}
-PDDL Studio \parencite{plch2012inspect}, is an application for
-creating and managing PDDL projects. A project is regarded as a
-collection of PDDL files. Its IDE is inspired by Microsoft Visual
-Studio and imperative programming paradigms. Its core function is the
-PDDL project management, consisting of managing PDDL projects and
-creating, adding , so that corresponding as well as inspecting,
-analyzing and modifying the underlying domain and problem files.
-Besides general editing features like line counting, bracket matching
-and auto-save, it supports PDDL specific editing features including
-syntax highlighting, code folding (collapse code blocks to see only a
-single visible line) and context aware code completions, all based on
-a PDDL to XML parser. This parser can also be used to convert PDDL to
-XML files and vice versa for domain and problem file editing. Also
-based on this parser is a included, sophisticated on the fly error
-detection, recognizing both syntax errors (missing keywords,
-parentheses, etc.) and semantic errors (wrong type of predicate
-parameters, misspelled predicates, etc.). As semantic errors can be of
-a \emph{interfile nature}, meaning that there is a mismatch between domain
-and problem file, PDDL Studio can detect such errors. TODO: Explain
-further. The code completion feature allows for the selection of
-completion suggestions for a for standard PDDL constructs and dynamic
-list completions, that were used in the current project (TODO:
-technical terms!). An interface allows the integration of command line
-planners in order to run and compare different planning software. that
-means syntax and semantic checking, syntax highlighting, code
-completion and project management. While colors for highlighted code
-can be customized, the background color of the tool is always white.
-In its most recent version (of 15.6.2012), PDDL Studio's parser
-supports PDDL 1.2, the official language of the first and second IPC
-in 1998 and 2000 respectively. Since then, PDDL has largely evolved,
-the most recent and most powerful version is PDDL 3.1, supporting
-amongst others durative actions. PDDL Studio does not support the
-insertion of larger code skeletons (called \emph{snippets} in this thesis).
-The customization features (without editing the C source code) are
-limited to the choice of font style and color of highlighted PDDL
-expressions. PDDL Studio is written as standalone program, meaning
-that there are no PDDL independent no extensions .
-\section{itSIMPLE}
-\label{sec-2-2}
-The itSIMPLE project is a graphical interface that allows for
-designing planning models in an object-oriented approach, using Uniﬁed
-Modeling Language (UML) diagrams. UML was invented in order to
-standardize modeling in software engineering (SE). It consists of
-several part notations, the here presented tool uses the 'class
-diagram' notation, as PDDL types and classes in OOP have strong
-resemblance (see Tiago 2006, p 535). itSIMPLE proposes UML.P (UML in a
-Planning Approach), a UML variant that specifies a structure for Class
-(domain specification), Object (problem specification) and StateChart
-Diagrams (dynamic behavior of actions).
-
-itSIMPLE's main focus is to support knowledge engineers in the initial
-stages of the design phase by providing an opportunity for the
-transition of the informality of real world requirements to domain
-models as formal specifications. The assertive statement is to provide
-a tool for a \enquote\{disciplined process of elicitation, organization
-and analysis of requirements\}. Petri Nets can be generated from the
-UML model and be used to validate the planning domain's static and
-dynamic bevahior. Finally, a PDDL representation can be generated from
-the UML diagram, if required, edited, and finally used as input to a
-variety of planning systems. The generated plan can be inspected using
-the in-build plan analysis, consisting of a plan visualization and
-plan simulation (TODO: write some more info). itSIMPLE's mdoeling
-workflow is unidirectional, as changes in the PDDL domain do not
-affect the UML model and UML models have to be modeled manually,
-meaning that they cannot by generated using PDDL.
-
-Starting in version 4.0 (currently in beta status as of writing of
-this thesis) itSIMPLE expanded its features to allow the creation of
-PDDL projects from scratch (i.e. without UML to PDDL translation
-process). Thus far, the PDDL editing features are basic (see YouTube
-video). A minimal syntax highlighting feature recognizes PDDL keywords
-and variables. Furthermore, itSIMPLE provides templates for PDDL
-constructs (similar to the code snippets presented in this thesis),
-consisting of requirement specifications, predicates, actions, goals
-and initial definitions. 
-
-itSIMPLE's original and main design approach is reversed to the
-process presented in this paper. While itSIMPLE generates PDDL models
-from UML specifications, myPDDL generates type diagrams from PDDL. So,
-while itSIMPLE focuses on the initial design phase, the tools
-presented here are made for later stages.
-
-However, \textcite{tonidandel2006reading} describe a translation
-process, similar to the approach in this thesis, from a PDDL domain
-specification to an object-oriented UML.P (UML in a Planning Approach)
-model as possible integration for itSIMPLE. According to an email from
-This translation process has not been fully implemented to date /
-there is no release with this feature. 
-
-This translation process does consider the order of variables as an
-indicator for the importance.
-
-\emph{Create\(_{\text{specializations}}\)} is the function for creating the typing
-diagram. \emph{Create\(_{\text{associations}}\)} creates binary associations between
-classes, whereby the first argument is considered as the \emph{main
-argument}. 
-This process requires semantic assumptions: the first argument of 
-
-In an e-mail to, Tiago Vaquero (one of the authors), on February 28,
-2014,, affirms that, the translation is not functional yet.
-
-Currently there exists no implementation from PDDL to UML. UML.P's
-semantic associations, 
-
-
-myPDDL allows for a representation of a arbitrary, n-ary predicates,
-without .
-On the one hand, one the other hand, this enables the visualization of
-n-ary predicates.
-
-itSIMPLE's modeling process is focused on a graphical design
-process and the newly added PDDL editing features are basic,
-consisting of highlighted keywords and variables. The templates
-primarily insert PDDL keywords, without showing the required syntax.
-It is not possible to define custom key shortcuts. itSIMPLE is not
-customizable (without editing the Java source code). There is no
-possibility to show line numbers, matching brackets or code folding.
-
-myPDDL shell support initial creating of domains (by code snippets)
-and checking for validity of domains and problem by the type
-generator.
-\section{PDDL-Mode for Emacs}
-\label{sec-2-3}
-PDDL-mode (announced 2005 in a mailing list) is a major Emacs mode for
-browsing and editing PDDL 2.2 files. It provides syntax highlighting
-by basic pattern matching of keywords (and variables ?), regardless of
-the current context. automatic indentation and completions and bracket
-matching. Code snippets for the insertion of domains, problems and
-actions are provided. A declaration menu shows all actions and
-problems in the current PDDL file.
-
-Being an Emacs mode, PDDL-mode is highly and easily customizable. Text
-editor features, like auto-completion, can be extended independently
-of this mode, by installing further Emacs modes.
-
-\emph{myPDDL} uses Sublime Text, an editor, that is extensible and
-customizable as well. The syntax highlighting feature of \emph{myPDDL}
-supports all PDDL versions, up to the most recent version 3.1. in
-contrast to \emph{PDDL-mode}, \emph{myPDDL-h's} syntax highlighting feature is
-context-dependent and more extensive, as it can recognize almost any
-PDDL construct and highlight it according to its semantic.
-
-By syntax highlighting, both tools can support code navigation,
-however, \emph{PDDL-mode} does not allow for an fast and evident error
-detection.
-\section{Conclusion \& Summary}
-\label{sec-2-4}
-As it can be seen, there is need for an up-to-date, customizable, text
-editor with PDDL support, that supports the current standard PDDL 3.1. 
 \chapter{Planning Basics and PDDL}
-\label{sec-3}
+\label{sec-2}
 
-Introduction to planing:
-\url{http://books.google.de/books?id=eCj3cKC_3ikC&printsec=frontcover&dq=automated+planning&hl=en&sa=X&ei=3wgNU5fQIcHx4gSTsoDABA&redir_esc=y#v=onepage&q=automated%20planning&f=false}
+In KE, a human expert that is familiar with the underlying syntax
+integrates world information into a computer system
+\textcite{feigenbaum1983fifth}. In automated planning, this is usually
+done using a planning language applied in an editor. While humans can
+sense and represent their environment in a way given by nature (and
+make choices), automated software based planning systems need a
+artificial formalization of a planning problem. Planning is the
+decision making process that finally leads to a sequence of actions.
 
-Classical Planning!
+Planning tasks can model all kind of problems, however, one needs a
+way of representing. For this purpose, one needs diverse constructs
+that can represent the state and change of planning tasks.
+
+Consider the following (fictional) world that should be integrated
+into a computer system :
+
+If a hacker is hungry, he has to eat some pizza in order to exploit
+vulnerable software.
+
+In this description, we can identify several constructs, that should
+somehow be modeled in \textsc{pddl}. There are \emph{types} of entities
+(hackers, software, pizza), logical states, that means predicates,
+that can be true or false (a hacker can be hungry or not, software can
+be vulnerable or not) and actions that a hacker can perform, exploit
+(that means hack into) software and \emph{eat pizza}.
+
+This world description would be modeled in \textsc{pddl}, using a
+domain file. While this description provides general, abstract
+specifications and conditions, no problem is yet declared.
+
+In order to be able to solve a problem in this world, one first needs
+to specify a problem particular to this domain.
+
+Consider the following problem: \emph{Gary} is a \emph{hungry} hacker who should
+somehow exploit the vulnerable software \emph{MagicFailureApp}. Some
+pepperoni pizza is laying on his desk.
+
+Gary wants to have help of an automated planning system, tn order to
+plan the sequence of required actions (\emph{Who has to eat pizza and
+when?}, \emph{When and what to hack?}), leading from the initial state
+(Gary is hungry) to the goal state (software is hacked). The problem
+has to be formalized again, this time in a problem file. Finally, he
+can fed the domain and problem file into a planner and generate the
+sequence of actions.
+
+Summing up, \textsc{pddl} planning tasks are composed of two separate
+files:
+
+\begin{description}
+\item[{Domain file}] Description of general types, predicates, (functions)
+and actions \(\Rightarrow\) uninstanciated problem independent
+\item[{Problem file}] Description of a concrete problem environment within
+a particular domain \(\Rightarrow\) instance speciﬁc
+\end{description}
 
 
-Action planning plays a key role in artificial intelligence. Ranging
-from the control of a (intelligent) household robot (or video game
-enemy) to the operational procedure of a complex \ldots{} , instances of
-planning tasks can possibly improve and automate work sequences. AP
-provides reasons for the choice of actions and the coherent
-deliberation process. By means of a formalization of a planning world
-by the state space (predicates \& actions - operations), AP's
-declared aim is to generate a sequence of these actions (a \emph{plan})
-that can change the predicate values, from an initial state to a goal
-state, both specified by the value of predicates.
+This separation allows for an powerful process of task modeling: While
+general instances are described in the domain file, specific instances
+of problems are created in the problem files. So, one abstract
+modeling of a \emph{world} can be used for solving many problem instances.
+Planning is concerned with the automatic generation of plans, that
+means sequences of actions for the solution of a problem, specified
+with a specific domain file.
 
-\begin{itemize}
-\item PDDL: Levels of expressivity (level 1 .. 4)
-\item Formal description of PDDL tasks
-\end{itemize}
 
-Following this definition, in PDDL this there would be three parts:planner and use the generated solution file (\emph{plan}).
 
-The planning domain definition language (PDDL) is a formal language
+Gary uses the tools presented in this paper and the planning software
+SGPlan\(_{\text{6}}\).
+
+\emph{Gary} is a \emph{hungry} \emph{white-hat} hacker who should exploit Gisela's vulnerable
+\emph{application} software \emph{MysteriousTexMexMix} on behalf of her. In order to
+plan the sequence of required actions, Gary uses the tools presented
+in this paper and the planning software SGPlan\(_{\text{6}}\).
+
+
+Hackers can be further divided by their intention
+(\emph{white hats} \emph{black hats}, \emph{gray hats}).
+
+\emph{Software} can be
+\emph{application} software, \emph{system} software or programming \emph{tools}.
+System software can be further divided into drivers and operating
+systems.
+
+
+In order to represent the planning problems in a way, so that planning
+software can use it, standardized planning formalization are needed.
+The de facto planning language is \texts{pddl} (SOURCE).
+
+The planning domain definition language (\textsc{pddl}) is a formal language
 and the quasi standard for the description of planning tasks.  
-PDDL was first described in PDDL-the planning domain definition
+\textsc{pddl} was first described in \textsc{pddl}-the planning domain definition
 language (1998) and has been in constant development since then, .
 This thesis makes use of \textcite{pddl3.1} if not otherwise stated. 
 
-PDDL planning task specifications are composed of two separate files:
+In order to represent situations 
 
-\begin{itemize}
-\item Domain file: description of general types, predicates, functions
-and actions -> uninstanciated problem independent
-\item Problem file: description of a concrete problem environment -> instance speciﬁc
-\end{itemize}
-
-
-This separation allows for an intuitive process of task modeling:
-While general instances are described in the domain file, specific
-instances of problems are created in the problem files.
+Following this definition, in \textsc{pddl} this there would be three
+parts:planner and use the generated solution file (\emph{plan}).
 
 TODO: Add predicates and actions to domain, 
 init and goal to problem and sequence of actions to plan
 \begin{figure}[htb]
 \centering
 \includegraphics[width=.9\linewidth]{../img/pddl-workflow.pdf}
-\caption{\label{fig:workflow}PDDL Planning workflow}
+\caption{\label{fig:workflow}\textsc{pddl} Planning workflow}
 \end{figure}
-The PDDL worklow. domain.pddl and problem.pddl represent typical
+The \textsc{pddl} worklow. domain.pddl and problem.pddl represent typical
 planning specification files, with the standard file extension \emph{.pddl}
 
+\textsc{pddl} is manifold and not all parts are mandatory components
+of task specifications, nevertheless, most domains used by ICAPS
+follow the here described format. More complete descriptions as well
+as a formulations in Backus-Naur form (BNF) can be found in
+\textcite{fox2003pddl2} for \textsc{pddl} 2.2 and
+\textcite{kovacs2011bnf} for \textsc{pddl} 3.1. The rest of this
+section will give an rather informal overview of \textsc{pddl}, to
+provide a basis for the rest of this thesis.
 
-This thesis is concerned with deterministic planning.
+\section{Analysis}
+\label{sec-2-1}
+How to Design Classes, describes a incremental process for designing
+class hierarchies in object oriented programming (\textsc{oop}). The
+general principles will be transferred to \textsc{pddl}, so that In
+accordance to the \emph{good principles} of object oriented programming
+(HTDC), designing new analysis of writing new task specifications
+basically is a stepwise, iterative process:
 
-The syntax of basic constructs of these two files shell be investigated
-further in this section. More complete descriptions as well as a
-formulations in Backus-Naur form (BNF) can be found in
-\textcite{fox2003pddl2} for PDDL 2.2 and \textcite{kovacs2011bnf} for
-PDDL 3.1. 
+\begin{description}
+\item[{Analysis}] Every task specification begins by an analysis of the
+informal world and the problem statement. In this design
+step, one determines relevant types, adequate examples
+and identifies both the initial and the goal state. One
+keeps track of the analysis using any kind of list.
 
-\section{Domain File More scientific?}
-\label{sec-3-1}
+\item[{Type diagram}] Based on the preceding analysis, the relationship of
+the identified types is represented, using a
+diagram. This can be done by pen and paper or by
+means of a graph editor.
+\item[{Domain definition}] In this step, the (graphical) diagrams are
+translated into \textsc{pddl}. Furthermore predicates and actions
+are declared.
 
-\begin{verbatim}
-(define (domain name)
-    
-  (:requirements :requirement1
-                 :requirement2...)
+\item[{Problem definition}] After completing the domain definition,
+objects can be instantiated in the problem file. By means of the
+predicates, declared in the domain file, the initial and goal logical
+values are defined.
+\end{description}
 
-  (:types subsubtype1 subsubtype2 – subtype1
-          subtype1 – type1
-          subtype2 – type2
-          ...
-          type1 type2 …  - object)
-  
-  (:predicates (predicateName1 ?var1 – typeOfVar1)
-               (predicateName2 ?var2 – typeOfVar2 ?var3 – typeOfVar3)
-               ...)
-     
-  (:action actionName1
-    :parameters (...)
-    :precondition (...)
-    :effect (...))
-  
-  (:action actionName2
-    :parameters (...)
-    :precondition (...)
-    :effect (...))
-    
-...)
-\end{verbatim}
+Two further steps  
+
+\begin{description}
+\item[{Planning}] Provide domain and problem definition to a planner
+\item[{Plan analysis}] 
+\end{description}
+
+Plan analysis can be supported by VAL or Visplan
+ A further convenient method is the use of \textsc{itSimple}, so that
+     the hierarchy can be translated to \textsc{pddl}.
+
+
+The syntax of basic and common constructs of these two files shell be
+investigated further in this section, in a step-by-step approach,
+where both domain and problem file are described by an example:
+\emph{Gary's Hacker World}, a short, yet adequate task specifications for
+the hacker \emph{Gary} that tries to \emph{exploit} vulnerable software.
+\section{Domain File}
+\label{sec-2-2}
 
 The domain file contains the frame for planning tasks and determines,
 which types and predicates are available and which actions are possible.
@@ -442,32 +359,46 @@ which types and predicates are available and which actions are possible.
 (Usually, domain files have a strict format: All keyword arguments must appear
 in the order specified in the manual (an argument may be omitted,
 according to 1998, only the strict part requires this order) and
-just one PDDL definition (of a domain, problem, etc.) may appear per
+just one \textsc{pddl} definition (of a domain, problem, etc.) may appear per
 file (same here). \cite[6]{fox2003pddl2}.)
 
-The in Example 1 declared domain shell be explained by an example.
-
 \subsection{Define}
-\label{sec-3-1-1}
-Every domain file starts with (define (domain NAME) \ldots{}) where,
-NAME is a string that starts with a character, and then contains
-further characters, number, hyphens (-) or underscores (\_).  
+\label{sec-2-2-1}
+Every domain file starts with \texttt{(define (domain NAME) ...)} where,
+\texttt{NAME} is a string that starts with a character, and then contains
+further characters(\texttt{a-z}), numbers (\texttt{0-9}), hyphens (\texttt{-}) or
+underscores (\texttt{\_}). \textsc{PDDL}'s syntax is case insensitive.
+\\
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+; Gary's Hacker world - A realistic example
+(define (domain garys-hacker-world)
+\end{minted}
 \subsection{Requirements}
-\label{sec-3-1-2}
-The requirements part is not a mandatory part of a PDDL domain file.
-However, PDDL supports different "levels of expressivity", that means
-subsets of PDDL features \textcite[1]{mcdermott1998pddl}. As most
-planners only support a subset of PDDL the requirements part is useful
+\label{sec-2-2-2}
+
+\begin{itemize}
+\item \textsc{pddl}: Levels of expressivity (level 1 .. 4)
+\item Formal description of \textsc{pddl} tasks
+\end{itemize}
+
+\textsc{pddl} supports different "levels of expressivity", that means
+subsets of \textsc{pddl} features \textcite[1]{mcdermott1998pddl}. As most
+planners only support a subset of \textsc{pddl} the requirements part is useful
 for determining if a planner is able to act on a given problem. They
 are declared by the \verb~(:requirements ...)~ part. Some often used
 requirements include \verb~:strips~ and \texttt{:typing}. Lists of requirement
 flags and their meaning can be found in \textcite{fox2003pddl2} for
-PDDL 2.1 and \textcite{kovacs2011bnf} for PDDL 3.1 It should be
-mentioned, that almost no planner supports every part of PDDL.
-\subsection{Types}
-\label{sec-3-1-3}
+\textsc{pddl} 2.1 and \textcite{kovacs2011bnf} for \textsc{pddl} 3.1 It should be
+mentioned, that almost no planner supports every part of \textsc{pddl}.
 
-In the \texttt{(:typing ...)} part, PDDL allows for structuring and typing
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:requirements :typing
+               :negative-preconditions)
+\end{minted}
+\subsection{Types}
+\label{sec-2-2-3}
+
+In the \texttt{(:types ...)} part, \textsc{pddl} allows for structuring and typing
 the domain. Typed lists are used to assign types to entity lists.
 Relations can be expressed by a type hierarchy. whereby types can be
 subtypes of Like that, parameters in actions can be typed, as well as
@@ -484,327 +415,510 @@ the list is declared to be of the rst type that follows it, or
 object if there are no types that follow 
 
 If order to be able to use type hierarchys in a domain file, the
-requirement :typing should be declared (TODO: is :adl enough?).
+requirement :typing should be declared.
 
-\begin{verbatim}
-(:types subsubtype1 subsubtype2 – subtype1
-        subtype1 – type1
-        subtype2 – type2
-        ...
-        type1 type2 …  - object)
-\end{verbatim}
+As 
 
-Every PDDL domain includes the built-in types \texttt{object} and \texttt{number},
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:types hacker non-hacker - person
+        white-hat gray-hat black-hat - hacker
+        application system tool - software
+        driver os - system
+        pizza person software - object)
+\end{minted}
+\caption{\label{gary-types}Always this gary}
+\end{listing}
+
+Every \textsc{pddl} domain includes the built-in types \texttt{object} and \texttt{number},
 whereby every defined type is subtype of \texttt{object}. 
+
+\subsection{Predicates}
+\label{sec-2-2-4}
+Predicates are templates for logical facts (therefore can be true or
+false) and describe the properties of objects. This part declares
+names, number of arguments, together with the corresponding type. The
+general syntax is \texttt{(p ?v1 – t1 ?v2 - t2 ...)}, whereby \texttt{?} followed by
+a name, declares a variable, and the expression after the hyphen (\texttt{-})
+determines the type of this variable (that has to be declared in the
+typing section first). The number of variables determines the arity of
+a predicate, ranging from zero arguments (0-ary predicate) to any
+positive integer (n-ary predicate). Type assignments for variables
+that have the same type and are declared side by side can be grouped,
+so that \texttt{(p ?v1 ?v2 - t)} is similar to \texttt{(p ?v1 - t ?v2 - t)}.
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:predicates (has ?s - software ?p - person)
+             (hungry ?p - person)
+             (vulnerable ?s - software)
+             (exploited ?s - software))
+\end{minted}
+\caption{This section declares four predicates: has (2-ary), hungry, vulnerable and exploited (1-ary).}
+\end{listing}
 \subsection{Actions}
-\label{sec-3-1-4}
+\label{sec-2-2-5}
 
-Actions are the tools for 
+Actions are the operators in \textsc{PDDL} and are able to change the
+truth value of predicates (and therefore properties of objects), so
+that problems can be solved (if there exists a solution). Actions
+usually consist of three parts
+\begin{description}
+\item[{\texttt{:parameters}}] A (typed) argument list that determines which
+variables can be used in the precondition and
+effect part.
+\item[{\texttt{:precondition}}] The logical expression that is expressed in this
+section has to be \texttt{true}, before an action can be applied.
+\item[{\texttt{:effect}}] The effect describes the post-condition of an action,
+that means it assigns new truth values to the mentioned
+predicates.
+\end{description}
 
-PDDL 3.1 supports two types of actions: durative-action and the
+Since \textsc{pddl2.2}, two types of actions are supported: durative-actions and the
 'regular' action.
-\subsection{Functions}
-\label{sec-3-1-5}
-Functions are not supported by many planners (source!) and, before
-PDDL 3.1 they could only be modeled as 
 
-It is notable that before PDDL 3.0 the keyword functors was used instead
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+;; Eat a delicious pizza
+(:action eat-pizza
+  :parameters (?pi - pizza ?p - person)
+  :precondition (hungry ?p)
+  :effect (not (hungry ?p)))
+
+;; Exploit vulnerable software of a victim
+(:action exploit        
+  :parameters (?h - hacker ?s - software ?p - person)
+  :precondition (and (has ?s ?p)
+                     (vulnerable ?s)
+                     (not (hungry ?h)))
+  :effect (exploited ?s)))
+\end{minted}
 \section{Problem File}
-\label{sec-3-2}
+\label{sec-2-3}
 
-Problems are designed with respect to a domain. Domains usually have
-multiple problems p01.pddl, p02.pddl, \ldots{} Problems declare the initial
-world state and the goal state to be reached. They instantiate types,
-in they way that they create objects 
+Problems declare the initial world state and the goal state to be
+reached on the basis of the logical values of the instantiated
+predicates. Furthermore, they instantiate types and their hierarchy,
+in they way that they create \emph{objects}.
+
+
+\subsection{Define (define (problem NAME) \ldots{})}
+\label{sec-2-3-1}
+Analog to the domain definition, problem files are initiated with
+\texttt{(define (problem NAME) ...)}.
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(define (problem garys-huge-problem)
+\end{minted}
+\caption{Initiating the problem file with the name garys-huge-problem}
+\end{listing}
+\subsection{Domain (:domain NAME)}
+\label{sec-2-3-2}
+Problems are designed with respect to a domain, which has to be
+declared here (that means the NAME in \texttt{(:domain NAME)} and \texttt{(define
+(domain NAME) ...)} have to be equal.
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:domain NAME)
+\end{minted}
+\subsection{Objects (:objects \ldots{})}
+\label{sec-2-3-3}
+Objects represent the instantiating of abstract types.
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:objects big-pepperoni-pizza - pizza
+          gary - white-hat
+          gisela - non-hacker
+          mysterious-tex-mex-mix - application)
+\end{minted}
+\caption{The instantiated objects. For example, \texttt{gisela - non-hacker} means that the object gisela is a non hacker.}
+\end{listing}
+\subsection{Init (:init \ldots{})}
+\label{sec-2-3-4}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:init (hungry gary)
+       (vulnerable mysterious-tex-mex-mix)
+       (has mysterious-tex-mex-mix gisela))
+\end{minted}
+\subsection{Goal (:goal \ldots{})}
+\label{sec-2-3-5}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:goal (exploited mystERIOUS-TEX-MEX-MIX)
+\end{minted}
 \section{Planning}
-\label{sec-3-3}
+\label{sec-2-4}
 
 A planning solution is a sequence of actions that lead from the
-initial state to the goal state. PDDL itself does not declare any
+initial state to the goal state. \textsc{pddl} itself does not declare any
 uniform plan layout.
 
 The input to the planning software is a domain and a belonging
 problem, the output is usually a totally or partially ordered plan.
-Due to the yearly ICAPS, there is a broad range of available planners.
-This thesis uses the planner SGPLAN\(_{\text{6}}\) \textcite{hsu2008sgplan}, a
+Due to the yearly \textsc{icaps}, there is a broad range of available planners.
+This thesis uses the planner SGPlan\(_{\text{6}}\) \textcite{hsu2008sgplan}, a
 'extensive' (in the sense of its supporting features) planner for both
 temporal and non-temporal planning problems.
 
 An overview of different planners is given at
 \url{http://ipc.informatik.uni-freiburg.de/Planners}.
 
-
-
 Additionally, the
 quality of error messages is very diversified. While some simple
 state: error occured, other list the problem and the line.
 
+\chapter{Related Work}
+\label{sec-3}
+Related work primarily compromises knowledge engineering tools,
+consisting of at least the possibility to edit \textsc{pddl} files in
+a textual environment and providing supporting functionality or
+checking the correctness of \textsc{pddl}.
+
+\section{PDDL Studio}
+\label{sec-3-1}
+\textsc{pddl} Studio \parencite{plch2012inspect}, is an application
+for creating and managing \textsc{pddl} projects. A project is
+regarded as a collection of \textsc{pddl} files. Its IDE is inspired
+by Microsoft Visual Studio and imperative programming paradigms. Its
+core function is the \textsc{pddl} project management, consisting of
+managing \textsc{pddl} projects and creating, adding , so that
+corresponding as well as inspecting, analyzing and modifying the
+underlying domain and problem files. Besides general editing features
+like line counting, bracket matching and auto-save, it supports
+\textsc{pddl} specific editing features including syntax highlighting,
+code folding (collapse code blocks to see only a single visible line)
+and context aware code completions, all based on a \textsc{pddl} to
+\textsc{xml} parser. This parser can also be used to convert
+\textsc{pddl} to \textsc{xml} files and vice versa for domain and
+problem file editing. Also based on this parser is a included,
+sophisticated on the fly error detection, recognizing both syntax
+errors (missing keywords, parentheses, etc.) and semantic errors
+(wrong type of predicate parameters, misspelled predicates, etc.). As
+semantic errors can be of a \emph{interfile nature}, meaning that there is
+a mismatch between domain and problem file, \textsc{pddl} Studio can
+detect such errors. TODO: Explain further. The code completion feature
+allows for the selection of completion suggestions for a for standard
+\textsc{pddl} constructs and dynamic list completions, that were used
+in the current project (TODO: technical terms!). An interface allows
+the integration of command line planners in order to run and compare
+different planning software. that means syntax and semantic checking,
+syntax highlighting, code completion and project management. While
+colors for highlighted code can be customized, the background color of
+the tool is always white. In its most recent version (of 15.6.2012),
+\textsc{pddl} Studio's parser supports \textsc{pddl} 1.2, the official
+language of the first and second IPC in 1998 and 2000 respectively.
+Since then, \textsc{pddl} has largely evolved, the most recent and
+most powerful version is \textsc{pddl} 3.1, supporting amongst others
+durative actions. \textsc{pddl} Studio does not support the insertion
+of larger code skeletons (called \emph{snippets} in this thesis). The
+customization features (without editing the C source code) are limited
+to the choice of font style and color of highlighted \textsc{pddl}
+expressions. \textsc{pddl} Studio is written as standalone program,
+meaning that there are no \textsc{pddl} independent no extensions .
+\section{ItSIMPLE}
+\label{sec-3-2}
+The \textsc{itSimple} project is a graphical interface that allows for
+designing planning models in an object-oriented approach, using Uniﬁed
+Modeling Language (UML) diagrams. UML was invented in order to
+standardize modeling in software engineering (SE). It consists of
+several part notations, the here presented tool uses the 'class
+diagram' notation, as \textsc{pddl} types and classes in OOP have strong
+resemblance (see Tiago 2006, p 535). \textsc{itSimple} proposes UML.P (UML in a
+Planning Approach), a UML variant that specifies a structure for Class
+(domain specification), Object (problem specification) and StateChart
+Diagrams (dynamic behavior of actions).
+
+\textsc{itSimple}'s main focus is to support knowledge engineers in the initial
+stages of the design phase by providing an opportunity for the
+transition of the informality of real world requirements to domain
+models as formal specifications. The assertive statement is to provide
+a tool for a \enquote\{disciplined process of elicitation, organization
+and analysis of requirements\}. Petri Nets can be generated from the
+UML model and be used to validate the planning domain's static and
+dynamic bevahior. Finally, a \textsc{pddl} representation can be generated from
+the UML diagram, if required, edited, and finally used as input to a
+variety of planning systems. The generated plan can be inspected using
+the in-build plan analysis, consisting of a plan visualization and
+plan simulation (TODO: write some more info). \textsc{itSimple}'s mdoeling
+workflow is unidirectional, as changes in the \textsc{pddl} domain do not
+affect the UML model and UML models have to be modeled manually,
+meaning that they cannot by generated using \textsc{pddl}.
+
+Starting in version 4.0 (currently in beta status as of writing of
+this thesis) \textsc{itSimple} expanded its features to allow the creation of
+\textsc{pddl} projects from scratch (i.e. without UML to \textsc{pddl} translation
+process). Thus far, the \textsc{pddl} editing features are basic (see YouTube
+video). A minimal syntax highlighting feature recognizes \textsc{pddl} keywords
+and variables. Furthermore, \textsc{itSimple} provides templates for \textsc{pddl}
+constructs (similar to the code snippets presented in this thesis),
+consisting of requirement specifications, predicates, actions, goals
+and initial definitions. 
+
+\textsc{itSimple}'s original and main design approach is reversed to the
+process presented in this paper. While \textsc{itSimple} generates \textsc{pddl} models
+from UML specifications, my\textsc{pddl} generates type diagrams from \textsc{pddl}. So,
+while \textsc{itSimple} focuses on the initial design phase, the tools
+presented here are made for later stages.
+
+However, \textcite{tonidandel2006reading} describe a translation
+process, similar to the approach in this thesis, from a \textsc{pddl} domain
+specification to an object-oriented UML.P (UML in a Planning Approach)
+model as possible integration for \textsc{itSimple}. According to an email to
+one of the authors, there is currently no release with this feature.
+
+This translation process does consider the order of variables as an
+indicator for the importance and therefore makes semantic assumptions
+about the structure of the domain. That means that the first argument
+of an predicate or action is considered as the \emph{main} argument - so
+that in actions it is considered as the agent of the agent and in
+predicates as \ldots{}.
+
+TODO: Describe further! \\
+Agent, environment, problems of semantic assumptions, disadvantages,
+advantages, associations (many arrows could be distracting),
+
+\emph{my\textsc{pddl}} allows for a representation of a arbitrary, n-ary predicates,
+without making assumptions about semantics. On the one hand this
+allows for a visualization of any \textsc{pddl} domain (and n-ary predicates),
+while one the other hand (that means, if semantic assumptions are made
+correctly, U
+
+\textsc{itSimple}'s modeling process is focused on a graphical design process
+and the newly added \textsc{pddl} editing features are basic, consisting of
+highlighted keywords and variables. The templates primarily insert
+\textsc{pddl} keywords, without showing the required syntax (e.g. \texttt{(:predicates
+...)} instead of \texttt{(:predicates (predicate-name ?x - object)}. \textsc{itSimple}
+is not customizable (without editing the Java source code). It is not
+possible to define custom key shortcuts for commands. General editor
+features, like to displaying line numbers, matching brackets or code
+folding are not (yet) supported.
+
+\emph{my\textsc{pddl}} shell support both, the initial design process of creating
+domains (by code snippets and the Clojure interface) and the later
+step of checking validity of existing domains and problems by the
+type generator (and possibly extending them).
+\section{PDDL-Mode for Emacs}
+\label{sec-3-3}
+\textsc{pddl}-mode (announced 2005 in a mailing list) is a major Emacs
+mode for browsing and editing \textsc{pddl} 2.2 files. It provides
+syntax highlighting by basic pattern matching of \textsc\{pddl]
+keywords, variables and comments, regardless of the current context.
+Furthermore, its provides automatic indentation and completions and
+bracket matching. Code snippets for the insertion of domains, problems
+and actions are provided. A declaration entry in the Emacs menu bar
+shows all actions  in the current \textsc{pddl} file and
+allows for jumping to the definition.
+
+Being an Emacs mode, \textsc{pddl}-mode is highly and easily customizable. Text
+editor features, like auto-completion, can be extended independently
+of this mode, by installing further Emacs modes.
+
+\emph{my\textsc{pddl}} uses Sublime Text, an editor, that is an extensible
+and customizable editor as well. The syntax highlighting feature of
+\emph{my\textsc{pddl}} supports all \textsc{pddl} versions, up to the most
+recent version 3.1. in contrast to \emph{\textsc{pddl}-mode},
+\emph{my\textsc{pddl}-h's} syntax highlighting feature is context-dependent
+and more extensive, as it can recognize almost any \textsc{pddl}
+construct and highlight it according to its semantic.
+
+By syntax highlighting, both tools can support code navigation,
+however, \emph{\textsc{pddl}-mode} does not allow for an fast and evident error
+detection.
+\section{Conclusion \& Summary}
+\label{sec-3-4}
+As it can be seen, there is need for an up-to-date, customizable, text
+editor with \textsc{pddl} support, that supports the current standard
+\textsc{pddl} 3.1. myPDDL integrates and expands features described in
+this section, while keeping an focus on application, efficiency and
+customization opportunities. 
 \chapter{Software Engineering Tools for AI Planning}
 \label{sec-4}
+
 \section{Statement of Problem}
 \label{sec-4-1}
 
-Writing and maintaining PDDL files can be time-consuming and
-cumbersome \textcite{li2012translating}. So, the following development
-tools shell support and facilitate the PDDL task design process and
-reduce potential errors.
+Writing and maintaining \textsc{pddl} files can be time-consuming and
+cumbersome \textcite{li2012translating}. To this end, a collection of
+extensible development tools (\emph{my\textsc{pddl}}) shell support and
+facilitate the \textsc{pddl} task design process and reduce potential modeling
+errors. Main goals are a fast and reliable (or good) design process
+that should support the collaboration between knowledge engineers and
+thereby promote the use of \textsc{pddl} in real-world applications.
 
-Below, methods are presented for
+\emph{my\textsc{pddl}} is a extensible, modular system, designed for supporting
+knowledge engineers in the process of writing, analyzing and expanding
+\textsc{pddl} domains and problems. The following integral parts of \emph{my\textsc{pddl}}
+will be presented in the following sections:
 
 \begin{description}
-\item[{Syntax Highlighting and Code Snippets}] Environment for Editing
-PDDL files
-\item[{Class Diagram Generator}] The automation of the PDDL task design process. File
-input and output and dynamic generation (design level)
-\item[{Human Planner Interaction}] An interactive PDDL environment: speech synthesis and
+\item[{my\textsc{pddl}-i/f}] A general interface between \textsc{pddl} and Clojure, allowing
+for file input (reading \textsc{pddl}) and output (\textsc{pddl} domain
+and problem generation)
+\item[{my\textsc{pddl}-new}] Create a new \textsc{pddl} project folder with domain and
+problem skeletons
+\item[{my\textsc{pddl}-syn}] A syntax highlighting feature that colorizes
+\textsc{pddl} constructs by its context
+\item[{my\textsc{pddl}-snp}] Code snippets (templates), which can be inserted in
+\textsc{pddl} files.
+\item[{my\textsc{pddl}-loc}] Automated distance calculation for \textsc{pddl} locations
+\item[{my\textsc{pddl}-gen}] A \textsc{pddl} type diagram generator for analyzing the
+structure of type and object hierarchies.
+\item[{my\textsc{pddl}-sub}] The integration of \emph{my\textsc{pddl}-syn}, \emph{-snip} and \emph{-gen}
+                into a environment to be used in Sublime Text
+
+\item[{Human Planner Interaction}] An interactive \textsc{pddl} environment: speech synthesis and
 recognition.
-\item[{Problem Generator}] Mathematical limitations (design level)
 \end{description}
 
-\section{Clojure Interface}
-\label{sec-4-2}
-\subsection{Approach}
-\label{sec-4-2-1}
-PDDL, as planning language modeling capabilities are limited, a
-interface with a programming is handy a can reduce dramatically the
-modeling time. In IPC, task generators are used write extensive domain
-and problem files. As PDDL is used to create more and more complex domains
-(SOURCE1, SOURCE2, SOURCE3, \ldots{}). 
+myPDDL is focused on customizability and extensibility, ranging from
+the choice of key bindings and themes to the adaptability of the code
+snippets to the point of adding a new module based on the general
+interface.
 
-While it seems to be reasonable to further extend PDDL's modeling
+TODO: Mindmap for modular hierarchy.
+\section{General Interface between \textsc{pddl} and Clojure (/my\textsc{pddl}-i/f)}
+\label{sec-4-2}
+
+Being a planning language, \textsc{pddl}'s modeling capabilities are
+limited. For this reason, a interface with a programming seems
+reasonable and can partly automate the modeling process as well as
+reduce the modeling time (see e.g. distance calculator). Furthermore,
+In IPC, task generators are used to write extensive domain and problem
+files. As \textsc{pddl} is used to create more and more complex
+domains (SOURCE1, SOURCE2, SOURCE3, \ldots{}).
+
+In this section, a general approach for generating \textsc{pddl} constructs,
+but also for reading in domain and problem files, handling, using and
+modifying the input, and generating \textsc{pddl} files as output, will be
+presented.
+
+
+While it seems to be reasonable to further extend \textsc{pddl}'s modeling
 capability to at planning time instead of modeling time, a modeling
 support tool as preprocessor is appropriate in any case
 (\url{http://orff.uc3m.es/bitstream/handle/10016/14914/proceedings-WS-IPC2012.pdf?sequence=1#page=47})
 
-As PDDL's syntax is inspired by LISP \parencite[64]{fox2003pddl2},
-using a LISP dialect for the interface seems reasonable as file input
+As \textsc{pddl}'s syntax is inspired by \textsc{lisp} \parencite[64]{fox2003pddl2},
+using a \textsc{lisp} dialect for the interface seems reasonable, as file input
 and output methods can use s-expressions instead of regular
-expressions. This thesis uses Clojure \parencite{hickey2008clojure}, a
-modern LISP dialect that runs on the Java Virtual Machine. So, PDDL
-expressions can be extracted and written back in a similar manner, and
-parts of PDDL files can be accessed in a natural way.
+expressions. This way, \textsc{pddl} expressions can be extracted from a task
+specification and written back in a similar manner, and parts of \textsc{pddl}
+files can be accessed in a convenient way. This thesis uses Clojure
+\parencite{hickey2008clojure}, a modern \textsc{lisp} dialect that runs on the
+Java Virtual Machine.
 
-In this section, a general approach for generating PDDL
-constructs, but also for reading in PDDL files, handling, using and
-modifying the input, and generating PDDL files as output.
-\subsection{Create}
-\label{sec-4-2-2}
-The functionality of sublime-PDDL is available trough a command line
-interface, which allow for an integration of ST (and every other tool
-that holds an interface for command line). Different tasks can be
-performed by passing appropriate. New PDDL projects can be generated
-by invoking the following command:
-\begin{minted}[]{bash}
-$ java -jar path/to/pddl.jar new NAME
-\end{minted}
-This will create a new structured project folder, consisting of a
-domain and problem file with basic skeletons, a \texttt{domain} and \texttt{problem}
-folder for an offline version control and a \texttt{png} and \texttt{dot} folder for
-the generated dot language and png type diagrams respectively. This
-approach should support an structured and organized design process,
-and should finally lead to a standardized method for a PDDL project
-structure in the planning community. This directory organization is
-intended to contain just of couple of domain files in one project
-keeping domain file per project, stored in the project root directory,
-while problem files are stores in the subfolder problems. This
-organization corresponds to the PDDL 
+The interface is built on two methods:
+\begin{description}
+\item[{read-construct(keyword,file)}] Allows for the
+extraction of a \textsc{pddl} construct, specified by its name.
+\item[{add-construct(file,position,part)}] Provides a means for adding
+\textsc{pddl} constructs to a specified position, indicated by a
+keyword.
+\end{description}
 
-\dirtree{%
-.1 NAME.
-.2 dot.
-.2 diagrams.
-.2 domains.
-.2 problems.
-.2 solutions
-.2 domain.pddl.
-.2 p01.pddl.
-.2 README.md.
-}
-
-
-\subsection{Basics}
-\label{sec-4-2-3}
-Through the higher-order filter method in Clojure, parts of PDDL files
-can be easily extracted. Like that, one can extract parts of the file
-and handle the constructs in a Clojure intern way.
-
-As an example, the type handling will be represented here, but the
-basic approach is similar for all PDDL constructs.
-
-The here developed tools should be platform independent with a
-development focus in UNIX/Linux systems, as most planners (source!)
-run on Linux.
-\subsection{Functions}
-\label{sec-4-2-4}
-As functions have a return value, the modeling possibilities
-dramatically increase.
-
-\subsection{Numerical Expressiveness}
-\label{sec-4-2-5}
-One might assume that the distance could be modeled as follows:
-
-\begin{verbatim}
-(durative action ...
-...
-  :duration (= ?duration (sqrt (coord-x )))
-...
-\end{verbatim}
-
-However, PDDL does only support basic arithmetic operations (+, -, /, *).
-
-An Euclidean distance function that uses the square root would be
-convenient for distance modeling and measurement. However, PDDL 3.1
-supports only four arithmetic operators (+, -, /, *). These
-operators can be used in preconditions, effects
-(normal/continuous/conditional) and durations.
-\textcite{parkinson2012increasing} describe a workaround for this
-drawback. By declaring an action `calculate-sqrt', they bypass the
-lack of this function and rather write their own action that makes use
-of the Babylonian root method.
-
-\begin{enumerate}
-\item Alternative \#1: Only sqrt exists
-\label{sec-4-2-5-1}
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-
-\begin{verbatim}
-:duration (= ?duration 
-             (sqrt
-              (+
-               (*
-                (- (pos-x (current-pos))
-                   (pos-x ?goal))
-                (- (pos-x (current-pos))
-                   (pos-x ?goal)))
-               (*
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))
-                (- (pos-y (current-pos))
-                   (pos-y ?goal))))))
-\end{verbatim}
-\item Alternative \#2: sqrt and expt exist
-\label{sec-4-2-5-2}
-Assuming that a function sqrt would actually exist, the duration could be modeled as follows:
-\begin{verbatim}
-:duration (= ?duration 
-             (sqrt
-              (+
-               (expt
-                (- 
-                 (pos-x (current-pos))
-                 (pos-x ?goal)))
-               (expt
-                (- 
-                 (pos-y (current-pos))
-                 (pos-y ?goal))))))
-\end{verbatim}
-
-\item Alternative \#3: Calculate distance and hard code it, e.g. (distance table kitchen) = 5.9
-\label{sec-4-2-5-3}
-
-\begin{itemize}
-\item Distance Matrix
-\item \url{http://stackoverflow.com/questions/20654918/python-how-to-speed-up-calculation-of-distances-between-cities}
-\item Scipy.spatial.distance (-> Clojure?)
-\item Mention that the Taxicab geometry allows different ways that have an equal length
-\end{itemize}
-
-Another alternative is to make use of an external helper and, instead
-of calculating every entry of the distance matrix. the distance only
-if needed, incorporate every possible combination of two locations.
-This approach has certainly a major drawback: With an increasing
-amount of locations, the number of combinations increases
-exponentially. That means, if there are 100 locations, there will be
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-TODO: Calculate possibilities
-
-\rule[.8em]{\textwidth}{2pt}
-
-nil\end{minipage}
-}
-\end{center}
-\ldots{} . The native approach would be to iterate over the cities twice
-and calculate only the half of the matrix (as it is symmetric, that
-mean distance from A to B is the same as the distance from B to A).
-
-\item Alternative \#4: Use the Manhattan distance
-\label{sec-4-2-5-4}
-
-Allowing the agent to move only vertically and horizontally would be
-that one can use the so called Taxicab geometry (or Manhattan length)
-as distance measurement.  In the Kitchen domain, this could be modeled
-as follows:
-
-\begin{verbatim}
-% => Metric: reduce duration
-
-% dKitchenware.pddl 
-\begin{figure}[t]
-\inputminted[mathescape, linenos, numbersep=5pt, frame=lines, framesep=2mm]
-            {csharp}
-            {Code/dKitchenware.pddl}
-\caption{The basic kitchenware domain}
-\end{figure}
-\section
-\end{verbatim}
-
-\begin{center}
-\fbox{
-\begin{minipage}[c]{.6\textwidth}
-TODO:
-
-\rule[.8em]{\textwidth}{2pt}
-
-TODO Human Planner Interaction
-\end{minipage}
-}
-\end{center}
-\end{enumerate}
-\section{Syntax Highlighting and Code Snippets}
+Once a part is extracted and represented in Clojure, the processing
+possibilities are manifold. An implementation using the
+\texttt{read-construct} method is myPDDL-gen. The combination of these two
+methods allows for the manipulation of existing \textsc{pddl} files,
+as well as the creation of new files, as shown by myPDDL-loc. Possible
+further applications could consist of domain and problem generators, \ldots{}
+\section{Create PDDL Projects (myPDDL-new) p}
 \label{sec-4-3}
+Prior to each implementation of a \textsc{pddl} task specification
+stands the creation of at least one domain and a belonging problem
+file. In order to facilitate the creation of these files and to keep
+track of their development, \emph{my\textsc{pddl}-new} creates a structured
+\textsc{pddl} project folder. (Figure
+\ref{fig:mypddl-new-project-folder}) displays the structure of the
+project folder.
+
+\begin{figure}[] 
+  \dirtree{%
+  .1 NAME.
+  .2 dot.
+  .2 diagrams.
+  .2 domains.
+  .2 problems.
+  .2 solutions.
+  .2 domain.pddl.
+  .2 p01.pddl.
+  .2 README.md.
+  }
+\caption[]{\label{fig:mypddl-new-project-folder}The project folder structure created by \textit{my\textsc{pddl}-new}.}
+\end{figure}
+
+In this project folder, the domain file \texttt{domain.pddl} and the problem
+file \texttt{p01.pddl} (in folder \texttt{problems}) are filled with basic \textsc{pddl}
+skeletons (TODO: remove this sentence or add functionality or even
+better: specify a template, which can be added!).\\
+The \texttt{domains}, \texttt{dot} and \texttt{diagrams} folders are created for the use
+with \emph{my\textsc{pddl}-gen}, which will save its generated output to these
+folders and thereby allows for a basic version control system (see
+section 123). \\
+As domain files usually have multiple problem files, the \texttt{problems}
+folder is designed for the collection of all associated problem files.
+\\ \texttt{README.md} is a Markdown file, which is, amongst others, intended
+for information about the author(s) of the project, contact
+information, informal domain and problem specifications, TODOs and
+licensing. 
+
+The functionality of \emph{my\textsc{pddl}-new} is available trough a
+command line interface, which allow for an integration of ST (and
+every other tool that holds an interface for command line). New
+\textsc{pddl} projects can be generated by invoking the following
+command:
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
+$ java -jar path/to/my\textsc{pddl}.jar new NAME
+\end{minted}
+
+This approach should support an structured and organized design
+process. The choice of a folder structure (instead of a project file)
+has the advantage of being readable and customizable by every editor.
+This directory organization is intended to contain a single or just a
+few domain files in one project, stored in the project root directory,
+while problem files are stores in the subfolder problems.
+\section{Syntax Highlighting}
+\label{sec-4-4}
+
+\textbf{*} Statement of Problem
 \label{sec:syntax}
 
 
-Writing extensive domain and problem files is a cumbersome task:
-longer files can get quickly confusing. Therefore, it is convenient to
-have a tool that supports editing these files. Syntax highlighting
-describes the feature of text editors of displaying code in different
-colors and fonts according to the category of terms (source: Wiki). A
-syntax highlighting plug-in for the text and source code editors
-\textcite{sublimetext2} and \textcite{sublimetext3} is proposed and
-transferred to the on-line text editor Ace are used to implement this
-feature, as ST Syntax Highlighting files can easily be converted to
-Ace Files. 
+Writing extensive domain and problem files is a cumbersome and
+time-consuming task \textcite{zhuo2010learning}. Addtionally, longer
+files can get quickly confusing. Therefore, it is convenient to have a
+tool that supports editing these files. Syntax highlighting, a common
+feature of text and code editors, describes the feature of displaying
+code in different styles (colors, fonts) according to the category of
+terms. In order to facilitate editing PDDL files, a syntax
+highlighting plug-in for the text and source code editor Sublime Text
+\cite{sublimetext2,sublimetext3} is proposed.
 
-Extending a available editor.
-Furthermore, ST was used as it provides a framework for general code
-editing. Features include code folding, 
-
-For Mac user, TextMate (TM) is very similar to ST and the syntax
-highlighting file can be used there, too. Besides, the general
-principles (e.g. regular expressions) outlined here, apply to most of
-other editors as well. So, a Pygments extension was written, that
-allows for syntax highlighting in \LaTeX documents.
+The process of writing \textsc{pddl} files usually involves extending
+them and making continual amendments to them. SH provides code in a
+more readable way and can help to find and fix code errors quickly
+(see evaluation). 
 
 
 \subsection{Implementation and Customization}
-\label{sec-4-3-1}
-ST syntax definitions are written in property lists in the XML format.
+\label{sec-4-4-1}
+ST syntax definitions are written in property lists in the \textsc{xml} format.
 
-For the ease of creation, the PDDL syntax highlighter is is
+For the ease of creation, the \textsc{pddl} syntax highlighter is
 implemented by the use of the ST plug-in \textcite{aaapackagedev}. So,
-the definitions can be written in YAML in converted to Plist XML later
-on. \textcite{aaapackagedev} is a ST plugin, that helps
-to create, amongst others, ST packages, syntax definitions and
-'snippets' (re-usable code). 
+the definitions can be written in YAML in converted to Plist
+\textsc{xml} later on. \textcite{aaapackagedev} is a ST plugin, that
+helps to create, amongst others, ST packages, syntax definitions and
+'snippets' (re-usable code).
 
 By means of Oniguruma regular expressions \parencite{kosako}, scopes
-are defined, that determine the meaning of the PDDL code block. ST
-themes highlight different parts of the code through by the use of
+are defined, that determine the meaning of the \textsc{pddl} code
+block. ST themes highlight different parts of the code by the use of
 scopes. Scopes are defined by the use of regular expressions (regexes)
-in a tmLanguage file. The scope naming conventions mentioned in the
+in a tm-Language file. The scope naming conventions mentioned in the
 \citetitle{textmate} are applied here. By the means of the name, the
 colors are assigned according to the current used ST theme. That means
 that colors are not assigned per se, but dependently on the current
@@ -813,92 +927,76 @@ and all can easily change the colors by changing the scheme. Different
 ST themes display different colors (not all themes support all naming
 conventions).
 
-The syntax highlighting is intended for PDDL 3.1, but is backward
-compatible to previous version. It's based on the Backus-Naur Form
-(BNF) descriptions, formulated in
+The syntax highlighting is intended for \textsc{pddl} 3.1, but is
+backward compatible to previous version. It's based on the Backus-Naur
+Form (BNF) descriptions, formulated in
 \textcite{kovacs2011bnf,fox2003pddl2,mcdermott1998pddl}.
 
 The pattern matching heuristic that is implemented by the use of
 regular expressions is used for assigning scopes to the parts of the
-file. As a result of PDDL's LISP-derived syntax, PDDL uses the
-s-expression format for representing information (SOURCE!). So, the
-semantic of a larger PDDL part (sexpr) can be recognized by a opening
-parenthesis, followed by PDDL keyword and finally matched closing
-parentheses (potentially containing further sexpr). These scopes
-allow for a fragmentation of the PDDL files, so that constructs are
-only highlighted, if they appear in the right section.
+file. As a result of \textsc{pddl}'s \textsc{lisp}-derived syntax,
+\textsc{pddl} uses the s-expression format for representing
+information (SOURCE!). So, the semantic of a larger \textsc{pddl} part
+(sexpr) can be recognized by a opening parenthesis, followed by
+\textsc{pddl} keyword and finally matched closing parentheses
+(potentially containing further sexpr). These scopes allow for a
+fragmentation of the \textsc{pddl} files, so that constructs are only
+highlighted, if they appear in the right section.
 
 The YAML-tmlanguage file is organized into repositories, so that
 expressions can be re-used in different scopes. This organization also
 allows for a customization of the syntax highlighter. The default 
 
-The first part of the PDDL.YAML-tmlanguage
-describes the parts of the PDDL task that should be highlighted. By
+The first part of the \textsc{pddl}.YAML-tmlanguage
+describes the parts of the \textsc{pddl} task that should be highlighted. By
 removing (or commenting) include statements, the syntax highlighter is
 adjustable the user's need.
 
-\includegraphics[width=.9\linewidth]{/home/pold/Pictures/ba.png}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{/home/pold/Documents/BA/org-ba/thesis/img/coffee_errors_img.png}
+\caption{\label{Screenshot-in-Sublime-Text-3}Coffee domain with and without syntax highlighting}
+\end{figure}
+\url{file:///home/pold/Documents/BA/org-ba/thesis/img/coffee_errors_no.pngp}
 
 \subsection{Usage and Customization}
-\label{sec-4-3-2}
+\label{sec-4-4-2}
 
-After invoking pddl.jar twice with 
-
-
-To enable syntax highlighting and code snippets in ST, the files of
-this repository have to be placed in the ST packages folder
+\textsc{myPddl} can be installed via Package Control or by placing the
+files of this repository (\ldots{}) have to be placed in the ST packages folder
 (\url{http://www.sublimetext.com/docs/3/packages.html}). Following, the
-features can be activated by changing ST's syntax to PDDL
-(\texttt{View->Syntax->PDDL}).
-
-
+features can be activated by changing ST's syntax to \textsc{pddl}
+(\texttt{View->Syntax->\textbackslash{}textsc\{pddl\}}).
 
 
 By using ST as editor, language independent ST features are supported,
 like auto completion of words already used in this file, code folding
 and column selection, described in the Sublime Text 2 Documentation.
 
-
-
-The PDDL.YAML-tmlanguage file is split in two parts:
+The \textsc{pddl}.YAML-tmlanguage file is split in two parts:
 
 By default, all scopes are included.
-\subsection{Use case}
-\label{sec-4-3-3}
-Following, a small use case will be presented, that should represent a
-typical work flow using the tools presented in this paper.
+
 
 \begin{enumerate}
-\item Initial Situation (Domain)
-\label{sec-4-3-3-1}
-Our world consists of two types of persons: hackers and non-hackers.
-Hackers can be further divided into \emph{white hats} (seeking
-vulnerabilities on behalf of the system owner), \emph{black hats}
-(compromise security holes without permission) and \emph{gray hats}
-(sometimes act legally, other times not). \emph{Software} can be
-\emph{application} software, \emph{system} software or programming \emph{tools}.
-System software can be further divided into drivers and operating
-systems. A hacker must not be hungry (and in that case need some needs
-some pizza) in order to exploit vulnerable software.
-\item Problem
-\label{sec-4-3-3-2}
-\emph{Gary} is a \emph{hungry} \emph{white-hat} hacker who should exploit Gisela's vulnerable
-\emph{application} software \emph{MysteriousTexMexMix} on behalf of her. In order to
-plan the sequence of required actions, Gary uses the tools presented
-in this paper and the planning software SGPlan\(_{\text{6}}\).
 \item Workflow
-\label{sec-4-3-3-3}
-Gary creates a new PDDL project using the command line, to this end he
+\label{sec-4-4-2-1}
+Gary creates a new \textsc{pddl} project using the command line, to this end he
 types
-\begin{minted}[]{bash}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ java -jar pddl.jar new hacker-world
 \end{minted}
+
 changes into that directory 
-\begin{minted}[]{bash}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ cd bulb-world
 \end{minted}
 and renames the file domain.pddl to 
-\begin{minted}[]{bash}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ mv domain.pddl garys-hacker-world.pddl
 \end{minted}
 
@@ -911,30 +1009,27 @@ any other graph editor.
 [./gary\(_{\text{sketch.svg}}\) ]
 
 He then opens this domain file in the Sublime Text 2 editor
-\begin{minted}[]{bash}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ sublime gary-hacker-world.pddl
 \end{minted}
+
 and starts to model his world. To this end, he uses the code snippets
 \texttt{domain} for creating the domain skeleton, navigates inside the domain
 file with \Tab, creates new type definitions with the snippets \texttt{t2}
-and \texttt{t3}. After completing his first draft, he presses
-\keystroke{f8}, for saving his file and displaying the PDDL type
-diagram and sees the following diagram:
+and \texttt{t3}. After completing his first draft, he presses \keystroke{f8},
+for saving his file and displaying the \textsc{pddl} type diagram and
+sees the following diagram:
 
 [.././hacker-world/diagrams/png-diagram3.png ]
 
 He recognizes, that he forgot to model that system software can be
 sub-divided into drivers and operating systems. Therefore he closes
 the diagram and adds the missing type declaration. He continues to
-write the PDDL domain and adds the required predicates with \texttt{p1} and
-\texttt{p2}, for example he types
+write the \textsc{pddl} domain and adds the required predicates with
+\texttt{p1} and \texttt{p2}, for example he types
 
-\keystroke{p}\keystroke{2}\Tab\keystroke{h}\keystroke{a}\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{p}\Tab\keystroke{p}\Tab
-
-And gets \texttt{(has ?s - software ?p - person)} and \texttt{action} for the action
-definition.
-
-The syntax highlighter shows Gary, if the uses incorrect PDDL syntax
+The syntax highlighter shows Gary, if the uses incorrect \textsc{pddl} syntax
 or if the forgets to close a parenthesis, as then parts don't get
 highlighted. 
 
@@ -947,15 +1042,15 @@ interface. So, adding \texttt{\#\_} just before the predicates s-expression
 (that means \texttt{\#\_(:predicates ...)} excludes the predicates from the
 type diagram, as this is the Clojure notation for commenting out
 s-expressions (and more convenient than commenting every single line).
-However, the \texttt{\#\_} construct is \emph{not} correct PDDL, so Gary generates
+However, the \texttt{\#\_} construct is \emph{not} correct \textsc{pddl}, so Gary generates
 the diagram without the predicates, checks and sees that everything is
 fine, removes the \texttt{\#\_}, saves and closes the file. 
 
 The final version in the ST editor now looks like this:
 [./domain2.pdf ]
 
-In the command line, he now opens the PDDL problem file p01.pddl
-\begin{minted}[]{bash}
+In the command line, he now opens the \textsc{pddl} problem file p01.pddl
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ sublime p01.pddl
 \end{minted}
 and adds the problem skeleton by typing \texttt{problem} and pressing \Tab.
@@ -963,19 +1058,22 @@ and adds the problem skeleton by typing \texttt{problem} and pressing \Tab.
 The relevant output lines of the output file are
 
 The planner SGPlan\(_{\text{5}}\) can be invoked by
-\begin{minted}[]{bash}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{bash}
 $ ./sgplan -o garys-hacker-world.pddl \
            -f p01.pddl \
            -out plans/solution0.soln
 \end{minted}
+
 where -o specifies the domain file, -f the problem file and -out the
 output file. 
 The extension \texttt{.soln} for \texttt{solution0.soln} is used to show that solution
-files are not specified by PDDL per se, however,
+files are not specified by \textsc{pddl} per se, however,
 \cite[91]{fox2003pddl2} specifies plan syntax as a sequence of timed
 actions. 
 
 TODO: Possibly change planner to one that does not use time stamps.
+
 \begin{verbatim}
 0.001: (EAT-PIZZA BIG-PEPPERONI-PIZZA GARY) [1]
 1.002: (EXPLOIT GARY MYSTERIOUS-TEX-MEX-MIX GISELA) [1]
@@ -984,52 +1082,30 @@ TODO: Possibly change planner to one that does not use time stamps.
 Gary now definitely knows, that he first has to eat the pepperoni
 pizza, before he can exploit Gisela's application
 \emph{MysteriousTexMexMix}.
+
 The numbers to the left of the actions (\texttt{0.001}, \texttt{1.002}) and to the
 right (both \texttt{[1]}) specify the start time and the duration of the
 actions, respectively. They are dispensable in this case, as only the
 sequence of actions is relevant.
-
-The result directory tree looks as follows:
-\dirtree{%
-.1 NAME.
-.2 dot.
-.3 dot-diagram0.dot.
-.3 dot-diagram1.dot.
-.3 dot-diagram2.dot.
-.2 diagrams.
-.3 png-diagram0.png.
-.3 png-diagram1.png.
-.3 png-diagram2.png.
-.2 domains.
-.3 garys-hacker-world0.pddl.
-.3 garys-hacker-world1.pddl.
-.3 garys-hacker-world2.pddl.
-.2 problems.
-.2 plans
-.3 plan0.soln
-.2 domain.pddl.
-.2 p01.pddl.
-.2 README.md.
-}
 
 The generated files (\texttt{dot-diagram[0-2].dot}, \texttt{png-diagram[0-2].png},
 \texttt{garys-hacker-world[0-2].pddl}) are the revision control versions,
 generated each time the Clojure script is invoked (by pressing \keystrokes{F8}).
 
 It can probably be seen, that this rather short description of the
-world and in problem results in rather extensive PDDL files.
+world and in problem results in rather extensive \textsc{pddl} files.
 \end{enumerate}
 \subsection{Evaluation}
-\label{sec-4-3-4}
+\label{sec-4-4-3}
 A key challenge of creating a sophisticated syntax highlighter without
 the availability of a lexical parser, is the use of regular
-expressions for creating a preferably complete PDDL identification.
+expressions for creating a preferably complete \textsc{pddl} identification.
 While this a not possible by the expressiveness of regexes, this
 syntax highlighter tries to come as close as possible.
 
-The consistency and capability to highlight every PDDL construct in a
+The consistency and capability to highlight every \textsc{pddl} construct in a
 color according to its meaning, were checked by 320 (syntax
-error-free) PDDL files, consisting of 87 domain and 230 problem files
+error-free) \textsc{pddl} files, consisting of 87 domain and 230 problem files
 (list of files). In that, no inconsistencies nor non-highlighted words
 could be found.
 
@@ -1037,60 +1113,272 @@ While syntax highlighting can improve the time and ability to get
 along in code files, it is mainly intended to distinct language
 structures and syntax errors. 
 
-\section{Type Diagram Generator}
-\label{sec-4-4}
-Graphical notations, have some advantages compared to textual
-notations, as they simplify the communication between developers and
-help to quickly grasp the connection of related system units (source!). 
 
-But for all that one disadvantage has to be accepted: 
+\section{Code Snippets (\emph{my\textsc{pddl}-snp})}
+\label{sec-4-5}
+While writing and extending \text{pddl} files, knowledge engineers are
+supposed to use the same constructs many times. To facilitate and
+fasten the implementation of standard constructs, my-PDDL-snp provides
+code snippets. These snippets are templates for often used \text{pddl}
+constructs, like domain and problem definitions, predicates and
+actions. They can be inserted by typing a trigger keyword. The
+inserted content contains fields with placeholders, that can be
+accessed and filled in consecutively. \textsc{pddl} constructs
+with a specified arity can be inserted by adding the arity number to
+the trigger keyword.
 
-Object types play a major role in the PDDL design process: they are
-involved, besides their definition in the \texttt{(:types ...)}, in the
-constants, =(:predicates \ldots{}) and =(:actions \ldots{}) part. So, a fine
-grasp of their hierarchy, as well as their involved predicates becomes
-handy and assists knowledge engineers in the planning process.
-Furthermore, in order to understand, use and extend available domains,
-a crucial part is the grasping of types, their hierarchy, and the
-predicates they that make use of them. Types strongly resemble classes
-in object oriented programming,  as mentioned in chapter (\ldots{}), the type
-definitions follow a specific syntax. For example \verb~truck car -
-vehicle~ would indicate, that both \verb~truck~ and \verb~car~ are subtypes of
-the super-type vehicle.
+\begin{figure}[h]
+\keystroke{p}\keystroke{2}\Tab\keystroke{h}\keystroke{a}\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{p}\Tab\keystroke{p}\Tab
+\caption[Example for the use of snippets]{\label{fig:snippet-example} Example for the use of snippets. =p2= creates a binary predicate template that can filled in.}
+\end{figure}
 
-Subtypes and corresponding super-types can be extracted using regular
-expressions (regex). The regex
-\begin{verbatim}
-#"((?:(?:\b[a-zA-Z](?:\w|-|_)+)\s+)+)-\s+(\b[a-zA-Z](?:\w|-|_)+)
-\end{verbatim}
-matches every kind of that form and a Clojure-friendly representation
-in form of a hash-map can be created.
 
-PDDL side ----------------------------------------------- Clojure side
+And gets \texttt{(has ?s - software ?p - person)} and \texttt{action} for the action
+definition.
 
-'(:types \ldots{} \ldots{} --- \ldots{})                      \{\ldots{} [\ldots{} \ldots{} \ldots{}], \ldots{}\}
+Every snippet is stored in a
+separate file, located in the \texttt{PDDL/} folder. New snippets can be
+added and existing snippets can be customized there.
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:action actionName
+        :parameters (?x - <objectType>)
+        :precondition (<conditions>)
+        :effect (<effects>))
+\end{minted}
+
+\section{Distance Calculation for \textsc{pddl} Locations (my\textsc{pddl}-loc)}
+\label{sec-4-6}
+While one might assume that , However, \textsc{pddl} does only support
+basic arithmetic operations (\texttt{+}, \texttt{-}, \texttt{/}, \texttt{*}). A planning problem
+In temporal domains, it could be desirable to  One might assume that
+the Euclidean distance could be modeled using \texttt{sqrt}
+
+myPDDL-loc uses the PDDL-Clojure interface and reads a problem file
+and extracts all locations, defined in the \texttt{:init} part. In Clojure,
+the Euclidean distances between all locations are calculated and then
+written back to an extended problem file.
+
+The calculator works on any dimension, so that locations can be
+specified both two dimensionally and three dimensionally (or
+n-dimensionally).
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+...
+(:init (location home-gary 7 3)
+       (location home-gisela 10 5)) 
+...
+\end{minted}
+\caption{Before}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
+(:init
+ (location home-gary 7 3)
+ (location home-gisela 10 5)
+ (distance home-gary home-gary 0.0)
+ (distance home-gary home-gisela 3.6056)
+ (distance home-gisela home-gary 3.6056)
+ (distance home-gisela home-gisela 0.0))
+\end{minted}
+\caption{After}
+\end{listing}
+
+
+An Euclidean distance function that uses the square root would be
+convenient for distance modeling and measurement. However,
+\textsc{pddl} 3.1 supports only four arithmetic operators (+, -, /,
+*). These operators can be used in preconditions, effects
+(normal/continuous/conditional) and durations.
+\textcite{parkinson2012increasing} describe a workaround for this
+drawback. By declaring an action `calculate-sqrt', they bypass the
+lack of this function and rather write their own action that makes use
+of the Babylonian root method.
+
+
+Another alternative is to make use of an external helper and, instead
+of calculating every entry of the distance matrix. the distance only
+if needed, incorporate every possible combination of two locations.
+This approach has certainly a major drawback: With an increasing
+amount of locations, the number of combinations increases
+exponentially. That means, if there are 100 locations, there will be
+xyz distance entries in the problem file.
+
+The native approach would be to iterate over the cities twice
+and calculate only the half of the matrix (as it is symmetric, that
+mean distance from A to B is the same as the distance from B to A).
+
+Inspect problem file and calculate distances while planning
+calculating. 
+
+\section{Type Diagram Generator (\emph{my\textsc{pddl}-gen})}
+\label{sec-4-7}
+As stated by the adage "A picture is worth a thousand words" graphical
+representations can have some advantages compared to textual
+representations. In computer science, they should simplify the
+communication between developers and help to quickly grasp the
+connection of related system units (source!). graphical
+representations are not always superior to textual representations
+(see introduction for a short discussion on this topic), both text and
+graphics can complement each other and facilitate the understanding of
+complex problems. To support this theory, a user test was performed,
+showing that \ldots{})
+
+The extended expressive power provided by \texttt{ADL} includes the ability
+to express a type hierarchy in the domain and a object hierarchy in
+the problem file.
+
+Assuming that \texttt{:typing} or \texttt{:adl} is declared, object types play a
+major role in the \textsc{pddl} design process: they constrain the
+types of arguments to predicates and determine the types of actions.
+So, a fine grasp of their hierarchy, as well as their involved
+predicates becomes handy and assists knowledge engineers in the
+planning process. Furthermore, in order to understand, use and extend
+available domains, a crucial part is the grasping of types, their
+hierarchy, and the predicates they that make use of them. Types
+strongly resemble classes in object oriented programming, as mentioned
+in chapter (\ldots{}), the type definitions follow a specific syntax. For
+example \verb~truck car - vehicle~ would indicate, that both \verb~truck~ and
+\verb~car~ are subtypes of the super-type vehicle (TODO: possibly move to
+basics part).
+
+\emph{my\textsc{pddl}-gen} uses \texttt{get-\textbackslash{}textsc\{pddl\}-part(file,types)},
+declared in \emph{my\textsc{pddl}-i/f} for extracting the textual type
+hierarchy declared in a \textsc{pddl} file. These extracted types get
+separated in are then separated in subtypes and supertypes, using
+regular expressions (regex).
+
+
+\begin{center}
+\begin{tabular}{ll}
+PDDL side & Clojure side\\
+(:types \ldots{} \ldots{} --- \ldots{}) & \\
+\end{tabular}
+\end{center}
+
+
+\begin{enumerate}
+\item Visualization
+\label{sec-4-7-0-1}
+
+
+The visualization is generated using dot from the GraphViz package, a
+collection of programs for drawing graphs. dot is a scriptable,
+graphing tool, that is able to generate hierarchical drawing of
+directed graphs in a variety of output format (png, pdf, \ldots{}), from
+specific text files, written in the \textsc{DOT} language.
+
+From this representation, the description of a directed graph
+(\texttt{digraph}) in the dot language is created and saved in the folder
+\texttt{dot/}. This file is then passed to the command line program \texttt{dot} and
+a \textsc{png} graphic is created in the folder \texttt{diagrams/} and
+immediately opened and displayed in a window. In addition, a copy of
+the domain file is stored in the folder \texttt{domains/}. Every time
+\emph{my\textsc{pddl}-gen} is invoked, these steps are executed and the saved file
+names are extended by a ascending revision number. This way, one
+cannot only identify associated pddl, dot and png files, but also
+use this feature for basic revision control. The structure and
+revision number of a previous version can be identified by the png
+type diagram and then, one can revert to a previous revision, stored
+in the \texttt{domains/} folder. All folders are created if necessary.
+
+\begin{figure}[] 
+\dirtree{%
+.1 garys-hacker-world.pddl.
+.2 dot.
+.3 dot-diagram0.dot.
+.3 dot-diagram1.dot.
+.2 diagrams.
+.3 png-diagram0.png.
+.3 png-diagram1.png.
+.2 domains.
+.3 garys-hacker-world0.pddl.
+.3 garys-hacker-world1.pddl.
+}
+\caption[\textit{my\textsc{pddl}-gen} folder structure]{\label{fig:mypddl-new-project-folder} Folder structure after two invocations of textit{my\textsc{pddl}-gen}.}
+\end{figure}
+
+Figure xyz displays a type diagram generated from the \texttt{Gary's Hacker
+World} domain. In the diagram, types are represented with boxes,
+whereby every box consists of two parts:
+\begin{itemize}
+\item The header displays the name of the type.
+\item The lower part displays all predicates that use the corresponding
+type at least once in their arguments. The predicates are written in
+the same way, as they appear in the \textsc{pddl} code.
+\end{itemize}
+
+Generalization relationships ("is a", for example "a driver \emph{is a}
+type of software") are expressed by arrows from the specialization
+(the subtype, here: driver) to the generalization (the super type -
+here: software), where the arrow head aims at the super type. This
+relationship expresses, that every subtype is also an instance of the
+illustrated super type.
+\subsection{Limitations}
+\label{sec-4-7-1}
+
+\emph{myPDDL-gen} does not display predicates without argument (nullary or 0-ary
+predicates), like \texttt{(is-rainy)}, as they have no assigned type.
+Furthermore, it does not support predicates defined by \texttt{(either ...)}
+and types that have to super type. 
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=.9\linewidth]{/home/pold/Documents/BA/org-ba/diagram.png}
-\caption{Part of a PDDL domain and the corresponding, generated UML diagram}
+\includegraphics[width=.9\linewidth]{/home/pold/Documents/BA/org-ba/hacker-world/dot/gary-pdf.pdf}
+\caption{The type diagram that was generated from \texttt{garys-hacker-world.pddl} using myPDDL-gen.}
 \end{figure}
+
+\section{Syntax Highlighting and Code Snippets (myPDDL-sub)}
+\label{sec-4-8}
+
+While \emph{snp} and \emph{syn} are devised explicitly for ST and therefore
+integrated from the outset, the other tools (new, gen, loc) can be
+used independently of ST utilizing the command line interface and any
+\textsc{pddl} file. To provide a central interface for using myPDDL,
+\emph{-sub} integrates new, gen and loc, aiming at a a user-friendly
+execution and use of the system.
+
+The three tools can be invoked using the ST command palette
+(\keys{\ctrl+\shift+P}), and then choosing one of the PDDL menu entries:
+
+\begin{description}
+\item[{\emph{PDDL: Create Project} for myPDDL-new}] \emph{PDDL: Create Project}
+requires the user to specify a project name in the then displayed
+input panel.
+\item[{\emph{PDDL: Calculate Distances}}] for myPDDL-loc Saves and
+\item[{\emph{PDDL: Display Diagram}}] for myPDDL-dia
+\end{description}
+
+
+
+Extending a available editor.
+Furthermore, ST was used as it provides a framework for general code
+editing. Features include code folding, 
+
+For Mac user, TextMate (TM) is very similar to ST and the syntax
+highlighting file can be used there, too. Besides, the general
+principles (e.g. regular expressions) outlined here, apply to most of
+other editors as well. So, a Pygments extension was written, that
+allows for syntax highlighting in \LaTeX documents.
 \chapter{Analysis}
 \label{sec-5}
 \section{Participants}
 \label{sec-5-1}
-Eight non-paid students (two female, Mean\(_{\text{age}}\)=23, SD\(_{\text{age}}\)=2) took part
-in the experiment. All had knowledge about at least one LISP dialect,
-and therefore about program code written as parenthesized lists, but
-nobody one had faced PDDL prior to this study. One participant had
-used the ST editor.  
+Eight non-paid students (two female, Mean\(_{\text{age}}\)=23, SD\(_{\text{age}}\)=2) took
+part in the experiment. All had knowledge about at least one
+\textsc{lisp} dialect, and therefore about program code written as
+parenthesized lists, but nobody had faced \textsc{pddl} or any other
+planning language prior to this study. Furthermore, nobody has used
+Sublime Text before that test.
 \section{Material}
 \label{sec-5-2}
-The usability of myPDDL-s (Syntax Highlighter, see \ref{sec:syntax}) and
-myPDDL-t (Type Diagram Generator, see \texttt{Type Diagram Generator}) were
+The usability of my\textsc{pddl}-syn (Syntax Highlighter, see \ref{sec:syntax}) and
+my\textsc{pddl}-gen (Type Diagram Generator, see \texttt{Type Diagram Generator}) were
 tested. For this purpose, two domains (\emph{Planet Splisus}, \emph{Store}) with
 fantasy type names were created. Participants were asked to answer
-five questions that required to understand the PDDL type hierarchy.
+five questions that required to understand the \textsc{pddl} type hierarchy.
 Subjects were asked to work on questions, while time on task (per
 question) was measured without subjects' knowledge, by asking the S to
 say out loud the regarding answer. 
@@ -1103,6 +1391,8 @@ in the code (as this could change the syntax highlighting of other
 code parts) and write down the line and a description or the
 correction of the error on a sheet of paper for an easy identification
 in the analysis of test results.
+
+TODO: Include /home/pold/Documents/BA/org-ba/thesis/img/coffee\(_{\text{errors.png}}\)
 \section{Design}
 \label{sec-5-3}
 
@@ -1123,28 +1413,36 @@ H & \emph{Coffee} & \emph{Store} & Logistics & Planet Splisus\\
 \end{center}
 
 \emph{Italic}: Tools part
-
 \section{Procedure}
 \label{sec-5-4}
 At the earliest, 24 hours ahead testing date, participants received a
-link to a 30-minute video tutorial and were asked to watch this video
+link \footnote{\url{http://www.youtube.com/playlist?list=PL3CZzLUZuiIMWEfJxy-G6OxYVzUrvjwuV}} to a 30-minute video tutorial and were asked to watch this video
 before the test, if possible. This tutorial comprised a general
-introduction to planning and a more specific introduction to PDDL's
-domain syntax. In the video, participants were also asked to fulfill tasks
-regarding PDDL and check theirs answers with the provided solutions in
-the video. 
+introduction to planning and a more specific introduction to
+\textsc{pddl}'s domain syntax. In the video, participants were also
+asked to fulfill tasks regarding \textsc{pddl} and check their
+answers with the provided solutions in the video.
 
-Upon arrival participants were asked to sign a consent form and to
-take a set in front of a Laptop with a 13" display and a connected
-monitor with a 17" display. If they did not already watch the PDDL
-tutorial the participants first were asked to watch the tutorial then.
-After that, any open questions regarding PDDL and the were clarified.
+At testing date, participants were asked to sign a consent form and to
+take a seat in front of a Laptop with a 13" display and a connected
+monitor with a 17" display. If they did not already watch the
+\textsc{pddl} tutorial the participants first were asked to watch the
+tutorial then. After that, any open questions regarding \textsc{pddl}
+and the general testing procedure were clarified.
 
+All participants were provided with a one page summary of PDDL domain
+syntax (\emph{cheat sheet}) that they could always refer to. Furthermore,
+they were allowed to take any hand-written notes that they took during
+the video tutorial.  (and to rewatch the video tutorial at any time).
+
+Participants were then tested, according to a assigned order of tasks.
+
+The participants did not and that there will be a \emph{tools} part.
 Immediately before the tools part, a three minute video introduction
-to the functionality of myPDDL-syn and the usage of myPDDL-gen was
-given. Subsequently, participants were asked to work on the tools
-parts, meaning that participants were not confronted with the tools
-before the actual test.
+to the functionality of the syntax highlighter (my\textsc{pddl}-syn)
+and the usage of (my\textsc{pddl}-gen) was given. Directly after his,
+participants were asked to work on the tools parts. so that they faced
+the tools were not confronted with the tools before the actual test.
 \section{Results}
 \label{sec-5-5}
 \begin{table}[htb]
@@ -1175,41 +1473,44 @@ As seen in the conducted study, missing actions in the type diagram
 can confuse. So, it is possibly helpful to exclude predicates in the
 diagram and only display the plain type hierarchy (as all participants
 were faster) before actions have not been added. Nevertheless, it is
-worth noting that only PDDL novices were tested, after watching a
+worth noting that only \textsc{pddl} novices were tested, after watching a
 introduction video, without ever writing a domain by scratch.
 
 Very likely, a learning effect will occur, so that tasks are more
 easily to fulfill if they are done for the second time.
-\chapter{Conclusion and Outlook}
-\label{sec-7}
-The tools (Clojure interface (I), type diagram generator (T), syntax
-highlighting (S), distance calculation (C)) presented in this thesis
-have been designed to support knowledge engineers in modeling planning
-tasks as well as in understanding, modifying, extending and using
-planning domains. The user study has been conducted to examine the
-utility of I and T. There is some evidence that they can support
-engineers in the design process, in particular in error detection and
-in keeping track of the domain structure, the type hierarchy and
-grasping predicates using these types. The faster understanding of the
-domain structure could be beneficial for the maintenance and
-application of existing domains and problems.  The communication
-between engineers can be facilitated and
 
-\section{Outlook}
+\chapter{Outlook and Conclusion}
+\label{sec-7}
+
+\section{Limitations and Future Work}
 \label{sec-7-1}
-As
 
 The plug-in for the editor ST could be further extended to provide
 features of common integrated developing environments (IDE). A build
 script for providing input to a planner for auto-matching domain and
 matching problem(s) (or problem and matching domain) in ST could be
-convenient.  
-Detecting of semantic errors besides syntactic errors (as in PDDL
-Studio) could be the next step to detecting errors fast and accurate.
-Possible semantic errors could be undeclared variables or predicates
-in a domain specification.
+convenient.
+
+Detecting semantic errors besides syntactic errors \textcite[as
+implemented in][for \textsc{pddl1.2}]\{plch2012inspect\} Studio could be
+the next step to detecting errors fast and accurate. Possible semantic
+errors could be undeclared variables or predicates in a domain
+specification.
+
+Either construct not supported!
+
+In the diagram, predicates are only added to the types that are
+explicitly mentioned in the argument of the predicate. However, as
+subtypes of types declared in the predicate arguments, can also be
+used as argument to the predicate, this means, that all
+specializations of a type can also be used for this predicate. This
+can be seen in Figure xyz \ldots{}:For example, a the \textsc{pddl} domain
+file could declare \texttt{(hungry ?p - person)}, although men and women can
+be hungry. 
+
 \section{Outlook}
 \label{sec-7-2}
+
 Besides ICKEPS, as mentioned in the introduction, also the yearly
 workshop Knowledge Engineering for Planning and Scheduling (KEPS) will
 promote the research in planning and scheduling technology.
@@ -1218,10 +1519,46 @@ will be shifted from the manual KE to the automated knowledge
 acquisition (KA). Perception systems, Nevertheless, a engineer who
 double-checks the generated tasks will be irreplaceable.
 
+\section{Conclusion}
+\label{sec-7-3}
 
 
-\printbibliography
+\textsc{myPddl} - Modular Auxiliary for the Planning Domain Definition
+Language, has been designed to support knowledge engineers in modeling
+planning tasks as well as in understanding, modifying, extending and
+using existing planning domains.
 
+\textsc{myPddl} has been implemented as an interface between Clojure
+and PDDL, where PDDL editing features are fulfilled in the text editor
+Sublime Text. It is designed as an modular architecture, which is
+extensible, customizable and easy usable system. myPDDL-gen can
+visualize any PDDL domain, without making semantic assumptions and
+n-ary predicates.
+
+Implemented features comprise code editing features, namely syntax
+highlighting and code snippets, a type diagram generator and a
+distance calculator,
+
+The user study shows some initial evidence that the syntax
+highlighting feature (\textsc{myPddl-sub}) and the type diagram
+generator(\textsc{myPDDL-gen}) can support knowledge engineers in the
+design and analysis process, in particular in error detection and in
+keeping track of the domain structure, the type hierarchy and grasping
+predicates using these types.
+
+A faster understanding of the domain structure could be beneficial for
+the maintenance and application of existing domains and problems, and,
+possibly for the communication between engineers. Finally, real world
+usage of PDDL can be promoted so that the focus of artificial
+intelligence planning can also be shifted towards the design of plans,
+following the citation "Plans are worthless, but planning is
+everything".
+
+
+\printbibheading
+\printbibliography[nottype=online,heading=subbibliography,title=Paper Sources]
+\printbibliography[type=online,heading=subbibliography,title=Website
+Sources]
 \chapter{Appendix}
 \label{sec-8}
 
@@ -1232,7 +1569,7 @@ version).
 The website \url{http://pold87.github.io/sublime-pddl/} is the accompanying
 website for this project.
 
-\begin{minted}[]{clojure}
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{clojure}
 (ns org-ba.core
   (:gen-class :main true)
   (:require [clojure.tools.reader.edn :as edn]
@@ -1268,7 +1605,7 @@ website for this project.
   (println "Written to file: " ~filename)))
 
 (defn read-objs
-  "Read PDDL objects from a file and add type
+  "Read \textsc{pddl} objects from a file and add type
   (e.g. 'table bed' -> (list table - furniture
                         bed - furniture))"
   [file object-type]
@@ -1279,7 +1616,7 @@ website for this project.
 
 
 (defn create-pddl
-  "Creates a PDDL file from a list of objects and locations"
+  "Creates a \textsc{pddl} file from a list of objects and locations"
   [objs-file objs-type]
   (str
    "(define (domain domainName)
@@ -1317,7 +1654,7 @@ website for this project.
    ))
 
 (defn split-up
-  "Split a PDDL type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
+  "Split a \textsc{pddl} type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
   into strings of subtypes and associated types,
   [[subytype1 subtype 2 ... - type][subtype1 subtype2 ...][type]"
   [coll]
@@ -1360,7 +1697,7 @@ to a TikZ string (key -- { val1, val2 })"
    "{" (clojure.string/join ", " (val entry)) "}"))
 
 (defn hash-map->TikZ-out
-  "Converts complete PDDL type hash-map to TikZ file"
+  "Converts complete \textsc{pddl} type hash-map to TikZ file"
   [h-map]
   (str
    "\\documentclass[tikz]{standalone}
@@ -1397,14 +1734,14 @@ to the dot language"
 
 
 (defn types-hash-map->dot-language
-  "Converts a PDDL types hash-map
+  "Converts a \textsc{pddl} types hash-map
 to the dot language notation"
   [pddl-types-map]
   (clojure.string/join "\n" (map types-map-entry->dot-language pddl-types-map)))
 
-;;; Read PDDL predicates and generate UML 'type' diagram
+;;; Read \textsc{pddl} predicates and generate UML 'type' diagram
 (defn get-types-in-predicate
-  "Takes a PDDL predicate,
+  "Takes a \textsc{pddl} predicate,
   e.g. '(at ?x - location ?y - object)
   and returns the involved types, e.g.
   '(location object)"
@@ -1416,7 +1753,7 @@ to the dot language notation"
            (= \? first-char)))) (rest pddl-pred)))
 
 (defn pddl-pred->hash-map-long
-  "Takes a PDDL predicate, e.g.
+  "Takes a \textsc{pddl} predicate, e.g.
   '(at ?x - location ?y - object) and returns a
   hash-map, that assigns the involved types
   to this predicate, e.g.
@@ -1436,7 +1773,7 @@ to the dot language notation"
 ;;; TODO: Create short version wiht prolog predicate style
 ;;; e.g. at/2
 (defn all-pddl-preds->hash-map-long
-  "Takes a list of PDDL predicates and
+  "Takes a list of \textsc{pddl} predicates and
   returns a hash-map of types and the
   assigned predicate"
   [pddl-preds]
@@ -1473,7 +1810,7 @@ edge[dir=back, arrowtail=empty]
    "}"))
 
 
-(defn PDDL->dot-with-style
+(defn \textsc{pddl}->dot-with-style
   "Adds dot template to
 hash-map>dot"
   [preds types]
@@ -1499,10 +1836,10 @@ edge[dir=back, arrowtail=empty]
 (hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
 
 
-(defn get-PDDL-construct
-  "Takes a PDDL keyword and a PDDL domain/problem
+(defn get-\textsc{pddl}-construct
+  "Takes a \textsc{pddl} keyword and a \textsc{pddl} domain/problem
 file and returns all parts of the file that
-belong to the PDDL keyword."
+belong to the \textsc{pddl} keyword."
   [pddl-keyword pddl-file]
   (filter #(and (seq? %)
                 (= (keyword pddl-keyword)
@@ -1511,42 +1848,42 @@ belong to the PDDL keyword."
 
 
                                         ; TODO: Throw error if length != 1
-(defn get-PDDL-predicates
-  "Get all predicates in a PDDL file"
+(defn get-\textsc{pddl}-predicates
+  "Get all predicates in a \textsc{pddl} file"
   [pddl-file]
-  (first (get-PDDL-construct 'predicates pddl-file)))
+  (first (get-\textsc{pddl}-construct 'predicates pddl-file)))
 
-(defn get-PDDL-init
-  "Get all predicates in a PDDL file"
+(defn get-\textsc{pddl}-init
+  "Get all predicates in a \textsc{pddl} file"
   [pddl-file]
-  (first (get-PDDL-construct 'init pddl-file)))
+  (first (get-\textsc{pddl}-construct 'init pddl-file)))
 
 
                                         ; TODO: Throw error if length != 1
-(defn get-PDDL-types
-  "Get all types in a PDDL file"
+(defn get-\textsc{pddl}-types
+  "Get all types in a \textsc{pddl} file"
   [pddl-file]
-  (first (get-PDDL-construct 'types pddl-file)))
+  (first (get-\textsc{pddl}-construct 'types pddl-file)))
 
-(defn PDDL->dot
-  "Takes a complete PDDL file
+(defn \textsc{pddl}->dot
+  "Takes a complete \textsc{pddl} file
 and generates a UML type diagram"
   [pddl-file]
-  (PDDL->dot-with-style (get-PDDL-predicates pddl-file)
-                        (get-PDDL-types pddl-file)))
+  (\textsc{pddl}->dot-with-style (get-\textsc{pddl}-predicates pddl-file)
+                        (get-\textsc{pddl}-types pddl-file)))
 
-(defn PDDL->dot-commandline-input
-  "Assumes that the PDDL input is
+(defn \textsc{pddl}->dot-commandline-input
+  "Assumes that the \textsc{pddl} input is
 a string and 'reads' this string"
   [pddl-file]
   (print "The type is " (type pddl-file))
-  (PDDL->dot (edn/read-string pddl-file)))
+  (\textsc{pddl}->dot (edn/read-string pddl-file)))
 
 
-(defn PDDL->dot-file-input
-  "Reads PDDL file"
+(defn \textsc{pddl}->dot-file-input
+  "Reads \textsc{pddl} file"
   [pddl-file-name]
-  (PDDL->dot pddl-file-name))
+  (\textsc{pddl}->dot pddl-file-name))
 
 ;;;; math helper functions
 
@@ -1584,22 +1921,22 @@ IS VERY GOOD !!!"
 
 (defn get-specified-predicates-in-pddl-file
   "Extracts all locations in the predicates part
-(by the specified name) in a PDDL file"
+(by the specified name) in a \textsc{pddl} file"
   [pddl-file predicate-name]
   (filter #(and (seq? %)
                 (= predicate-name (first %)))
-          (get-PDDL-predicates pddl-file)))
+          (get-\textsc{pddl}-predicates pddl-file)))
 
 (defn get-specified-inits-in-pddl-file
   "Extracts all locations in the init part
-(by the specified name) in a PDDL problem"
+(by the specified name) in a \textsc{pddl} problem"
   [pddl-file predicate-name]
   (filter #(and (seq? %)
                 (= predicate-name (first %)))
-          (get-PDDL-init pddl-file)))
+          (get-\textsc{pddl}-init pddl-file)))
 
 (defn calc-distance
-  "Calculate distances of PDDL objects"
+  "Calculate distances of \textsc{pddl} objects"
   [locations]
   (for [[ _ loc1 & xyz-1] locations
         [ _ loc2 & xyz-2] locations]
@@ -1609,8 +1946,8 @@ IS VERY GOOD !!!"
 
 ; LOOK UP: extended equality: 'hello = :hello
 
-(defn add-part-to-PDDL
-  "Takes a PDDL domain or problem
+(defn add-part-to-\textsc{pddl}
+  "Takes a \textsc{pddl} domain or problem
 and add the specified part to the
 specified position"
   [pddl-file position part]
@@ -1643,7 +1980,7 @@ exited after the JFrame is closed"
 
 
 (defn extract-locations-from-file
-  "Read a Blender LISP file and write object positions to out-file"
+  "Read a Blender \textsc{lisp} file and write object positions to out-file"
   [file-in file-out]
   (let [map-destructorer-local (fn [[_addgv _furniture object
                                       [_make-instance _object-detail
@@ -1669,7 +2006,7 @@ exited after the JFrame is closed"
   [& args]
 
   (cond
-   ;; Create a new PDDL project
+   ;; Create a new \textsc{pddl} project
    (= "new" (first args))
    (let [project-name (second args)]
      (fs/mkdir project-name)
@@ -1680,9 +2017,9 @@ exited after the JFrame is closed"
      (fs/create (io/file (str project-name "/domain.pddl")))
      (fs/create (io/file (str project-name "/p01.pddl"))))
 
-   ;; -l flag for adding locations in PDDL file
+   ;; -l flag for adding locations in \textsc{pddl} file
    (= (second args) "-l")
-   (let [content (add-part-to-PDDL (first args)
+   (let [content (add-part-to-\textsc{pddl} (first args)
                                    'init
                                    (calc-distance-good
                                     (get-specified-inits-in-pddl-file (first args)
@@ -1713,7 +2050,7 @@ exited after the JFrame is closed"
      ;; Create dot language file in dot folder.
      (doall
       (write->file new-dot-filename
-                   (print (PDDL->dot-file-input input-domain))))
+                   (print (\textsc{pddl}->dot-file-input input-domain))))
 
      ;; Create a png file from dot
      (fs/exec "dot" "-Tpng" "-o" new-png-filename new-dot-filename)
@@ -1738,15 +2075,16 @@ exited after the JFrame is closed"
      ;; Display png file in JFrame.
      (exit-on-close
       (quil/sketch
-       :title (str "PDDL Type Diagram - " input-domain-filename)
+       :title (str "\textsc{pddl} Type Diagram - " input-domain-filename)
        :setup setup
        :draw draw
        :size (vec img-size))))))
 \end{minted}
-\begin{verbatim}
+
+\begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
 # [PackageDev] target_format: plist, ext: tmLanguage
 ---
-name: PDDL
+name: \textsc{pddl}
 scopeName: text.pddl
 fileTypes: [pddl]
 uuid: 2aef09fc-d29e-4efd-bf1a-974598feb7a9
@@ -2274,6 +2612,6 @@ repository:
 
 
 # TODO: Metric
-\end{verbatim}
+\end{minted}
 % Emacs 24.3.1 (Org mode 8.2.5h)
 \end{document}
