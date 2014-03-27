@@ -1,0 +1,499 @@
+# m1..m4 specifies that every condition was test four times
+#+NAME: total-errors
+| module    | tool | m1 | m2 | m3 | m4 |  mean | clow | chigh |
+|-----------+------+----+----+----+----+-------+------+-------|
+| Logistics | Yes  | 15 | 15 |  7 |  9 |  11.5 |      |       |
+| Logistics | No   |  5 |  8 |  7 |  6 |   6.5 |      |       |
+| Coffee    | Yes  |  6 |  8 | 10 | 12 |     9 |      |       |
+| Coffee    | No   | 12 |  8 |  8 |  7 |  8.75 |      |       |
+| Combined  | Yes  |    |    |    |    | 10.25 | 7.36 | 13.14 |
+| Combined  | No   |    |    |    |    | 7.625 | 5.90 |  9.35 |
+#+TBLFM: $7=vmean($3..$6)::@6$7=vmean(@2$3..@2$6,@4$3..@4$6)::@7$7=vmean(@3$3..@3$6,@5$3..@5$6)
+
+#+NAME: logistics-errors-new
+| module    | tool |    m1 |
+|-----------+------+-------|
+| Logistics | Yes  |    15 |
+| Logistics | Yes  |    15 |
+| Logistics | Yes  |     7 |
+| Logistics | Yes  |     9 |
+| Logistics | No   |     5 |
+| Logistics | No   |     8 |
+| Logistics | No   |     7 |
+| Logistics | No   |     6 |
+| Coffee    | Yes  |     6 |
+| Coffee    | Yes  |     8 |
+| Coffee    | Yes  |    10 |
+| Coffee    | Yes  |    12 |
+| Coffee    | No   |    12 |
+| Coffee    | No   |     8 |
+| Coffee    | No   |     8 |
+| Coffee    | No   |     7 |
+| Combined  | Yes  | 10.25 |
+| Combined  | No   | 7.625 |
+
+
+#+NAME:logistics-errors-22
+| module    | tool | m1 |
+|-----------+------+----|
+| Logistics | Yes  | 15 |
+| Logistics | Yes  | 15 |
+| Logistics | Yes  |  7 |
+| Logistics | Yes  |  9 |
+ 
+# Error Analysis
+#+name: error_analysis_total-2
+#+begin_src R :file error_plot2.png :results output graphics :var errors=total-errors my=logistics-errors-new
+  library(ggplot2)
+  library(plyr)
+
+#  mm <- ddply(my, "module", summarise, m1=mean(m1))
+  
+ my$module <- as.character(my$module)
+ my$module <- factor(my$module, levels=c("Logistics", "Coffee", "Combined"), ordered=TRUE)
+  
+  p <- ggplot(my, aes(x=module, y=m1,fill=tool)) + 
+       geom_bar(position=position_dodge(), stat="identity") +
+       scale_fill_discrete(name = "Syntax Highlighted\nCode") +
+      # geom_point(position=position_dodge(width=0.9)) +
+       xlab("Domain") +
+       ylab("Identified Errors") +
+       ggtitle("Correctly Identified Errors (Arithmetic Mean)") +
+       scale_y_continuous(breaks=0:15*1) +
+       theme_bw()
+p
+#+end_src
+
+#+RESULTS: error_analysis_total-2
+[[file:error_plot2.png]]
+
+
+#+BEGIN_SRC R :var my=logistics-errors-new :results output
+  library(ggplot2)
+  library(plyr)
+  my <- ddply(log, c("module","tool"), summarise, m1=mean(m1))
+#+END_SRC
+
+#+RESULTS:
+
+#+RESULTS: error_analysis_total-1
+[[file:error_plot1.png]]
+
+
+# Error Analysis
+#+name: error_analysis_total
+#+begin_src R :file error_plot.png :results output graphics :var errors=total-errors log=logistics-errors
+library(ggplot2)
+
+#Turn your 'treatment' column into a character vector
+errors$module <- as.character(errors$module)
+errors$module <- factor(errors$module, levels=c("Logistics", "Coffee", "Combined"), ordered=TRUE)
+
+p <- ggplot(errors, aes(x=module, y=mean,fill=tool)) + 
+       geom_bar(position=position_dodge(), stat="identity") +
+          scale_fill_discrete(name = "Syntax Highlighted\nCode") +
+    xlab("Domain") +
+    ylab("Identified Errors") +
+    ggtitle("Correctly Identified Errors (Arithmetic Mean)") +
+    scale_y_continuous(breaks=0:15*1) +
+    theme_bw()
+#+end_src
+
+#+RESULTS: error_analysis_total
+[[file:error_plot.png]]
+
+# Error Analysis
+#+name: error_analysis_total-1
+#+begin_src R :file error_plot1.png :results output graphics :var errors=total-errors log=logistics-errors-22
+library(ggplot2)
+
+#Turn your 'treatment' column into a character vector
+errors$module <- as.character(errors$module)
+
+errors$module <- factor(errors$module, levels=c("Logistics", "Coffee", "Combined"), ordered=TRUE)
+
+p <- ggplot(errors, aes(x=module, y=mean,fill=tool)) + 
+     geom_bar(position=position_dodge(), stat="identity") +
+     scale_fill_discrete(name = "Syntax Highlighted\nCode") +
+   #  geom_point(data=log, aes(x=module,y=m1,fill = module)) +
+    geom_point(data=log, aes(x=module,y=m1),position=position_dodge(width=0.7)) +
+     xlab("Domain") +
+     ylab("Identified Errors") +
+     ggtitle("Correctly Identified Errors (Arithmetic Mean)") +
+     scale_y_continuous(breaks=0:15*1) +
+     theme_bw()
+p
+#+end_src
+
+#+RESULTS: error_analysis_total-1
+[[file:error_plot1.png]]
+
+
+#+BEGIN_SRC R 
+library(ggplot2)
+# Manufactured data:
+d <- data.frame(tree = rep(1:7, each = 50),
+                score = sample(1:7, 350, replace = TRUE))
+
+# (1) Let ggplot2 do the work:
+g <- ggplot(d, aes(x = tree, y = score))
+g + 
+    stat_summary(fun.data = 'mean_sdl', geom = 'errorbar', width = 0.2, size = 1) +
+    stat_summary(fun.y = mean, geom = 'point', size = 3, color = 'red') +
+    stat_summary(fun.y = mean, geom = 'line', size = 1, color = 'red')
+
+d
+#+END_SRC
+
+#+RESULTS:
+| 1 | 1 |
+| 1 | 3 |
+| 1 | 3 |
+| 1 | 5 |
+| 1 | 1 |
+| 1 | 2 |
+| 1 | 7 |
+| 1 | 4 |
+| 1 | 6 |
+| 1 | 6 |
+| 1 | 3 |
+| 1 | 5 |
+| 1 | 1 |
+| 1 | 6 |
+| 1 | 6 |
+| 1 | 4 |
+| 1 | 4 |
+| 1 | 3 |
+| 1 | 4 |
+| 1 | 5 |
+| 1 | 2 |
+| 1 | 3 |
+| 1 | 3 |
+| 1 | 1 |
+| 1 | 6 |
+| 1 | 6 |
+| 1 | 7 |
+| 1 | 3 |
+| 1 | 5 |
+| 1 | 7 |
+| 1 | 4 |
+| 1 | 6 |
+| 1 | 7 |
+| 1 | 4 |
+| 1 | 7 |
+| 1 | 7 |
+| 1 | 5 |
+| 1 | 7 |
+| 1 | 2 |
+| 1 | 7 |
+| 1 | 3 |
+| 1 | 5 |
+| 1 | 5 |
+| 1 | 7 |
+| 1 | 3 |
+| 1 | 2 |
+| 1 | 7 |
+| 1 | 3 |
+| 1 | 6 |
+| 1 | 2 |
+| 2 | 4 |
+| 2 | 1 |
+| 2 | 7 |
+| 2 | 2 |
+| 2 | 1 |
+| 2 | 5 |
+| 2 | 4 |
+| 2 | 1 |
+| 2 | 1 |
+| 2 | 4 |
+| 2 | 1 |
+| 2 | 1 |
+| 2 | 2 |
+| 2 | 5 |
+| 2 | 7 |
+| 2 | 3 |
+| 2 | 7 |
+| 2 | 6 |
+| 2 | 4 |
+| 2 | 7 |
+| 2 | 3 |
+| 2 | 2 |
+| 2 | 4 |
+| 2 | 3 |
+| 2 | 1 |
+| 2 | 2 |
+| 2 | 1 |
+| 2 | 7 |
+| 2 | 7 |
+| 2 | 3 |
+| 2 | 2 |
+| 2 | 1 |
+| 2 | 6 |
+| 2 | 5 |
+| 2 | 6 |
+| 2 | 3 |
+| 2 | 2 |
+| 2 | 5 |
+| 2 | 1 |
+| 2 | 3 |
+| 2 | 5 |
+| 2 | 1 |
+| 2 | 5 |
+| 2 | 6 |
+| 2 | 5 |
+| 2 | 5 |
+| 2 | 3 |
+| 2 | 1 |
+| 2 | 2 |
+| 2 | 3 |
+| 3 | 2 |
+| 3 | 1 |
+| 3 | 1 |
+| 3 | 6 |
+| 3 | 5 |
+| 3 | 1 |
+| 3 | 1 |
+| 3 | 6 |
+| 3 | 5 |
+| 3 | 1 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 6 |
+| 3 | 2 |
+| 3 | 2 |
+| 3 | 7 |
+| 3 | 4 |
+| 3 | 3 |
+| 3 | 4 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 7 |
+| 3 | 6 |
+| 3 | 3 |
+| 3 | 7 |
+| 3 | 6 |
+| 3 | 1 |
+| 3 | 2 |
+| 3 | 7 |
+| 3 | 6 |
+| 3 | 1 |
+| 3 | 3 |
+| 3 | 1 |
+| 3 | 4 |
+| 3 | 2 |
+| 3 | 4 |
+| 3 | 4 |
+| 3 | 7 |
+| 3 | 2 |
+| 3 | 6 |
+| 3 | 3 |
+| 3 | 7 |
+| 3 | 6 |
+| 3 | 2 |
+| 3 | 3 |
+| 3 | 2 |
+| 4 | 4 |
+| 4 | 5 |
+| 4 | 6 |
+| 4 | 6 |
+| 4 | 2 |
+| 4 | 3 |
+| 4 | 2 |
+| 4 | 3 |
+| 4 | 1 |
+| 4 | 2 |
+| 4 | 7 |
+| 4 | 5 |
+| 4 | 6 |
+| 4 | 6 |
+| 4 | 4 |
+| 4 | 6 |
+| 4 | 1 |
+| 4 | 3 |
+| 4 | 1 |
+| 4 | 1 |
+| 4 | 2 |
+| 4 | 7 |
+| 4 | 4 |
+| 4 | 2 |
+| 4 | 5 |
+| 4 | 4 |
+| 4 | 7 |
+| 4 | 7 |
+| 4 | 5 |
+| 4 | 4 |
+| 4 | 4 |
+| 4 | 5 |
+| 4 | 6 |
+| 4 | 4 |
+| 4 | 7 |
+| 4 | 6 |
+| 4 | 5 |
+| 4 | 7 |
+| 4 | 3 |
+| 4 | 2 |
+| 4 | 3 |
+| 4 | 1 |
+| 4 | 2 |
+| 4 | 3 |
+| 4 | 7 |
+| 4 | 4 |
+| 4 | 5 |
+| 4 | 1 |
+| 4 | 5 |
+| 4 | 3 |
+| 5 | 6 |
+| 5 | 6 |
+| 5 | 2 |
+| 5 | 5 |
+| 5 | 4 |
+| 5 | 6 |
+| 5 | 6 |
+| 5 | 5 |
+| 5 | 5 |
+| 5 | 3 |
+| 5 | 7 |
+| 5 | 2 |
+| 5 | 6 |
+| 5 | 1 |
+| 5 | 4 |
+| 5 | 5 |
+| 5 | 3 |
+| 5 | 7 |
+| 5 | 4 |
+| 5 | 1 |
+| 5 | 2 |
+| 5 | 4 |
+| 5 | 1 |
+| 5 | 7 |
+| 5 | 7 |
+| 5 | 7 |
+| 5 | 1 |
+| 5 | 5 |
+| 5 | 5 |
+| 5 | 2 |
+| 5 | 5 |
+| 5 | 4 |
+| 5 | 1 |
+| 5 | 2 |
+| 5 | 4 |
+| 5 | 7 |
+| 5 | 6 |
+| 5 | 6 |
+| 5 | 4 |
+| 5 | 5 |
+| 5 | 3 |
+| 5 | 1 |
+| 5 | 6 |
+| 5 | 4 |
+| 5 | 6 |
+| 5 | 3 |
+| 5 | 2 |
+| 5 | 1 |
+| 5 | 4 |
+| 5 | 3 |
+| 6 | 3 |
+| 6 | 5 |
+| 6 | 5 |
+| 6 | 7 |
+| 6 | 4 |
+| 6 | 1 |
+| 6 | 6 |
+| 6 | 3 |
+| 6 | 4 |
+| 6 | 3 |
+| 6 | 3 |
+| 6 | 4 |
+| 6 | 2 |
+| 6 | 2 |
+| 6 | 2 |
+| 6 | 1 |
+| 6 | 3 |
+| 6 | 1 |
+| 6 | 6 |
+| 6 | 5 |
+| 6 | 4 |
+| 6 | 5 |
+| 6 | 3 |
+| 6 | 6 |
+| 6 | 1 |
+| 6 | 2 |
+| 6 | 5 |
+| 6 | 4 |
+| 6 | 3 |
+| 6 | 4 |
+| 6 | 6 |
+| 6 | 5 |
+| 6 | 7 |
+| 6 | 3 |
+| 6 | 4 |
+| 6 | 5 |
+| 6 | 1 |
+| 6 | 7 |
+| 6 | 7 |
+| 6 | 7 |
+| 6 | 6 |
+| 6 | 5 |
+| 6 | 5 |
+| 6 | 4 |
+| 6 | 5 |
+| 6 | 7 |
+| 6 | 5 |
+| 6 | 6 |
+| 6 | 1 |
+| 6 | 4 |
+| 7 | 2 |
+| 7 | 4 |
+| 7 | 4 |
+| 7 | 5 |
+| 7 | 7 |
+| 7 | 6 |
+| 7 | 5 |
+| 7 | 6 |
+| 7 | 7 |
+| 7 | 6 |
+| 7 | 5 |
+| 7 | 1 |
+| 7 | 1 |
+| 7 | 7 |
+| 7 | 4 |
+| 7 | 7 |
+| 7 | 2 |
+| 7 | 1 |
+| 7 | 5 |
+| 7 | 4 |
+| 7 | 6 |
+| 7 | 1 |
+| 7 | 7 |
+| 7 | 7 |
+| 7 | 4 |
+| 7 | 6 |
+| 7 | 4 |
+| 7 | 2 |
+| 7 | 1 |
+| 7 | 3 |
+| 7 | 2 |
+| 7 | 2 |
+| 7 | 5 |
+| 7 | 6 |
+| 7 | 2 |
+| 7 | 2 |
+| 7 | 5 |
+| 7 | 5 |
+| 7 | 4 |
+| 7 | 6 |
+| 7 | 6 |
+| 7 | 1 |
+| 7 | 7 |
+| 7 | 2 |
+| 7 | 4 |
+| 7 | 2 |
+| 7 | 5 |
+| 7 | 2 |
+| 7 | 7 |
+| 7 | 5 |
+

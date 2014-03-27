@@ -1,0 +1,44 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,11pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE:
+
+* Nutzertest
+- Fertigstellung der Tools
+  - Praktische (und nicht nur theoretische) Anwendung ->
+    Nahezu vollständige Integration von PDDL 3.1 (inkl. korrekter
+    Anzahl von Klammern, Definition von Scopes, um Schlüsselwörter
+    nur in bestimmen Abschnitten zu highlighten, Erkennung von
+    Domain-/Problem-Dateien usw.), im Gegensatz zu vorhandenen PDDL
+    Syntax Highlightern
+  - Einfachste Verwendung des Typendiagrammgenerators (d.h. Eingliederung in Sublime Text)
+  - (Aufzeichnung der Interaktion)
+
+- Erstellen des Videotutorials
+  - Schreiben des Skripts
+    - Grundsätzlicher Aufbau
+    - Beispielbeschreibung
+    - Beispieldomain
+    - Videoaufnahme
+
+- Vorbereitung der Fragen
+  - Erstellen zweier neuer Domains
+  - Umschreiben und Anpassung zweier vorhandener Domains
+  - Schreiben zweier Beispielhierarchien
+  - 8 (oder mehr) Versuchspersonen
+  - Semesterferien
+  - Vorkenntnisse in Klammernotation (LISP)
+  - Bereitschaft, unentgeltich ca. 2 Stunden zu investieren
+  - Auswertung 
+  - Verfügbarkeit während des Tests (+ Zeitmessung)
+
+* Themenfindung
+- Möglichkeiten und Grenzen
+- Knowledge Engineering
+- Outtakes
+

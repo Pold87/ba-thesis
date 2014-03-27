@@ -1,0 +1,729 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,10pt]
+#+LaTeX_HEADER: \usepackage[margin=1in]{geometry}
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+TITLE: Raw Data - Splisus and Store 
+#+PROPERTY: colnames yes
+
+* All
+#+ATTR_LaTeX: :environment longtable
+#+NAME: raw-domains
+| VP | Tool | Domain  | Question | Seconds | Correct |
+|----+------+---------+----------+---------+---------|
+|  2 | Yes  | Splisus | Q1       |      38 |       1 |
+|  2 | Yes  | Splisus | Q2       |      30 |       1 |
+|  2 | Yes  | Splisus | Q3       |       7 |       1 |
+|  2 | Yes  | Splisus | Q4       |     140 |       0 |
+|  2 | Yes  | Splisus | Q5       |      53 |       1 |
+|  2 | No   | Store   | Q1       |      10 |       1 |
+|  2 | No   | Store   | Q2       |      24 |       1 |
+|  2 | No   | Store   | Q3       |      70 |       1 |
+|  2 | No   | Store   | Q4       |      64 |       1 |
+|  2 | No   | Store   | Q5       |      77 |       1 |
+|  3 | No   | Store   | Q1       |      60 |       1 |
+|  3 | No   | Store   | Q2       |      37 |       1 |
+|  3 | No   | Store   | Q3       |     163 |       0 |
+|  3 | No   | Store   | Q4       |     127 |       1 |
+|  3 | No   | Store   | Q5       |      77 |       1 |
+|  3 | Yes  | Splisus | Q1       |      19 |       1 |
+|  3 | Yes  | Splisus | Q2       |      18 |       1 |
+|  3 | Yes  | Splisus | Q3       |      33 |       1 |
+|  3 | Yes  | Splisus | Q4       |     142 |       0 |
+|  3 | Yes  | Splisus | Q5       |      11 |       1 |
+|  4 | Yes  | Store   | Q1       |      19 |       1 |
+|  4 | Yes  | Store   | Q2       |      15 |       1 |
+|  4 | Yes  | Store   | Q3       |      61 |       1 |
+|  4 | Yes  | Store   | Q4       |     148 |       1 |
+|  4 | Yes  | Store   | Q5       |      67 |       1 |
+|  4 | No   | Splisus | Q1       |      35 |       1 |
+|  4 | No   | Splisus | Q2       |     124 |       1 |
+|  4 | No   | Splisus | Q3       |      28 |       1 |
+|  4 | No   | Splisus | Q4       |      86 |       1 |
+|  4 | No   | Splisus | Q5       |      56 |       1 |
+|  5 | Yes  | Store   | Q1       |      33 |       1 |
+|  5 | Yes  | Store   | Q2       |      46 |       1 |
+|  5 | Yes  | Store   | Q3       |      37 |       0 |
+|  5 | Yes  | Store   | Q4       |      48 |       1 |
+|  5 | Yes  | Store   | Q5       |     179 |       1 |
+|  5 | No   | Splisus | Q1       |      50 |       1 |
+|  5 | No   | Splisus | Q2       |      22 |       1 |
+|  5 | No   | Splisus | Q3       |      36 |       1 |
+|  5 | No   | Splisus | Q4       |      34 |       1 |
+|  5 | No   | Splisus | Q5       |     173 |       1 |
+|  6 | No   | Store   | Q1       |      15 |       1 |
+|  6 | No   | Store   | Q2       |      32 |       1 |
+|  6 | No   | Store   | Q3       |     298 |       1 |
+|  6 | No   | Store   | Q4       |     124 |       0 |
+|  6 | No   | Store   | Q5       |      85 |       1 |
+|  6 | Yes  | Splisus | Q1       |      14 |       1 |
+|  6 | Yes  | Splisus | Q2       |      35 |       1 |
+|  6 | Yes  | Splisus | Q3       |      33 |       1 |
+|  6 | Yes  | Splisus | Q4       |      34 |       0 |
+|  6 | Yes  | Splisus | Q5       |      34 |       1 |
+|  7 | Yes  | Splisus | Q1       |      15 |       1 |
+|  7 | Yes  | Splisus | Q2       |      25 |       1 |
+|  7 | Yes  | Splisus | Q3       |      36 |       1 |
+|  7 | Yes  | Splisus | Q4       |      92 |       0 |
+|  7 | Yes  | Splisus | Q5       |      25 |       1 |
+|  7 | No   | Store   | Q1       |      71 |       1 |
+|  7 | No   | Store   | Q2       |      36 |       1 |
+|  7 | No   | Store   | Q3       |     119 |       1 |
+|  7 | No   | Store   | Q4       |     193 |       1 |
+|  7 | No   | Store   | Q5       |      46 |       1 |
+|  8 | Yes  | Store   | Q1       |      36 |       1 |
+|  8 | Yes  | Store   | Q2       |      20 |       1 |
+|  8 | Yes  | Store   | Q3       |     323 |       1 |
+|  8 | Yes  | Store   | Q4       |     213 |       1 |
+|  8 | Yes  | Store   | Q5       |      44 |       1 |
+|  8 | No   | Splisus | Q1       |     116 |       1 |
+|  8 | No   | Splisus | Q2       |     142 |       1 |
+|  8 | No   | Splisus | Q3       |      82 |       1 |
+|  8 | No   | Splisus | Q4       |     194 |       0 |
+|  8 | No   | Splisus | Q5       |      92 |       1 |
+|  9 | No   | Splisus | Q1       |      51 |       1 |
+|  9 | No   | Splisus | Q2       |     112 |       1 |
+|  9 | No   | Splisus | Q3       |      58 |       1 |
+|  9 | No   | Splisus | Q4       |     153 |       0 |
+|  9 | No   | Splisus | Q5       |      66 |       1 |
+|  9 | Yes  | Store   | Q1       |      15 |       1 |
+|  9 | Yes  | Store   | Q2       |      16 |       1 |
+|  9 | Yes  | Store   | Q3       |      75 |       1 |
+|  9 | Yes  | Store   | Q4       |      68 |       1 |
+|  9 | Yes  | Store   | Q5       |      32 |       1 |
+
+
+** Plot - All
+#+BEGIN_SRC R :var raw=raw-domains :results output graphics :file meeee.png :exports none
+    library(plyr)
+    cdata <- ddply(raw, c("Domain","Tool","Question"), summarise,
+                   Time = mean(Time),
+                   CompletionRate = mean(Correct))
+    cdata
+  
+  library(ggplot2)
+  ggplot(cdata, aes(x=Domain, y=Time,fill=Tool)) + 
+         geom_bar(position=position_dodge(), stat="identity") +
+         scale_y_continuous(breaks=0:200*5) +
+         theme_bw()
+#+END_SRC  
+
+#+RESULTS:
+[[file:meeee.png]]
+
+
+#+PROPERTY: colnames yes
+#+NAME: task-total
+#+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("Domain","Tool","Question"), summarise,
+                   wSeconds = exp(mean(log(Seconds))),
+                   CompletionRate = mean(Correct))
+    cdata
+#+END_SRC  
+
+#+RESULTS: task-total
+| Domain  | Tool | Question |          Seconds | CompletionRate |
+|---------+------+----------+------------------+----------------|
+| Splisus | No   | Q1       | 56.7239614894067 |              1 |
+| Splisus | No   | Q2       | 81.1591861321943 |              1 |
+| Splisus | No   | Q3       | 46.7924294809285 |              1 |
+| Splisus | No   | Q4       | 96.5200709011594 |            0.5 |
+| Splisus | No   | Q5       | 87.5772841603726 |              1 |
+| Splisus | Yes  | Q1       | 19.7328185798802 |              1 |
+| Splisus | Yes  | Q2       | 26.2180539751404 |              1 |
+| Splisus | Yes  | Q3       | 22.8879610186401 |              1 |
+| Splisus | Yes  | Q4       |  88.801598012187 |              0 |
+| Splisus | Yes  | Q5       | 26.5321149447106 |              1 |
+| Store   | No   | Q1       |  28.273216224343 |              1 |
+| Store   | No   | Q2       | 31.8028734593883 |              1 |
+| Store   | No   | Q3       | 141.828077977078 |           0.75 |
+| Store   | No   | Q4       | 118.097491332123 |           0.75 |
+| Store   | No   | Q5       | 69.3888279614662 |              1 |
+| Store   | Yes  | Q1       | 24.1221117547533 |              1 |
+| Store   | Yes  | Q2       | 21.6770294316087 |              1 |
+| Store   | Yes  | Q3       | 85.9901756752833 |           0.75 |
+| Store   | Yes  | Q4       | 100.715860407791 |              1 |
+| Store   | Yes  | Q5       | 64.1036298653199 |              1 |
+
+
+
+* Task Completions
+** Aggregated
+
+#+NAME: task-completions-agg
+#+BEGIN_SRC R :var raw=raw-domains :results value :exports none
+    library(plyr)
+    eRaw <-  subset(raw, Correct == 1)
+    eCdata <- ddply(eRaw, c("Tool","Question"), summarise,
+                    Seconds = exp(mean(log(Seconds))),
+                    N = length(Domain))
+#+END_SRC  
+
+#+RESULTS: task-completions-agg
+| Tool | Question |          Seconds | N |
+|------+----------+------------------+---|
+| No   | Q1       | 40.0470826439493 | 8 |
+| No   | Q2       | 50.8044813636466 | 8 |
+| No   | Q3       | 73.7798322342579 | 7 |
+| No   | Q4       | 85.5664815613165 | 5 |
+| No   | Q5       | 77.9543783500101 | 8 |
+| Yes  | Q1       |  21.817361321208 | 8 |
+| Yes  | Q2       | 23.8396629099202 | 8 |
+| Yes  | Q3       | 45.5290787809905 | 7 |
+| Yes  | Q4       | 100.715860407791 | 4 |
+| Yes  | Q5       | 41.2408156558506 | 8 | 
+
+
+
+#+NAME: agg-points
+#+BEGIN_SRC R :var raw=raw-domains :exports none
+    library(plyr)
+    eRaw <-  subset(raw, Correct == 1)
+    eCdata <- ddply(eRaw, c("Seconds","Tool","Question"), summarise,
+                    Seconds = Seconds)
+#+END_SRC
+
+#+RESULTS: agg-points
+| Tool | Question | Seconds |
+|------+----------+---------|
+| Yes  | Q3       |       7 |
+| No   | Q1       |      10 |
+| Yes  | Q5       |      11 |
+| Yes  | Q1       |      14 |
+| No   | Q1       |      15 |
+| Yes  | Q1       |      15 |
+| Yes  | Q1       |      15 |
+| Yes  | Q2       |      15 |
+| Yes  | Q2       |      16 |
+| Yes  | Q2       |      18 |
+| Yes  | Q1       |      19 |
+| Yes  | Q1       |      19 |
+| Yes  | Q2       |      20 |
+| No   | Q2       |      22 |
+| No   | Q2       |      24 |
+| Yes  | Q2       |      25 |
+| Yes  | Q5       |      25 |
+| No   | Q3       |      28 |
+| Yes  | Q2       |      30 |
+| No   | Q2       |      32 |
+| Yes  | Q5       |      32 |
+| Yes  | Q1       |      33 |
+| Yes  | Q3       |      33 |
+| Yes  | Q3       |      33 |
+| No   | Q4       |      34 |
+| Yes  | Q5       |      34 |
+| No   | Q1       |      35 |
+| Yes  | Q2       |      35 |
+| No   | Q2       |      36 |
+| No   | Q3       |      36 |
+| Yes  | Q1       |      36 |
+| Yes  | Q3       |      36 |
+| No   | Q2       |      37 |
+| Yes  | Q1       |      38 |
+| Yes  | Q5       |      44 |
+| No   | Q5       |      46 |
+| Yes  | Q2       |      46 |
+| Yes  | Q4       |      48 |
+| No   | Q1       |      50 |
+| No   | Q1       |      51 |
+| Yes  | Q5       |      53 |
+| No   | Q5       |      56 |
+| No   | Q3       |      58 |
+| No   | Q1       |      60 |
+| Yes  | Q3       |      61 |
+| No   | Q4       |      64 |
+| No   | Q5       |      66 |
+| Yes  | Q5       |      67 |
+| Yes  | Q4       |      68 |
+| No   | Q3       |      70 |
+| No   | Q1       |      71 |
+| Yes  | Q3       |      75 |
+| No   | Q5       |      77 |
+| No   | Q5       |      77 |
+| No   | Q3       |      82 |
+| No   | Q5       |      85 |
+| No   | Q4       |      86 |
+| No   | Q5       |      92 |
+| No   | Q2       |     112 |
+| No   | Q1       |     116 |
+| No   | Q3       |     119 |
+| No   | Q2       |     124 |
+| No   | Q4       |     127 |
+| No   | Q2       |     142 |
+| Yes  | Q4       |     148 |
+| No   | Q5       |     173 |
+| Yes  | Q5       |     179 |
+| No   | Q4       |     193 |
+| Yes  | Q4       |     213 |
+| No   | Q3       |     298 |
+| Yes  | Q3       |     323 |
+
+  
+
+
+#+NAME: task-completion-rate
+#+BEGIN_SRC R :var raw=raw-domains :exports none
+ library(plyr)
+    con <- ddply(raw, c("Tool","Question"), summarise,
+                    CR = mean(Correct))
+#+END_SRC
+
+#+RESULTS: task-completion-rate
+| Tool | Question |    CR |
+|------+----------+-------|
+| No   | Q1       |     1 |
+| No   | Q2       |     1 |
+| No   | Q3       | 0.875 |
+| No   | Q4       | 0.625 |
+| No   | Q5       |     1 |
+| Yes  | Q1       |     1 |
+| Yes  | Q2       |     1 |
+| Yes  | Q3       | 0.875 |
+| Yes  | Q4       |   0.5 |
+| Yes  | Q5       |     1 |
+
+
+
+# Very, very good
+#+NAME: task-completions-plot
+#+BEGIN_SRC R :var tc=task-completions-agg points=agg-points rate=task-completion-rate :results output graphics :file task-completions-agg.svg :exports graphics
+  library(ggplot2)
+    
+    ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_point(data = points, aes(x=Question, y = Seconds, fill=Tool), size = 1, colour = 'black',
+               stat = "identity",position=position_dodge(width=0.9)) + 
+  
+    scale_y_continuous(breaks=0:200*10) +
+      scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
+      ggtitle("Average Task Completion Time (Geometric Mean)\nfor Aggregated Domains per Question (with Data Values)") +
+      guides(fill = guide_legend(override.aes = list(text = 1))) +
+      theme_bw() +  
+         geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 3), size = 3,
+      position = position_dodge(width=0.9))
+#+END_SRC
+
+#+RESULTS: task-completions-plot
+[[file:task-completions-agg.svg]]
+
+
+# Same Plot, but without points
+#+CAPTION: Aggregated Domains, without points
+#+NAME: task-completions-plot-no-points
+#+BEGIN_SRC R :var tc=task-completions-agg points=agg-points rate=task-completion-rate :results output graphics :file task-completions-agg-no-points.svg :exports value
+  library(ggplot2)
+    
+    ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    scale_y_continuous(breaks=0:200*5) +
+      scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
+      ggtitle("Aggregated Task Completion Time (Geometric Mean)\nfor Aggreagted Domains per Question") +
+      guides(fill = guide_legend(override.aes = list(text = 1))) +
+      theme_bw() +  
+         geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 3), size = 3,
+      position = position_dodge(width=0.9))
+#+END_SRC
+
+#+RESULTS: task-completions-plot-no-points
+[[file:task-completions-agg-no-points.svg]]
+
+
+#+NAME: task-completion-rate-splisus
+#+BEGIN_SRC R :var raw=raw-domains :exports none
+  library(plyr)
+  sRaw <-  subset(raw, Domain == "Splisus")
+  ddply(sRaw, c("Tool","Question"), summarise,
+           CR = mean(Correct))
+  
+#+END_SRC
+
+#+RESULTS: task-completion-rate-splisus
+| Tool | Question |  CR |
+|------+----------+-----|
+| No   | Q1       |   1 |
+| No   | Q2       |   1 |
+| No   | Q3       |   1 |
+| No   | Q4       | 0.5 |
+| No   | Q5       |   1 |
+| Yes  | Q1       |   1 |
+| Yes  | Q2       |   1 |
+| Yes  | Q3       |   1 |
+| Yes  | Q4       |   0 |
+| Yes  | Q5       |   1 |
+
+
+#+NAME: task-completions
+#+BEGIN_SRC R :var raw=raw-domains :results value :exports none
+    library(plyr)
+    eRaw <-  subset(raw, Correct == 1)
+    eCdata <- ddply(eRaw, c("Domain","Tool","Question"), summarise,
+                    Seconds = exp(mean(log(Seconds))),
+                    N = length(Domain))
+    question4 <- data.frame(Domain="Splisus", Tool="Yes", Question="Q4", Seconds=0,N=4)
+    total <- rbind(eCdata, question4)
+    total
+#+END_SRC  
+
+#+RESULTS: task-completions
+| Domain  | Tool | Question |          Seconds | N |
+|---------+------+----------+------------------+---|
+| Splisus | No   | Q1       | 56.7239614894067 | 4 |
+| Splisus | No   | Q2       | 81.1591861321943 | 4 |
+| Splisus | No   | Q3       | 46.7924294809285 | 4 |
+| Splisus | No   | Q4       | 54.0740233383831 | 2 |
+| Splisus | No   | Q5       | 87.5772841603726 | 4 |
+| Splisus | Yes  | Q1       | 19.7328185798802 | 4 |
+| Splisus | Yes  | Q2       | 26.2180539751404 | 4 |
+| Splisus | Yes  | Q3       | 22.8879610186401 | 4 |
+| Splisus | Yes  | Q5       | 26.5321149447106 | 4 |
+| Store   | No   | Q1       |  28.273216224343 | 4 |
+| Store   | No   | Q2       | 31.8028734593883 | 4 |
+| Store   | No   | Q3       | 135.400547930236 | 3 |
+| Store   | No   | Q4       | 116.193098911462 | 3 |
+| Store   | No   | Q5       | 69.3888279614662 | 4 |
+| Store   | Yes  | Q1       | 24.1221117547533 | 4 |
+| Store   | Yes  | Q2       | 21.6770294316087 | 4 |
+| Store   | Yes  | Q3       |  113.90196249769 | 3 |
+| Store   | Yes  | Q4       | 100.715860407791 | 4 |
+| Store   | Yes  | Q5       | 64.1036298653199 | 4 |
+| Splisus | Yes  | Q4       |                0 | 4 |
+
+
+
+** Splisus
+
+#+NAME: task-completions-splisus
+#+BEGIN_SRC R :var tc=task-completions :exports none
+tcs <-  subset(tc, Domain == "Splisus")
+#+END_SRC
+
+#+RESULTS: task-completions-splisus
+| Domain  | Tool | Question |          Seconds | N |
+|---------+------+----------+------------------+---|
+| Splisus | No   | Q1       | 56.7239614894067 | 4 |
+| Splisus | No   | Q2       | 81.1591861321943 | 4 |
+| Splisus | No   | Q3       | 46.7924294809285 | 4 |
+| Splisus | No   | Q4       | 54.0740233383831 | 2 |
+| Splisus | No   | Q5       | 87.5772841603726 | 4 |
+| Splisus | Yes  | Q1       | 19.7328185798802 | 4 |
+| Splisus | Yes  | Q2       | 26.2180539751404 | 4 |
+| Splisus | Yes  | Q3       | 22.8879610186401 | 4 |
+| Splisus | Yes  | Q5       | 26.5321149447106 | 4 |
+| Splisus | Yes  | Q4       |                0 | 4 |
+
+#+NAME: splisus-points
+#+BEGIN_SRC R :var raw=raw-domains :exports none
+    library(plyr)
+    eRawT <-  subset(raw, Correct == 1)
+    eRaw <-  subset(eRawT, Domain == "Splisus")
+    eCdata <- ddply(eRaw, c("Seconds","Tool","Question"), summarise,
+                    Seconds = Seconds)
+    question4 <- data.frame(Tool="Yes", Question="Q4", Seconds=0)
+    total <- rbind(eCdata, question4)
+    total
+#+END_SRC
+
+#+RESULTS: splisus-points
+| Tool | Question | Seconds |
+|------+----------+---------|
+| Yes  | Q3       |       7 |
+| Yes  | Q5       |      11 |
+| Yes  | Q1       |      14 |
+| Yes  | Q1       |      15 |
+| Yes  | Q2       |      18 |
+| Yes  | Q1       |      19 |
+| No   | Q2       |      22 |
+| Yes  | Q2       |      25 |
+| Yes  | Q5       |      25 |
+| No   | Q3       |      28 |
+| Yes  | Q2       |      30 |
+| Yes  | Q3       |      33 |
+| Yes  | Q3       |      33 |
+| No   | Q4       |      34 |
+| Yes  | Q5       |      34 |
+| No   | Q1       |      35 |
+| Yes  | Q2       |      35 |
+| No   | Q3       |      36 |
+| Yes  | Q3       |      36 |
+| Yes  | Q1       |      38 |
+| No   | Q1       |      50 |
+| No   | Q1       |      51 |
+| Yes  | Q5       |      53 |
+| No   | Q5       |      56 |
+| No   | Q3       |      58 |
+| No   | Q5       |      66 |
+| No   | Q3       |      82 |
+| No   | Q4       |      86 |
+| No   | Q5       |      92 |
+| No   | Q2       |     112 |
+| No   | Q1       |     116 |
+| No   | Q2       |     124 |
+| No   | Q2       |     142 |
+| No   | Q5       |     173 |
+| Yes  | Q4       |       0 |
+
+
+
+#+NAME: task-completion-rate-store
+#+BEGIN_SRC R :var raw=raw-domains :exports none
+  library(plyr)
+  sRaw <-  subset(raw, Domain == "Store")
+  ddply(sRaw, c("Tool","Question"), summarise,
+           CR = mean(Correct))
+  
+#+END_SRC
+
+#+RESULTS: task-completion-rate-store
+| Tool | Question |   CR |
+|------+----------+------|
+| No   | Q1       |    1 |
+| No   | Q2       |    1 |
+| No   | Q3       | 0.75 |
+| No   | Q4       | 0.75 |
+| No   | Q5       |    1 |
+| Yes  | Q1       |    1 |
+| Yes  | Q2       |    1 |
+| Yes  | Q3       | 0.75 |
+| Yes  | Q4       |    1 |
+| Yes  | Q5       |    1 |
+
+** Plots
+
+# Very, very good
+#+NAME: task-completions-splisus-plot
+#+BEGIN_SRC R :var tc=task-completions-splisus points=splisus-points rate=task-completion-rate-splisus :results output graphics :file task-completions-splisus.svg :exports value
+  library(ggplot2)
+    
+    ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_point(data = points, aes(x=Question, y = Seconds, fill=Tool), size = 1, colour = 'black',
+               stat = "identity",position=position_dodge(width=0.9)) + 
+  
+    scale_y_continuous(breaks=0:200*10) +
+      scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
+      ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain Planet Splisus' per Question (with Data Dalues)") +
+      guides(fill = guide_legend(override.aes = list(text = 1))) +
+      theme_bw() +  
+         geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 3), size = 3,
+      position = position_dodge(width=0.9))
+#+END_SRC
+
+#+RESULTS: task-completions-splisus-plot-no-points
+[[file:task-completions-splisus.pdf]]
+
+# Very, very good
+#+NAME: task-completions-splisus-plot
+#+BEGIN_SRC R :var tc=task-completions-splisus points=splisus-points rate=task-completion-rate-splisus :results output graphics :file task-completions-splisus-no-points.svg :exports value
+  library(ggplot2)
+    
+    ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    scale_y_continuous(breaks=0:200*5) +
+      scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
+      ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain Planet Splisus' per Question") +
+      guides(fill = guide_legend(override.aes = list(text = 1))) +
+      theme_bw() +  
+         geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 3), size = 3,
+      position = position_dodge(width=0.9))
+#+END_SRC
+
+#+RESULTS: task-completions-splisus-plot
+[[file:task-completions-splisus.svg]]
+
+
+** Store
+
+#+NAME: task-completions-store
+#+BEGIN_SRC R :var tc=task-completions 
+tcs <-  subset(tc, Domain == "Store")
+#+END_SRC
+
+#+RESULTS: task-completions-store
+| Domain | Tool | Question |          Seconds | N |
+|--------+------+----------+------------------+---|
+| Store  | No   | Q1       |  28.273216224343 | 4 |
+| Store  | No   | Q2       | 31.8028734593883 | 4 |
+| Store  | No   | Q3       | 135.400547930236 | 3 |
+| Store  | No   | Q4       | 116.193098911462 | 3 |
+| Store  | No   | Q5       | 69.3888279614662 | 4 |
+| Store  | Yes  | Q1       | 24.1221117547533 | 4 |
+| Store  | Yes  | Q2       | 21.6770294316087 | 4 |
+| Store  | Yes  | Q3       |  113.90196249769 | 3 |
+| Store  | Yes  | Q4       | 100.715860407791 | 4 |
+| Store  | Yes  | Q5       | 64.1036298653199 | 4 | 
+
+#+NAME: store-points
+#+BEGIN_SRC R :var raw=raw-domains
+    library(plyr)
+    eRawT <-  subset(raw, Correct == 1)
+    eRaw <-  subset(eRawT, Domain == "Store")
+    eCdata <- ddply(eRaw, c("Seconds","Tool","Question"), summarise,
+                    Seconds = Seconds)
+    eCdata
+#+END_SRC  
+
+#+RESULTS: store-points
+| Tool | Question | Seconds |
+|------+----------+---------|
+| No   | Q1       |      10 |
+| No   | Q1       |      15 |
+| Yes  | Q1       |      15 |
+| Yes  | Q2       |      15 |
+| Yes  | Q2       |      16 |
+| Yes  | Q1       |      19 |
+| Yes  | Q2       |      20 |
+| No   | Q2       |      24 |
+| No   | Q2       |      32 |
+| Yes  | Q5       |      32 |
+| Yes  | Q1       |      33 |
+| No   | Q2       |      36 |
+| Yes  | Q1       |      36 |
+| No   | Q2       |      37 |
+| Yes  | Q5       |      44 |
+| No   | Q5       |      46 |
+| Yes  | Q2       |      46 |
+| Yes  | Q4       |      48 |
+| No   | Q1       |      60 |
+| Yes  | Q3       |      61 |
+| No   | Q4       |      64 |
+| Yes  | Q5       |      67 |
+| Yes  | Q4       |      68 |
+| No   | Q3       |      70 |
+| No   | Q1       |      71 |
+| Yes  | Q3       |      75 |
+| No   | Q5       |      77 |
+| No   | Q5       |      77 |
+| No   | Q5       |      85 |
+| No   | Q3       |     119 |
+| No   | Q4       |     127 |
+| Yes  | Q4       |     148 |
+| Yes  | Q5       |     179 |
+| No   | Q4       |     193 |
+| Yes  | Q4       |     213 |
+| No   | Q3       |     298 |
+| Yes  | Q3       |     323 | 
+
+
+** Plots
+
+# Very, very good
+#+NAME: task-completions-store-plot
+#+BEGIN_SRC R :var tc=task-completions-store points=store-points rate=task-completion-rate-store :results output graphics :file task-completions-store.svg :exports value
+library(ggplot2)
+  
+  ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_point(data = points, aes(x=Question, y = Seconds, fill=Tool), size = 1, colour = 'black',
+             stat = "identity",position=position_dodge(width=0.9)) + 
+  scale_y_continuous(breaks=0:200*10) +
+    scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  
+    ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain 'Store' per Question (with Data Values)") +
+    theme_bw() + 
+    geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 4), size = 3,
+    position = position_dodge(width=0.9))
+#+END_SRC  
+
+#+RESULTS: task-completions-store-plot
+[[file:task-completions-store.svg]]
+
+# Very, very good
+#+NAME: task-completions-store-plot-no-points
+#+BEGIN_SRC R :var tc=task-completions-store points=store-points rate=task-completion-rate-store :results output graphics :file task-completions-store-no-points.svg :exports value
+library(ggplot2)
+  
+  ggplot(tc, aes(x=Question, y=Seconds,fill=Tool)) +
+  geom_bar(position=position_dodge(), stat="identity") +
+  scale_y_continuous(breaks=0:200*5) +
+    scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  
+    ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain 'Store' per Question") +
+    theme_bw() + 
+    geom_text(data=rate,aes(label = paste(CR * 100, "%", sep = ""), x = Question, y = 4), size = 3,
+    position = position_dodge(width=0.9))
+#+END_SRC  
+
+#+RESULTS: task-completions-store-plot-no-points
+[[file:task-completions-store-no-points.svg]]
+
+* Task Failures
+** Aggregated
+#+NAME: task-failures
+#+BEGIN_SRC R :var raw=raw-domains :results value :exports none
+    eRaw <-  subset(raw, Correct == 0)
+    library(plyr)
+    eCdata <- ddply(eRaw, c("Domain","Tool","Question"), summarise,
+                    Time = mean(Time),
+                    N = length(Domain))
+    eCdata
+#+END_SRC  
+
+#+RESULTS: task-failures
+| Domain  | Tool | Question |  Time | N |
+|---------+------+----------+-------+---|
+| Splisus | No   |        4 | 173.5 | 2 |
+| Splisus | Yes  |        4 |   102 | 4 |
+| Store   | No   |        3 |   163 | 1 |
+| Store   | No   |        4 |   124 | 1 |
+| Store   | Yes  |        3 |    37 | 1 |
+
+** Splisus
+#+NAME: task-failures-splisus
+#+BEGIN_SRC R :var tf=task-failures  :exports none
+tfs <-  subset(tf, Domain == "Splisus")
+#+END_SRC
+
+#+RESULTS: task-failures-splisus
+| Domain  | Tool | Question |  Time | N |
+|---------+------+----------+-------+---|
+| Splisus | No   |        4 | 173.5 | 2 |
+| Splisus | Yes  |        4 |   102 | 4 |
+
+
+
+** Store
+
+#+NAME: task-failures-store
+#+BEGIN_SRC R :var tf=task-failures :results value :exports none
+tfs <-  subset(tf, Domain == "Store")
+tfs[3] <- lapply(tfs[3], as.character)
+tfs
+#+END_SRC
+
+#+RESULTS: task-failures-store
+| Domain | Tool | Question | Time | N |
+|--------+------+----------+------+---|
+| Store  | No   | Q3       |  163 | 1 |
+| Store  | No   | Q4       |  124 | 1 |
+| Store  | Yes  | Q3       |   37 | 1 |
+
+#+NAME: time-to-failure-store-plot
+#+BEGIN_SRC R :var tf=task-failures-store :results output graphics :file task-failures-store.png :exports value
+  library(ggplot2)
+  ggplot(tf, aes(x=Question, y=Time,fill=Tool)) + 
+      geom_bar(position=position_dodge(), stat="identity") +
+           scale_x_discrete(limits=c("Q1","Q2","Q3","Q4","Q5")) + 
+      scale_y_continuous(breaks=0:200*5) +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: time-to-failure-store-plot
+[[file:task-failures-store.png]]
+
+
+#+NAME: time-to-failure-plot
+#+BEGIN_SRC R :var mt=task-failures :results output graphics :file task-failures.png :exports none
+  library(ggplot2)
+  ggplot(mt, aes(x=Domain, y=Time,fill=Tool)) + 
+      geom_bar(position=position_dodge(), stat="identity") +
+      scale_y_continuous(breaks=0:200*5) +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: time-to-failure-plot
+[[file:task-failures.png]]

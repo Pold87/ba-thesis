@@ -1,0 +1,49 @@
+#+TITLE: 
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_HEADER: \usepackage[margin=1.5in]{geometry}
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LaTeX_HEADER: \usepackage{minted}
+#+DATE: 
+* Bachelorarbeit - Outtakes
+
+** Morse PDDL interface
+*** Idee
+Extrahieren der Umgebung, Planung und Visualisierung des Plans
+(Abbildung von PDDL-Aktionen in Morse)
+*** Bisherige Umsetzung
+Extrahieren der Umgebung
+*** Aufruf
+#+BEGIN_SRC bash
+$ cd /home/pold/Documents/morse-examples/mysim 
+$ morse run default.py
+#+END_SRC
+*** Herausforderungen
+Mapping von PDDL-Aktionen zu Morse-Aktionen
+
+** Integration des Planners in Gesamtarchitektur
+*** Idee
+Ausführungsschicht, Planungsschicht und Kontrollschicht
+*** Bisherige Umsetzung
+Lesen der nötigen Papers, Installation der nötigen Programme
+*** Herausforderungen
+Mapping von PDDL Aktionen zur Ausführungsschicht (da PDDL-Aktionen zu
+abstrakt sind)
+
+** Sprachein- und ausgabe
+*** Idee
+Sprachein- und ausgabe des Planners
+*** Bisherige Umsetzung
+Interaktive Planung, funktionierende Sprachein- und ausgabe
+*** Aufruf
+
+#+BEGIN_SRC bash
+$ killall pulseaudio
+$ qjackctl
+$ cd /home/pold/Documents/Git
+$ python tidy_up_interactive_speech.py
+#+END_SRC
+*** Herausforderungen
+Integration in Gesamtkonzept der Bachelorarbeit
