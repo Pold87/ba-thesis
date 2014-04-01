@@ -113,7 +113,7 @@
 [[file:meeee.png]]
 
 
-#+PROPERTY: colnames yes
+
 #+NAME: task-total
 #+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
 library(plyr)
@@ -123,34 +123,108 @@ library(plyr)
   }
 
     cdata <- ddply(raw, c("Domain","Tool","Question"), summarise,
-                   wSeconds = exp(mean(log(Seconds))),
+                   Seconds = round(exp(mean(log(Seconds))),0),
                    CompletionRate = mean(Correct))
     cdata
 #+END_SRC  
 
 #+RESULTS: task-total
-| Domain  | Tool | Question |          Seconds | CompletionRate |
-|---------+------+----------+------------------+----------------|
-| Splisus | No   | Q1       | 56.7239614894067 |              1 |
-| Splisus | No   | Q2       | 81.1591861321943 |              1 |
-| Splisus | No   | Q3       | 46.7924294809285 |              1 |
-| Splisus | No   | Q4       | 96.5200709011594 |            0.5 |
-| Splisus | No   | Q5       | 87.5772841603726 |              1 |
-| Splisus | Yes  | Q1       | 19.7328185798802 |              1 |
-| Splisus | Yes  | Q2       | 26.2180539751404 |              1 |
-| Splisus | Yes  | Q3       | 22.8879610186401 |              1 |
-| Splisus | Yes  | Q4       |  88.801598012187 |              0 |
-| Splisus | Yes  | Q5       | 26.5321149447106 |              1 |
-| Store   | No   | Q1       |  28.273216224343 |              1 |
-| Store   | No   | Q2       | 31.8028734593883 |              1 |
-| Store   | No   | Q3       | 141.828077977078 |           0.75 |
-| Store   | No   | Q4       | 118.097491332123 |           0.75 |
-| Store   | No   | Q5       | 69.3888279614662 |              1 |
-| Store   | Yes  | Q1       | 24.1221117547533 |              1 |
-| Store   | Yes  | Q2       | 21.6770294316087 |              1 |
-| Store   | Yes  | Q3       | 85.9901756752833 |           0.75 |
-| Store   | Yes  | Q4       | 100.715860407791 |              1 |
-| Store   | Yes  | Q5       | 64.1036298653199 |              1 |
+| Domain  | Tool | Question | Seconds | CompletionRate |
+|---------+------+----------+---------+----------------|
+| Splisus | No   | Q1       |      57 |              1 |
+| Splisus | No   | Q2       |      81 |              1 |
+| Splisus | No   | Q3       |      47 |              1 |
+| Splisus | No   | Q4       |      97 |            0.5 |
+| Splisus | No   | Q5       |      88 |              1 |
+| Splisus | Yes  | Q1       |      20 |              1 |
+| Splisus | Yes  | Q2       |      26 |              1 |
+| Splisus | Yes  | Q3       |      23 |              1 |
+| Splisus | Yes  | Q4       |      89 |              0 |
+| Splisus | Yes  | Q5       |      27 |              1 |
+| Store   | No   | Q1       |      28 |              1 |
+| Store   | No   | Q2       |      32 |              1 |
+| Store   | No   | Q3       |     142 |           0.75 |
+| Store   | No   | Q4       |     118 |           0.75 |
+| Store   | No   | Q5       |      69 |              1 |
+| Store   | Yes  | Q1       |      24 |              1 |
+| Store   | Yes  | Q2       |      22 |              1 |
+| Store   | Yes  | Q3       |      86 |           0.75 |
+| Store   | Yes  | Q4       |     101 |              1 |
+| Store   | Yes  | Q5       |      64 |              1 |
+
+
+
+#+BEGIN_SRC R :var raw=raw-domains :results value
+## Summarizes data.
+## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
+##   data: a data frame.
+##   measurevar: the name of a column that contains the variable to be summariezed
+##   groupvars: a vector containing names of columns that contain grouping variables
+##   na.rm: a boolean that indicates whether to ignore NA's
+##   conf.interval: the percent range of the confidence interval (default is 95%)
+gmean <- function(x) {
+  return(exp(mean(log(x))))
+}
+
+geosd <- function(x, na.rm = FALSE, ...)
+{
+exp(sd(log(x, ...), na.rm = na.rm, ...))
+}
+
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+    require(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = round(gmean   (xx[[col]]),0),
+          SD   = round(sd     (xx[[col]]),0)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column    
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$SE <- round(datac$SD / sqrt(datac$N),0)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$CI <- round(datac$SE * ciMult,0)
+
+    return(datac)
+}
+
+summarySE(raw, measurevar="Seconds", groupvars=c("Tool"))
+
+#+END_SRC
+
+#+RESULTS:
+| Tool |  N | Seconds | SD | SE | CI |
+|------+----+---------+----+----+----|
+| No   | 40 |      67 | 60 |  9 | 18 |
+| Yes  | 40 |      39 | 64 | 10 | 20 |
+
+
+
+
+
+
+
+
+
 
 
 

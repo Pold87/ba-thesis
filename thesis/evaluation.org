@@ -9,6 +9,84 @@
 #+DATE: 
 #+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
 
+#+NAME: summary
+#+BEGIN_SRC R :results output :var erro=myerrors
+
+library(ggplot2)
+#err <- read.csv(file="/home/pold/Documents/BA/org-ba/thesis/identifiederrors.csv",head=TRUE,sep=",")
+library(plyr)
+
+mm <- ddply(erro, c("Tool","Domain"), summarise, Errors=mean(Errors))
+newRow <- data.frame(Tool="Yes", Domain="Logistics", Errors=5)
+mm <- rbind(mm,
++                data.frame(Tool="Yes", Domain="Logistics", Errors=5),
++                data.frame(Tool="No", Domain="Logistics", Errors=10))
+mm
+#+END_SRC  
+
+#+RESULTS: summary
+:   Tool    Domain Errors
+: 1   No    Coffee   8.75
+: 2   No Logistics   6.50
+: 3  Yes    Coffee   9.00
+: 4  Yes Logistics  11.50
+: 5 <NA>      <NA>   5.00
+: 6 <NA>      <NA>  10.00
+
+#+NAME: modd
+| Tool | Domain    | Errors |
+|------+-----------+--------|
+| No   | Coffee    |   8.75 |
+| No   | Logistics |    6.5 |
+| No   | Combined  |     15 |
+| Yes  | Coffee    |      9 |
+| Yes  | Logistics |   11.5 |
+| Yes  | Combined  |     15 |
+
+
+
+#+NAME: summary1
+#+BEGIN_SRC R :file xxxxx5.png :results output graphics :var erro=myerrors ausg=myerrors inm=modd
+
+library(ggplot2)
+#err <- read.csv(file="/home/pold/Documents/BA/org-ba/thesis/identifiederrors.csv",head=TRUE,sep=",")
+library(plyr)
+inm$Domain <- as.character(inm$Domain)
+inm$Domain <- factor(inm$Domain, levels=c("Logistics", "Coffee", "Combined"), ordered=TRUE)
+
+#mm <- ddply(erro, c("Tool","Domain"), summarise, Errors=mean(Errors))
+#mm
+
+  p <- ggplot(inm, aes(x=Domain, y=Errors,fill=Tool)) + 
+       geom_bar(position=position_dodge(), stat="identity") + 
+      geom_point(data=ausg,position=position_dodge(width=0.9))
+p
+#+END_SRC  
+
+#+RESULTS: summary1
+[[file:xxxxx5.png]]
+
+# Error Analysis
+#+name: error_analysis_total-22  :var summary=summary
+#+begin_src R 
+  library(ggplot2)
+  library(plyr)
+
+mm <- ddply(summary, c("Tool","Domain"), summarise, Errors=mean(Errors))
+mm  
+# my$module <- as.character(my$module)
+# my$module <- factor(my$module, levels=c("Logistics", "Coffee", "Combined"), ordered=TRUE)
+  
+#  p <- ggplot(mm, aes(x=Domain, y=Errors,fill=Tool)) + 
+#       geom_bar(position=position_dodge(), stat="identity")
+#p
+#+end_src
+
+#+RESULTS: error_analysis_total-22
+
+#+RESULTS: error_analysis_total-2
+
+
 * Design
 *** Gruppenaufteilung
 #+NAME: order
@@ -212,11 +290,11 @@ Abhängig, ob :parameters doppelt oder einfach gezählt wird
 *** Coffee - ohne Syntax Highlighter
 
 Gefundene Fehler: 12 \\
-Davon korrekt erkannte Fehler: 
+Davon korrekt erkannte Fehler: 12
 
 *** System Usability Scale
 
-#+PLOT: :title "SUS" :with histograms
+#+NAME: sus-vp2
 | /Frage/ |   /Wertung/ | /SUS Contribution/ |
 |---------+-------------+--------------------|
 |       1 |           5 |                  4 |
@@ -224,14 +302,14 @@ Davon korrekt erkannte Fehler:
 |       3 |           5 |                  4 |
 |       4 |           1 |                  4 |
 |       5 |           5 |                  4 |
-|       6 |           2 |                  3 |
+|       6 |           1 |                  4 |
 |       7 |           2 |                  1 |
 |       8 |           1 |                  4 |
 |       9 |           5 |                  4 |
 |      10 |           2 |                  3 |
 |---------+-------------+--------------------|
-|         |         Sum |                 35 |
-|         | *SUS Score* |               87.5 |
+|         |         Sum |                 36 |
+|         | *SUS Score* |                90. |
 #+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
 
 \newpage
@@ -285,7 +363,7 @@ Davon gewertete Fehler: 15
 \newpage
 *** System Usability Scale
 
-#+PLOT: :title "SUS" :with histograms
+#+NAME: sus-vp3
 |     /Frage/ | /Wertung/ | /SUS Contribution/ |
 |-------------+-----------+--------------------|
 |           1 |         5 |                  4 |
@@ -353,7 +431,7 @@ Davon korrekt erkannte Fehler: 5
 
 *** System Usability Scale
 
-#+PLOT: :title "SUS" :with histograms
+#+NAME: sus-vp4
 |     /Frage/ | /Wertung/ | /SUS Contribution/ |
 |-------------+-----------+--------------------|
 |           1 |         5 |                  4 |
@@ -368,9 +446,8 @@ Davon korrekt erkannte Fehler: 5
 |          10 |         2 |                  3 |
 |-------------+-----------+--------------------|
 |         Sum |           |                 36 |
-| *SUS Score* |           |             #ERROR |
-
-#+TBLFM: @2$3=@2$2-1::@3$3=5-@3$2::@4$3=@4$2-1::@5$3=5-@5$2::@6$3=@6$2-1::@7$3=5-@7$2::@8$3=@8$2-1::@9$3=5-@9$2::@10$3=@10$2-1::@11$3=5-@11$2::@13$3=(* 2.5 @12$3)
+| *SUS Score* |           |                90. |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
 
 \newpage
 ** VP_5
@@ -421,6 +498,27 @@ Davon korrekt erkannte Fehler: 8
 #+TBLFM: @7$3='(+ @2$3..@6$3);N
 #+TBLFM: @7$4='(+ @2$4..@6$4);N
 \newpage
+*** System Usability Scale
+
+#+NAME: sus-vp5
+|     /Frage/ | /Wertung/ | /SUS Contribution/ |
+|-------------+-----------+--------------------|
+|           1 |           |                 -1 |
+|           2 |           |                  5 |
+|           3 |           |                 -1 |
+|           4 |           |                  5 |
+|           5 |           |                 -1 |
+|           6 |           |                  5 |
+|           7 |           |                 -1 |
+|           8 |           |                  5 |
+|           9 |           |                 -1 |
+|          10 |           |                  5 |
+|-------------+-----------+--------------------|
+|         Sum |           |                 20 |
+| *SUS Score* |           |                50. |
+#+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
+\newpage
+
 ** VP_6
 *** Design:
 | F | Coffee | Store | /Logistics/ | /Planet Splisus/ | 6 |
@@ -473,7 +571,7 @@ Davon korrekt erkannte Fehler: 7
 
 *** System Usability Scale
 
-#+PLOT: :title "SUS" :with histograms
+#+NAME: sus-vp6
 |     /Frage/ | /Wertung/ | /SUS Contribution/ |
 |-------------+-----------+--------------------|
 |           1 |         4 |                  3 |
@@ -527,15 +625,15 @@ Davon korrekt erkannte Fehler: 7
 | Typendiagramm | 00:02:20 | 140 | 1 |   |
 
 #+NAME: vp7-store-no-tool
-|     /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
-|---------------+----------+------------+----------+-----------|
-|             1 | 00:01:11 |         71 |        1 |           |
-|             2 | 00:00:36 |         36 |        1 |           |
-|             3 | 00:01:59 |        119 |        1 |           |
-|             4 | 00:03:13 |        193 |        1 |           |
-|             5 | 00:00:46 |         46 |        1 |           |
-|---------------+----------+------------+----------+-----------|
-|     /Gesamt/: | 00:10:05 |        605 |        0 |           |
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:01:11 |         71 |        1 |           |
+|         2 | 00:00:36 |         36 |        1 |           |
+|         3 | 00:01:59 |        119 |        1 |           |
+|         4 | 00:03:13 |        193 |        1 |           |
+|         5 | 00:00:46 |         46 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:10:05 |        605 |        0 |           |
 #+TBLFM: $3=$2;t
 #+TBLFM: @8$2=vsum(@2$2..@7$2);T
 #+TBLFM: @8$3='(+ @2$3..@7$3);N
@@ -543,8 +641,7 @@ Davon korrekt erkannte Fehler: 7
 
 *** System Usability Scale
 
-#+NAME:
-#+PLOT: :title "SUS" :with histograms
+#+NAME:sus-vp7
 | /Frage/ |   /Wertung/ | /SUS Contribution/ |
 |---------+-------------+--------------------|
 |       1 |           5 |                  4 |
@@ -587,8 +684,12 @@ Davon korrekt erkannte Fehler: 7
 #+TBLFM: @7$4='(+ @2$4..@6$4);N
 *** Coffee - mit Syntax Highlighter
 
-Gefundene Fehler: 11\\
+    Gefundene Fehler: 11\\
 Davon korrekt erkannte Fehler: 10
+*** Logistics - ohne Syntax Highlighter
+
+Gefundene Fehler: 7  \\
+Davon korrekt erkannte Fehler: 7
 
 *** Planet Splisus - ohne Generator
 
@@ -608,7 +709,7 @@ Davon korrekt erkannte Fehler: 10
 #+TBLFM: @7$4='(+ @2$4..@6$4);N
 *** System Usability Scale
 
-#+PLOT: :title "SUS" :with histograms
+#+NAME: sus-vp8
 | /Frage/ |   /Wertung/ | /SUS Contribution/ |
 |---------+-------------+--------------------|
 |       1 |           5 |                  4 |
@@ -635,61 +736,61 @@ Davon korrekt erkannte Fehler: 10
 *** Planet Splisus - ohne Generator
 
 #+NAME: vp9-splisus-no-tool
-| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
-|-----------+---------+------------+----------+-----------|
-|         1 |         |         30 |     1    |           |
-|         2 |         |         30 |     1    |           |
-|         3 |         |         30 |     1    |           |
-|         4 |         |        200 |     1    |           |
-|         5 |         |         30 |     1    |           |
-|-----------+---------+------------+----------+-----------|
-| /Gesamt/: |         |          0 |        0 |           |
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:00:51 |         51 |        1 |           |
+|         2 | 00:01:52 |        112 |        1 |           |
+|         3 | 00:00:58 |         58 |        1 |           |
+|         4 | 00:02:33 |        153 |        0 |           |
+|         5 | 00:01:06 |         66 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:07:20 |        440 |        4 |           |
 #+TBLFM: $3=$2;t
 #+TBLFM: @7$2=vsum(@2$2..@6$2);T
 #+TBLFM: @7$3='(+ @2$3..@6$3);N
 #+TBLFM: @7$4='(+ @2$4..@6$4);N
 *** Logistics - ohne Syntax Highlighter
 
-Gefundene Fehler:  \\
-Davon korrekt erkannte Fehler:
+Gefundene Fehler: 7  \\
+Davon korrekt erkannte Fehler: 6
 
 *** Store - mit Generator
 #+NAME: vp9-store-tool
-| /Aufgabe/ | /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
-|-----------+---------+------------+----------+-----------|
-|         1 |         |          0 |          |           |
-|         2 |         |          0 |          |           |
-|         3 |         |          0 |          |           |
-|         4 |         |          0 |          |           |
-|         5 |         |          0 |          |           |
-|-----------+---------+------------+----------+-----------|
-| /Gesamt/: |         |          0 |        0 |           |
+| /Aufgabe/ |  /Dauer/ | /Sekunden/ | /Punkte/ | Kommentar |
+|-----------+----------+------------+----------+-----------|
+|         1 | 00:00:15 |         15 |        1 |           |
+|         2 | 00:00:16 |         16 |        1 |           |
+|         3 | 00:01:15 |         75 |        1 |           |
+|         4 | 00:01:08 |         68 |        1 |           |
+|         5 | 00:00:32 |         32 |        1 |           |
+|-----------+----------+------------+----------+-----------|
+| /Gesamt/: | 00:03:26 |        206 |        5 |           |
 #+TBLFM: $3=$2;t
 #+TBLFM: @7$2=vsum(@2$2..@6$2);T
 #+TBLFM: @7$3='(+ @2$3..@6$3);N
 #+TBLFM: @7$4='(+ @2$4..@6$4);N
 *** Coffee - mit Syntax Highlighter
 
-Gefundene Fehler: \\
-Davon korrekt erkannte Fehler: 
+Gefundene Fehler: 12 \\
+Davon korrekt erkannte Fehler: 12
 
 *** System Usability Scale
-#+PLOT: :title "SUS" :with histograms
-| /Frage/ | /Wertung/   | /SUS Contribution/ |
+#+NAME: sus-vp9
+| /Frage/ |   /Wertung/ | /SUS Contribution/ |
 |---------+-------------+--------------------|
-|       1 |             |                 -1 |
-|       2 |             |                  5 |
-|       3 |             |                 -1 |
-|       4 |             |                  5 |
-|       5 |             |                 -1 |
-|       6 |             |                  5 |
-|       7 |             |                 -1 |
-|       8 |             |                  5 |
-|       9 |             |                 -1 |
-|      10 |             |                  5 |
+|       1 |           5 |                  4 |
+|       2 |           1 |                  4 |
+|       3 |           5 |                  4 |
+|       4 |           2 |                  3 |
+|       5 |           5 |                  4 |
+|       6 |           1 |                  4 |
+|       7 |           5 |                  4 |
+|       8 |           1 |                  4 |
+|       9 |           4 |                  3 |
+|      10 |           1 |                  4 |
 |---------+-------------+--------------------|
-|         | Sum         |                 20 |
-|         | *SUS Score* |                50. |
+|         |         Sum |                 38 |
+|         | *SUS Score* |               95.0 |
 #+TBLFM: @12$3=vsum(@2$3..@11$3);N::@13$3=@12$3*2.5::$3='(if (oddp $1) (- $2 1) (- 5 $2));N
 \newpage   
 
@@ -723,13 +824,11 @@ Davon korrekt erkannte Fehler:
 
 
 #+NAME: gmean
-#+BEGIN_SRC R
-  
+#+BEGIN_SRC R 
   ### Define geometric mean
   gmean <- function(x) {
   return(exp(mean(log(x))))
   }
- 
 #+END_SRC
 
 #+RESULTS: gmean
@@ -765,6 +864,12 @@ str(a)
 :  chr [1:3] "a" "b" "c"
 
 
+#+HEADER: :var vp2.splisus.tool=vp2-splisus-tool vp3.splisus.tool=vp3-splisus-tool vp6.splisus.tool=vp6-splisus-tool vp7.splisus.tool=vp7-splisus-tool
+#+BEGIN_SRC R
+
+#+END_SRC
+
+
 #+NAME: times
 | tool | task | time |  cr | ci.low | ci.high |
 |------+------+------+-----+--------+---------|
@@ -790,7 +895,6 @@ library(ggplot2)
 
 ggplot(splisus, aes(x=task, y=time,fill=tool)) + 
     geom_bar(position=position_dodge(), stat="identity") +   
- stat_summary(fun.data="mean_cl_boot", geom="point", size=1.1)  +
     geom_text(aes(label = paste(cr * 100, "%", sep = ""), x = task, y = 3), size = 3,
     #vjust = -0.2,
     position = position_dodge(width=0.9)) +
@@ -806,7 +910,9 @@ ggplot(splisus, aes(x=task, y=time,fill=tool)) +
                    labels=c("No", "Yes")) +
     ggtitle("Task Completion Time (Geometric Mean)\nfor Planet Splisus per Subtask ") +
     scale_y_continuous(breaks=0:30*5) +
-    theme_bw()
+    theme_bw() +
+    geom_point(data=splisus, mapping=aes(x=task-0.22, y=time)) + 
+    geom_point(data=splisus, mapping=aes(x=task+0.22, y=time))
     
 #+end_src
 
