@@ -1,7 +1,4 @@
 #+BEGIN_ABSTRACT
-
-TODO: some context
-
 Writing and maintaining planning problems, specified in the widely
 used /Planning Domain Definition Language/ (PDDL), can be difficult,
 time-consuming and error-prone. This thesis will present myPDDL, a
@@ -91,10 +88,8 @@ research and developments in the field concludes this thesis (Chapter
 
 [fn:2] http://icaps14.icaps-conference.org/workshops_tutorials/keps.html 
 
-* Planning Basics and Introduction to PDDL 
 
-Very good for While humans...
-http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.362.4331&rep=rep1&type=pdf#page=7
+* Background and Basics
 
 The human brain is an astonishing structure that allows us to get
 along in a highly complex world and plan more or less rational reasons
@@ -102,525 +97,686 @@ for our past or planned actions. While computer systems are yet to
 fully master these skills, the study of artificial intelligence (AI)
 tries to narrow this gap. For this purpose, constructs are needed that
 can represent the information about the world and the problem. The
-discipline that is engaged with the integration of world information
-into a computer system by a human expert is called knowledge
-engineering (KE) \textcite{feigenbaum1983fifth}. In automated
-planning, this is usually done using a planning language. Planning is
-then the decision making process that finally leads to a sequence of
-actions for solving the specified problem.
+discipline that deals with the integration of world information into a
+computer system via a human expert is called knowledge engineering
+(KE) \textcite{feigenbaum1983fifth}. In automated planning, this is
+usually done using a planning language. Planning, then, is the problem
+solving process that takes a model of the world, an initial world
+state and a desired goal state as input and produces a sequence of
+actions as output.
 
 The planning domain definition language (\textsc{pddl}) is a formal
-language and the quasi standard for the description of planning tasks.
-\textsc{pddl} was first described in \textsc{pddl}-the planning domain
-definition language (1998) and has been in constant development since
-then and is currently used in version 3.1.
+language and the de facto standard for the description of planning
+tasks (SOURCE). \textsc{pddl} was first described in \textsc{pddl}-The
+Planning Domain Definition Language (1998) and has been in constant
+development since then, the latest version being PDDL 3.1.
 
-Consider the following (fictional) world that should be integrated
-into a computer system using \textsc{}pddl:
+To illustrate the usage and basics of PDDL, the remainder of this
+section presents a modeling walkthrough using a fictional example.
+
+Consider the following world that is to be integrated into a computer
+system using \textsc{pddl}:
+
 #+BEGIN_QUOTE
-If a hacker is hungry, he has to eat some pizza in order to exploit
+If a hacker is hungry, he has to eat some
+pizza in order to be able to work, that is to hack into (or exploit)
 vulnerable software.
 #+END_QUOTE
 
-In this description, we can identify several constructs, that should
+In this description, we can identify several constructs that should
 somehow be integrated into the computer. There are:
-- Types of entities: :: The world consists of hackers, software and pizza.
+
+- Types of entities:  :: The world consists of hackers, software and pizza.
 - Logical states: :: Hackers can be hungry or not, software can
 be vulnerable or not.
-- Actions: :: Hackers can exploit (that means hack into) software and
-             they can eat pizza.
+- Actions: :: Hackers can exploit software and they can eat pizza.
 
-This world description could be specified in \textsc{pddl}, using a
-domain file. The domain file provides general, abstract constructs and
-conditions.
+This description of a world can be specified in \textsc{pddl} using a
+domain file. The domain file can be compared to a stage setting,
+providing the framework for a specific problem scenario by way of
+general, abstract constructs and conditions.
 
-Next, consider the following problem particular to this domain:
+In the world of hackers and pizzas, such a domain specific problem
+could be:
+
 #+BEGIN_QUOTE
-/Gary/ is a /hungry/ hacker who should
-somehow exploit the vulnerable software /MagicFailureApp/. Some
-pepperoni pizza is laying around.
+Gary is a hungry hacker who should somehow exploit the vulnerable
+software MagicFailureApp. Some pepperoni pizza is laying on the table.
 #+END_QUOTE
 
 Again, several constructs can be identified:
-- Objects :: The hacker Gary, the pepperoni pizza, the software
+- Objects :: The hacker Gary (in PDDL every entity is regarded as an
+             object), the pepperoni pizza, the software.
+
 - Initial state :: Gary is hungry and the software 'MagicFailureApp'
-                   is vulnerable
-- Goal state :: MagicFailureApp is exploited.
+                   is vulnerable.
 
-Assume, that Gary wants to have help of an automated planning system,
-in order to plan the sequence of required actions (/Who has to eat
-pizza?/ and /What to hack?/ and which one of both has to be done
-first?), leading from the initial state to the goal state. These
-specifications have to be formalized, this time in a problem file.
-Finally, Gary will be able to fed the domain and problem file into a
-planner and generate the sequence of required actions.
+- Goal state :: The MagicFailureApp is exploited.
 
-Summing up, \textsc{pddl} planning tasks are composed of two separate,
-corresponding files:
+Assume that Gary wants the help of an automated planning system to
+plan the sequence of required actions (/Who has to eat pizza?/, /What
+should be hacked?/ and /In what order should these things be done?/),
+leading from the initial state to the goal state. These specifications
+must be formalized so that a planner can utilize them. In PDDL, this
+is done in so called problem files. In the end, Gary will be able to
+feed the domain and the problem file into a planner which will
+generate a sequence of necessary actions that Gary must take to solve
+his problem. Summing up, \textsc{pddl} planning tasks are composed of
+two separate, corresponding files:
 
-  - Domain file :: General, problem-independent description of types,
-                   predicates (logical states) and actions.
-  - Problem file ::  Specification of a concrete problem within a
-                     particular domain, expressed by the initial state
-                     and the goal state. The values are assigned
-                     to the templates provided by the domain file.
+- Domain file :: General, problem-independent description of types,
+                 predicates (logical states) and actions.
 
+- Problem file :: Specification of a concrete problem within a
+                  particular domain, expressed by the initial state
+                  and the goal state. Specific values are assigned to
+                  the templates provided by the domain file
+                  (instantiation). 
 
-This separation allows for a powerful process of task modeling: While
-general instances are described in the domain file, specific instances
-of problems are created in the problem files. So, one abstract
-modeling of a /world/ can be used for solving many problem instances.
-
-Figure \ref{workflow} visualizes the workflow for planning in \textsc{pddl}.
-
-TODO: Add predicates and actions to domain, 
+This separation allows for a powerful task modeling process: while
+general world information is described in the domain file, specific
+instances of problems are created in the problem files. This means
+that one abstract model of a world can be used for solving many
+problem instances. Figure \ref{workflow} visualizes the workflow for
+planning in \textsc{pddl}. TODO: Add predicates and actions to domain,
 init and goal to problem and sequence of actions to plan
-#+CAPTION: \textsc{pddl} Planning workflow
-#+NAME: fig:workflow
-[[file:../img/pddl-workflow.pdf]]
-The \textsc{pddl} worklow. domain.pddl and problem.pddl represent typical
-planning specification files, with the standard file extension /.pddl/
-
-\textsc{pddl} is manifold and not all parts are mandatory components
-of task specifications. More complete descriptions as well as a
-formulations in Backus-Naur form (BNF) can be found in
-\textcite{fox2003pddl2} for \textsc{pddl} 2.2 and
-\textcite{kovacs2011bnf} for \textsc{pddl} 3.1. The rest of this
-section will give general design guidelines and an introduction to
-\textsc{pddl}, to provide a basis for the rest of this thesis. To this
-end, the syntax of common constructs of domain and problem fules shell
-be investigated further in this section, in a step-by-step approach,
-where both files are described by the above described example /Gary's
-Hacker World/.
+file://../img/pddl-workflow.pdf The \textsc{pddl} workflow.
+domain.pddl and problem.pddl represent typical planning specification
+files, with the standard file extension .pddl \textsc{pddl} is
+extensive and not all parts are mandatory components of task
+specifications. More complete descriptions as well as a formulations
+in Backus-Naur form (BNF) can be found in \textcite{fox2003pddl2} for
+\textsc{pddl} 2.2 and \textcite{kovacs2011bnf} for \textsc{pddl} 3.1.
+The rest of this section is to explain the general design guidelines
+of, and give an introduction to \textsc{pddl}, to serve a basis for
+the rest of this thesis. To this end, the syntax of common constructs
+of domain and problem files is investigated further in a step-by-step
+approach, continuing with the above described example /Gary's Hacker
+World/. (Auf Groß- und Kleinschreibung achten!)
 
 TODO:Functions, Metrics
 
 ** Analysis
 
-In order to integrate information into a computer system, first and
-foremost, the problem has to be understood. How to Design Classes
-(HtDC), describes a incremental process for modeling specification in
-object oriented programming (\textsc{oop}). The general principles
-will be transferred to \textsc{pddl}, so that in the style of the
-/design principles/ of object oriented programming (HtDC) a stepwise,
-iterative modeling process can be identified:
+In order to integrate information into a computer system, the problem
+has to be understood first (SOURCE !). When modeling in \textsc{pddl},
+the following six general design principles are proposed, that should
+lead to a thorough, stepwise, and iterative modeling process:
 
-- Analysis: :: Every task specification begins by an analysis of the
-              informal world and the problem statement. In this design
-              step, one determines relevant types, adequate examples
-              and identifies both the initial and the goal state. One
-              keeps track of the analysis using any kind of list.
+- Analysis: :: Every task specification should begin with an analysis
+               of the informal world and the problem statement. In
+               this design step, one determines relevant types,
+               adequate examples and identifies both the initial and
+               the goal state. Also, one should keep track of the
+               analysis by using some kind of list.
 
-- Type diagram: :: Based on the preceding analysis, the relationship of
-                  the identified types is represented, using a
-                  diagram. This can be done by pen and paper or by
-                  means of a graph editor.
-- Domain definition: :: In this step, the (graphical) diagrams are
-     translated into \textsc{pddl}. Furthermore predicates and actions
-     are declared.
+- Type diagram: :: Based on the preceding analysis, the relationship
+                   of the identified catgories or types is
+                   represented, using a diagram. This can be done on
+                   paper or with the help of a graph editor.
+
+- Domain definition: :: In this step, the diagrams are translated into
+     \textsc{pddl}. Furthermore predicates and actions are declared.
 
 - Problem definition: :: After completing the domain definition,
-     objects can be instantiated in the problem file. By means of the
-     predicates, declared in the domain file, the initial and goal logical
-     values are defined.
+     objects can be instantiated in the problem file. The initial and
+     goal states are modeled with a combination of the predicates
+     declared in the domain file.
 
-Two further steps can be identified: 
+- Planning: ::  Provide domain and problem definition to a planner. The
+               planner then generates a plan or a sequence of actions
+               that leads to the goal state being true.
 
-- Planning :: Provide domain and problem definition to a planner.
-- Plan analysis :: Inspect the resulting plan and optionally restart
-                   at a earlier design step.
-
-(Plan analysis can be supported by VAL or Visplan
- A further convenient method is the use of \textsc{itSimple}, so that
-     the hierarchy can be translated to \textsc{pddl}.)
+- Plan analysis: :: Inspect this plan and potentially restart at an
+  earlier design step.
 
 ** Domain File
 
-The domain file contains the frame for planning tasks and determines,
-which types and predicates are available and which actions are possible.
+The domain file sets the framework for planning tasks. It models the
+world in which the problem occurs and hence determines which types and
+predicates are available and which actions are possible.
 
-*** Define
-Every domain file starts with =(define (domain DNAME) ...)= where,
-=DNAME= specifies the name of the domain. It must be a string that
-starts with a character, and then contains further characters(=a-z=),
-numbers (=0-9=), hyphens (=-=) or underscores (=_=). A semicolon (=;=)
-declares the rest of the line as comment. \textsc{PDDL}'s syntax is
-case insensitive. \\
-#+NAME: define-garys-hacker-world
+***  Define
+Every domain file starts with =(define (domain DNAME) ...)=, where
+=DNAME= specifies the name of the domain. A semicolon (=;=) declares
+the rest of the line as comment.
+
 #+BEGIN_SRC text
 ; Gary's Hacker world - A realistic example
 (define (domain garys-hacker-world)
 #+END_SRC
 
-*** Requirements
 
-- \textsc{pddl}: Levels of expressivity (level 1 .. 4)
-- Formal description of \textsc{pddl} tasks
+*** Requirements
 
 \textsc{pddl} is composed of subsets of \textsc{pddl} features
 \textcite[1]{mcdermott1998pddl}. As most planners only support
-particular elements of \textsc{pddl}, the requirements part is useful
-for a planner to determine if it is able to act on a given problem.
-Often used requirements are:
-- =:strips= :: The most elementary subset of PDDL that supports
-               approximately the specifications declared in the STRIPS
-               specification of 1971. If no requirements are
-               declared :strips is assumed.
-- =:typing= :: Enables the typification of variables (see 'Types'
-               below), so that variables have to be of particular type.
-- =:equality= :: Specifies equality (=\==) as built-in predicate, so
-                 that 
+particular elements of \textsc{pddl}, the requirements block is useful
+for a planner to determine if it can act on a given problem[fn:3].
+While the specifications of STRIPS (SOURCE) are used by default,
+further requirements have to be stated explicitly. For example, one of
+the most frequently used requirements is:
 
-Besides =:typing=, Gary's hacker world will use a further requirement:
+- :typing :: Enables the typification of variables (see 'Types'
+             below), so that it is mandatory for variables to be of a
+             particular type.
 
-- =:negative-preconditions= :: Allows for the specification of
-     negative preconditions in actions, so that a action can only be
-     executed if a predicate is /not/ true at the beginning of the action.
+Besides =:typing=, Gary's hacker world will use a further
+requirement:
 
-Complete lists of requirements and their meaning can be found in
-\textcite{fox2003pddl2} for \textsc{pddl} 2.1 and
-\textcite{kovacs2011bnf} for \textsc{pddl} 3.1.
+- :negative-preconditions ::  Allows for the specification of negative
+     preconditions in actions, so that an action can only be executed
+     if a predicate is not true initially.
 
-#+CAPTION: The requirements part of Gary's Hacker World
+#+CAPTION: The requirements that are necessary to model Gary's Hacker World
 #+BEGIN_SRC text
-  (:requirements :typing
-                 :negative-preconditions)
+(:requirements :typing
+               :negative-preconditions)
 #+END_SRC
+
+[fn:3] Complete lists of requirements and their meaning can be found
+in \textcite{fox2003pddl2} for \textsc{pddl} 2.1 and
+\textcite{kovacs2011bnf} for \textsc{pddl} 3.1.
 
 *** Types
 
-In the real-world, there will be often individual objects of the same
-kind or /type/. There may be lots of different pizza types in
-existence, sharing common properties. Each pizza was made from a
-similar set of ingredients and may contain similar components.
+Often in the real-world, there will be individual objects of the same
+kind or type. There may be lots of different types of pizza sharing
+common properties. Each pizza was made from a similar set of
+ingredients and may contain similar components. \textsc{pddl} allows
+for declaring types and thereby structuring the domain in the =(:types
+...)= block. Relations can be expressed with a type hierarchy, in
+which any type can be a subtype of yet another type. Typed lists are
+used to assign types to variable lists. Parameters in actions, as well
+as arguments in predicates can be typed in this manner. Later, in the
+problem file, objects are assigned to types. Types are declared using
+a list of strings, followed by a hyphen (=-=), followed by the
+higher-level type. Every \textsc{pddl} domain includes the built-in
+types =object= and =number=, and every defined type, in turn, is a
+subtype of =object=.
 
-The =(:types ...)= part, \textsc{pddl} allows for declaring types and
-thereby structuring the domain. Relations can be expressed by a type
-hierarchy, whereby any type can be a subtype of yet another type.
-Typed lists are used to assign types to variable lists. Like that,
-parameters in actions can be typed, as well as arguments in
-predicates, functions [extra source!]. Later, in the problem file,
-objects will be assigned to types, like objects to classes in Object
-Orientated Programming (OOP).
-
-Types are declared by a list of strings, followed by a by a hypen
-(=-=), followed by the the higher-level type. Every \textsc{pddl}
-domain includes the built-in types =object= and =number=, whereby
-every defined type is subtype of =object=.
-
-#+NAME: gary-types
-#+CAPTION: The type hierarchy for Gary's Hacker World, consisting of different types of persons,
-#+CAPTION: hackers, software, The elements on the left-hand side (for example =driver os= are declared subtypes of the 
-#+CAPTION: right-hand side (=system=). The hierarchy is expressed by using a type both on the left-hand side (for example
-#+CAPTION: =hacker=) and on the right-hand. 
-#+CAPTION: /Software/ can be
-#+CAPTION: /application/ software, /system/ software or programming /tools/.
-#+CAPTION: System software can be further divided into drivers and operating systems.
+#+CAPTION: The type hierarchy for Gary's Hacker World, consisting of different
+#+CAPTION: types of persons, hackers, and software. The elements on the left-hand
+#+CAPTION: side (for example driver os are declared subtypes of the right-hand
+#+CAPTION: side (system). The hierarchy is expressed by writing the subtypes on
+#+CAPTION: the left-hand side (for example hacker non-hacker) and the type on the
+#+CAPTION: right-hand side (for example person).
 #+BEGIN_SRC text
-(:types hacker non-hacker - person
-	white-hat gray-hat black-hat - hacker
-	application system tool - software
-	driver os - system
-	pizza person software - object)
+  (:types hacker non-hacker - person
+          desk chair computer - furniture
+          laptop pc – computer
+          pizza burgers fries - food
+          pepperoni supreme - pizza
+          food person furniture software - object)
 #+END_SRC
-*** Predicates
-Predicates are templates for logical facts and describe the properties
-of objects. They can be either true or false. The =:(predicates ...)=
-part declares predicate names and number of arguments, together with
-the corresponding type. The general syntax is =(p ?v1 – t1 ?v2 - t2
-...)=, whereby =?= followed by a name (=v1=, =v2=), declares a
-variable, and the expression (=t1=, =t2=) after the minus sign (=-=)
-determines the type of this variable. Thereby, the type has to be
-declared in the typing section first. The number of variables
-determines the arity of a predicate, ranging from zero arguments
-(0-ary predicate) to any positive integer (n-ary predicate). Type
-assignments for variables that have the same type and are declared
-side by side can be grouped, so that =(p ?v1 ?v2 - t)= is similar to
-=(p ?v1 - t ?v2 - t)=.
 
-#+CAPTION: This section declares four predicates: has (2-ary), hungry, vulnerable and exploited (1-ary).
+*** Predicates
+Predicates are templates to represent logical facts and thus describe
+the properties of objects. They can be either true or false. In the
+=:(predicates ...)= block, predicate names and the number of arguments
+together with the corresponding types are declared. The general syntax
+for a predicate is is =(pname ?v1 – t1 ?v2 - t2 ...)=, where =?=
+followed by a name (=v1=, =v2=) declares a variable and the expression
+(=t1=, =t2=) after the hyphen (=-=) states the type of this variable.
+All types used must be declared in the typing section first. The
+number of variables (or arguments) determines the arity of a predicate
+ranging from zero (0-ary predicate) to any positive integer (n-ary
+predicate). Type assignments for variables that have the same type and
+are declared side by side can be grouped, meaning that =(p ?v1 - t
+?v2 - t)= is equivalent to =(p ?v1 ?v2 – t)=. 
+
+#+CAPTION: This section declares
+#+CAPTION: five predicates: the binary predicate has, the unary predicates
+#+CAPTION: hungry, vulnerable and exploited and the 3-ary predicate location that specifies coordinates for a furniture item.
 #+BEGIN_SRC text
-  (:predicates (has ?s - software ?p - person)
-               (hungry ?p - person)
-               (vulnerable ?s - software)
-               (exploited ?s - software))
-#+END_SRC	
+(:predicates (has ?s - software ?p - person)
+             (hungry ?p - person)
+             (vulnerable ?s - software)
+             (exploited ?s - software)
+             (location ?f – furniture ?x ?y - number)
+#+END_SRC
 
 *** Actions
+PDDL is an action-centered language. Actions are operators in
+\textsc{PDDL, because they can change the value of predicates (and
+thereby properties of objects), so that problems can be solved (if a
+solution exists). Actions usually consist of three parts
 
-PDDL is an action-centered language. Actions are the operators in
-\textsc{PDDL} and are able to change the truth value of predicates
-(and therefore properties of objects), so that problems can be solved
-(if there exists a solution). Actions usually consist of three parts
-- =:parameters= :: A (typed) argument list that determines which
-                   variables can be used in the precondition and
-                   effect part.
-- =:precondition= :: Describes the applicability of an action. The
-     logical expression that is expressed in this part has to be
-     =true=, before an action can be applied.
-- =:effect= :: The effect describes the post-condition of an action,
-               that means it assigns new truth values to the mentioned
-               predicates.
+- :parameters :: A (typed) argument list that determines which
+                 variables can be used in the precondition and effect
+                 part.
+- :precondition :: The precondition consists of a combination of
+                   predicates that must all be true before an action
+                   can be executed. Therefore, the preconditions
+                   describe the applicability of an action.
+- :effect :: This part specifies the new values of the declared
+             predicates, once the action has been completed.
+             Therefore, the effect describes the post-condition of an
+             action.
 
 #+BEGIN_SRC text
-  ;; Eat a delicious pizza
-  (:action eat-pizza
-    :parameters (?pi - pizza ?p - person)
-    :precondition (hungry ?p)
-    :effect (not (hungry ?p)))
-  
-  ;; Exploit vulnerable software of a victim
-  (:action exploit        
-    :parameters (?h - hacker ?s - software ?p - person)
-    :precondition (and (has ?s ?p)
-                       (vulnerable ?s)
-                       (not (hungry ?h)))
-    :effect (exploited ?s)))
+;; Eat a delicious pizza
+(:action eat-pizza
+  :parameters (?pi - pizza ?p - person)
+  :precondition (hungry ?p)
+  :effect (not (hungry ?p)))
+
+;; Exploit vulnerable software of a victim
+(:action exploit        
+  :parameters (?h - hacker ?s - software ?p - person)
+  :precondition (and (has ?s ?p)
+                     (vulnerable ?s)
+                     (not (hungry ?h)))
+  :effect (exploited ?s)))
 #+END_SRC
 
 ** Problem File
 
+A planning problem consists of a domain and a corresponding problem
+file. Within problem files, concrete objects are created
+(instantiated). Furthermore, the initial world state and the desired
+goal state that is to be reached are declared.
 
-Planning problems are described by the pairing of domain and problem
-files. Problem files declare the initial world state and the goal
-state to be reached on the basis of the logical values of the
-instantiated predicates. Furthermore, they create (instantiate)
-concrete objects.
-
-
-*** Define (define (problem NAME) ...)
-Analog to the domain definition, problem files are initiated with
-=(define (problem PNAME) ...)=, whereby, =PNAME= declares the name of
-the problem.
+*** Define (define (problem PNAME) …)
+Analogous to the domain definition, problem files are initiated with
+=(define (problem PNAME) ...)=, where =PNAME= declares the name of the
+problem.
 
 #+CAPTION: Initiating the problem file with the name garys-huge-problem
 #+BEGIN_SRC text
 (define (problem garys-huge-problem)
 #+END_SRC
+ 
+***  Domain (:domain DNAME)
 
-*** Domain (:domain NAME)
-Problems are designed with respect to a domain, which has to be
-declared here. That means that =DNAME= in =(:domain DNAME)= and
-=DNAME= =(define (domain DNAME) ...)= in the particular domain file
-have to be equal.
+Problems occur in worlds. Therefore, problem files are designed with
+regard to domain files, which need to be referenced at this point in
+the problem file. This means that =DNAME= in =(:domain DNAME)= and
+=DNAME= in =(define (domain DNAME) ...)= in the corresponding domain
+file have to be identical.
 
-#+CAPTION: The domain file "garys-hacker-world" is the corresponding domain file to the problem =garys-huge-problem=
+#+CAPTION: The domain file "garys-hacker-world" is
+#+CAPTION: the corresponding domain file to the problem garys-huge-problem
 #+BEGIN_SRC text
-  (:domain garys-hacker-world)
+(:domain garys-hacker-world)
 #+END_SRC
 
-*** Objects (:objects ...)
-Whereby types are only templates, they can be created (instantiated)
-in the =(:object...) part. That means that types are assigned to
-concrete objects.
 
-#+CAPTION: This part creates concrete objects from the type templates. So, = magicfailureapp - application= means that the object magicfailureapp is of the type application.
+*** Objects (:objects …)
+
+Since types are only empty shells, they still need to be instantiated.
+This is done in the =(:object…)= block. Instantiating types means that
+concrete objects are assigned to the types.
+
+#+CAPTION: This part creates concrete objects from the type
+#+CAPTION: templates. In this case, magicfailureapp - application means that the
+#+CAPTION: object magicfailureapp is of the type application.
 #+BEGIN_SRC text
   (:objects big-pepperoni-pizza - pizza
             gary - white-hat
-            gisela - non-hacker 
+            gisela - non-hacker
             magicfailureapp - application)
 #+END_SRC
 
-*** Init (:init ...)
 
-A problem consists of two situations, the current one, which is called
-the initial situation and the desired on which is called the goal state.
+***  Init (:init …)
+This section models the initial state of the world with a list of
+instantiated predicates that are declared as true. All other,
+non-specified predicates are assumed to be false, what is called
+/closed-world assumption/[fn:4].
 
-This part describes the initial state of the world by a list of
-instantiated predicates that are declared as true. All other
-predicates are assumed to be false (closed-world assumption).
-
-#+CAPTION: The initial situation in Gary's Hacker World, where the hacker Gary is hungry, the application magicfailureapp is vulnerable and belongs to the non-hacker Gisela.
+#+CAPTION: The initial situation in Gary's Hacker World consists of the hungry
+#+CAPTION: hacker Gary and the vulnerable application magicfailureapp that
+#+CAPTION: belongs to Gisela.
 #+BEGIN_SRC text
-(:init (hungry gary)
-       (vulnerable mysterious-tex-mex-mix)
-       (has magicfailureapp gisela)) 
+  (:init (hungry gary)
+         (vulnerable mysterious-tex-mex-mix)
+         (has magicfailureapp gisela))
 #+END_SRC
 
-*** Goal (:goal ...)
+[fn:4] By specifying =:open-world= in the requirements part, PDDL is
+also capable of using the open world assumption, where non-specified
+predicates can be both, true or false.
 
-The goal state refers to the situation one likes to obtain. It is
-described by the logical fact that is desirable and should be reached
-by the execution of the plan. In \textsc{pddl}, several goals would be
-combined with =(and ...), whereby all non-specified predicates are
-also nonrelevant, that means that they can be either true or false in
-the goal state.
 
-#+CAPTION: In the end, the software magicfailureapp should be exploited.
+***  Goal (:goal …)
+
+The goal state is described by the logical fact that is desirable and
+should be reached with the execution of the plan. In \textsc{pddl},
+several goals are combined with =(and …)=. All unspecified predicates
+are irrelevant, meaning that they can be either true or false in the
+goal state.
+
+#+CAPTION: In the end, the software magicfailureapp
+#+CAPTION: should be exploited.
 #+BEGIN_SRC text
- (:goal (exploited magicfailureapp)
+(:goal (exploited magicfailureapp)
 #+END_SRC
 
 ** Planning
 
-The effort of the formalization of the planning task will be finally
-rewarded by the automatic generation of the plan.
+Finally, the effort of the formalization of the planning task will be
+rewarded with the automatic generation of the plan.Due to the yearly
+\textsc{icaps}, there is a broad range of available planners. This
+thesis uses the planner SGPlan_6 \textcite{hsu2008sgplan}, an
+'extensive' (offers many supporting features) planner for both
+temporal and non-temporal planning problems. The broad range of
+planners supports different features. An overview of different
+planners is given at http://ipc.informatik.uni-freiburg.de/Planners.
+Additionally, the quality of error messages is very diverse. While
+some simply state that an error occured, others list the problem and
+the line.
 
-The input to the planning software is a domain file and a
-corresponding problem file, the output is a sequence of actions (the
-/plan/), leading from the initial state to the goal state.
-
-Due to the yearly \textsc{icaps}, there is a broad range of available
-planners. This thesis uses the planner SGPlan_6
-\textcite{hsu2008sgplan}, a 'extensive' (in the sense of its
-supporting features) planner for both temporal and non-temporal
-planning problems.
-
-
-An overview of different planners is given at
-http://ipc.informatik.uni-freiburg.de/Planners.
-
-Additionally, the quality of error messages is very diversified. While
-some simple state: error occured, other list the problem and the line.
-
+TODO: Edit this section!
 
 * Related Work
 
+This chapter is to introduce other knowledge engineering tools that
+allow editing PDDL files in a textual environment to some extent. All
+tools provide features to support the user in writing correct PDDL
+code more efficiently. After introducing the tools, they are compared
+and their shortcomings are discussed to set the scene for this
+project.
 
 ** PDDL Studio
-\textsc{pddl} Studio \parencite{plch2012inspect}, is an application
-for creating and managing \textsc{pddl} projects. A project is
-regarded as a collection of \textsc{pddl} files. Its IDE is inspired
-by Microsoft Visual Studio and imperative programming paradigms. Its
-core function is the \textsc{pddl} project management, consisting of
-managing \textsc{pddl} projects and creating, adding , so that
-corresponding as well as inspecting, analyzing and modifying the
-underlying domain and problem files. Besides general editing features
-like line counting, bracket matching and auto-save, it supports
-\textsc{pddl} specific editing features including syntax highlighting,
-code folding (collapse code blocks to see only a single visible line)
-and context aware code completions, all based on a \textsc{pddl} to
-\textsc{xml} parser. This parser can also be used to convert
-\textsc{pddl} to \textsc{xml} files and vice versa for domain and
-problem file editing. Also based on this parser is a included,
-sophisticated on the fly error detection, recognizing both syntax
-errors (missing keywords, parentheses, etc.) and semantic errors
-(wrong type of predicate parameters, misspelled predicates, etc.). As
-semantic errors can be of a /interfile nature/, meaning that there is
-a mismatch between domain and problem file, \textsc{pddl} Studio can
-detect such errors. TODO: Explain further. The code completion feature
-allows for the selection of completion suggestions for a for standard
-\textsc{pddl} constructs and dynamic list completions, that were used
-in the current project (TODO: technical terms!). An interface allows
-the integration of command line planners in order to run and compare
-different planning software. that means syntax and semantic checking,
-syntax highlighting, code completion and project management. While
-colors for highlighted code can be customized, the background color of
-the tool is always white. In its most recent version (of 15.6.2012),
-\textsc{pddl} Studio's parser supports \textsc{pddl} 1.2, the official
-language of the first and second IPC in 1998 and 2000 respectively.
-Since then, \textsc{pddl} has largely evolved, the most recent and
-most powerful version is \textsc{pddl} 3.1, supporting amongst others
-durative actions. \textsc{pddl} Studio does not support the insertion
-of larger code skeletons (called /snippets/ in this thesis). The
-customization features (without editing the C source code) are limited
-to the choice of font style and color of highlighted \textsc{pddl}
-expressions. \textsc{pddl} Studio is written as standalone program,
-meaning that there are no \textsc{pddl} independent no extensions .
 
-** ItSIMPLE
-The \textsc{itSimple} project is a graphical interface that allows for
-designing planning models in an object-oriented approach, using Uniﬁed
-Modeling Language (UML) diagrams. UML was invented in order to
-standardize modeling in software engineering (SE). It consists of
-several part notations, the here presented tool uses the 'class
-diagram' notation, as \textsc{pddl} types and classes in OOP have strong
-resemblance (see Tiago 2006, p 535). \textsc{itSimple} proposes UML.P (UML in a
-Planning Approach), a UML variant that specifies a structure for Class
-(domain specification), Object (problem specification) and StateChart
-Diagrams (dynamic behavior of actions).
+PDDL Studio \parencite{plch2012inspect} is an application for creating
+and managing PDDL projects, that is a collection of PDDL files. The
+PDDL Studio integrated development environment (IDE) was inspired by
+Microsoft Visual Studio and imperative programming paradigms. Its main
+features are syntax highlighting, error detection, context sensitive
+code completion, code folding, project management, and planner
+integration. Many of these features are based on a parser, which
+continuously analyzes the code and divides it into syntactic elements.
+These elements and the way in which they relate to each other can then
+be identified. The syntax highlighter is a tool that colors constructs
+according to their syntactical meaning within the code. In the case of
+PDDL Studio, it colors names, variables, errors, keywords, predicates,
+types and brackets each in a different customizable color. PDDL
+Studio’s error detection can recognize both syntax errors (missing
+keywords, parentheses, etc.) and semantic errors (wrong type of
+predicate parameters, misspelled predicates, etc.). Since semantic
+errors can be of an interfile nature, meaning that there is a mismatch
+between domain and problem file, PDDL Studio can detect such errors in
+real time. The code completion feature allows for the selection of
+completion suggestions for standard PDDL constructs as well as for
+terms that have been used before within this file or other files in
+the same project. Code folding allows the knowledge engineer to hide
+certain code units or blocks that are currently not needed. Only the
+first line of the block is then displayed. PDDL Studio’s code folding
+feature works on the basis of syntax. This means that it can tell
+different code blocks apart with the help of the parser and is thus
+able to fold the code accordingly. All these above mentioned features
+of PDDL Studio utilize the parser. Another important features of the
+PDDL Studio project is a project manager. This keeps track of all
+files, displays them in a tree structure, saves them upon compilation
+and is also necessary for the interfile error detection and code
+completion functionalities. Lastly, a command-line interface allows
+the integration of planners in order to run and compare different
+planning software.
 
-\textsc{itSimple}'s main focus is to support knowledge engineers in the initial
-stages of the design phase by providing an opportunity for the
-transition of the informality of real world requirements to domain
-models as formal specifications. The assertive statement is to provide
-a tool for a \enquote{disciplined process of elicitation, organization
-and analysis of requirements}. Petri Nets can be generated from the
-UML model and be used to validate the planning domain's static and
-dynamic bevahior. Finally, a \textsc{pddl} representation can be generated from
-the UML diagram, if required, edited, and finally used as input to a
-variety of planning systems. The generated plan can be inspected using
-the in-build plan analysis, consisting of a plan visualization and
-plan simulation (TODO: write some more info). \textsc{itSimple}'s mdoeling
-workflow is unidirectional, as changes in the \textsc{pddl} domain do not
-affect the UML model and UML models have to be modeled manually,
-meaning that they cannot by generated using \textsc{pddl}.
+** itSIMPLE
 
-Starting in version 4.0 (currently in beta status as of writing of
-this thesis) \textsc{itSimple} expanded its features to allow the creation of
-\textsc{pddl} projects from scratch (i.e. without UML to \textsc{pddl} translation
-process). Thus far, the \textsc{pddl} editing features are basic (see YouTube
-video). A minimal syntax highlighting feature recognizes \textsc{pddl} keywords
-and variables. Furthermore, \textsc{itSimple} provides templates for \textsc{pddl}
-constructs (similar to the code snippets presented in this thesis),
-consisting of requirement specifications, predicates, actions, goals
-and initial definitions. 
+Unlike PDDL Studio, which provides a text based editor for PDDL, the
+itSIMPLE editor has, as its main feature, a graphical approach that
+allows for designing planning tasks in an object-oriented approach
+using Uniﬁed Modeling Language (UML) diagrams. UML was invented in
+order to standardize modeling in software engineering (SE) and the
+latest version (UML 2.4.1) consists of 14 different types of diagrams
+divided into two larger groups: structure and behavior diagrams
+(Quelle: OMG). In the process leading up to itSIMPLE, UML.P (UML in a
+Planning Approach) was proposed, a UML variant specifically designed
+for modeling planning domains and problems (Vaquero, Tonidandel, &
+Silva 2005).
 
-\textsc{itSimple}'s original and main design approach is reversed to the
-process presented in this paper. While \textsc{itSimple} generates \textsc{pddl} models
-from UML specifications, my\textsc{pddl} generates type diagrams from \textsc{pddl}. So,
-while \textsc{itSimple} focuses on the initial design phase, the tools
-presented here are made for later stages.
+This variant specifies
+- Class Diagrams for static domain features
+- Object Diagrams to describe the initial and the goal state in
+  problem specifications
+- StateChart Diagrams to represent dynamic characteristics such as
+  actions in domain specifications.
 
+Thus, itSIMPLE uses both Structure Diagrams (Class and Object
+Diagrams) and Behavior Diagrams (State Machine Diagrams) (Vaquero et
+al. 2006, p 435). The main purpose of itSIMPLE is supporting knowledge
+engineers in the initial stages of the design phase by making tools
+available that help with the transition from the informality of the
+real world to the formal specifications of domain models. The
+professed aim of the project is to provide a means to a
+\enquote{disciplined process of elicitation, organization and analysis
+of requirements}. However, subsequent design stages are also
+supported. Once domain and problem models have been created, PDDL
+representations can be generated from the UML.P diagrams, edited, and
+then used as input to a number of different integrated planning
+systems. Therefore, one of the tools already introduced within the
+scope of PDDL Studio, planner integration, is also implemented.
+However, unlike in PDDL Studio, itSIMPLE has a more user-friendly
+approach to planner integration. Within this tool, it is possible to
+feed domain and problem to the planner with the press of a button,
+while in PDDL Studio, the user has to know and input commands in a
+command-line interface.
 
-Agent, environment, problems of semantic assumptions, disadvantages,
-advantages, associations (many arrows could be distracting),
-
-/my\textsc{pddl}/ allows for a representation of a arbitrary, n-ary predicates,
-without making assumptions about semantics. On the one hand this
-allows for a visualization of any \textsc{pddl} domain (and n-ary predicates),
-while one the other hand (that means, if semantic assumptions are made
-correctly, U
-
-\textsc{itSimple}'s modeling process is focused on a graphical design process
-and the newly added \textsc{pddl} editing features are basic, consisting of
-highlighted keywords and variables. The templates primarily insert
-\textsc{pddl} keywords, without showing the required syntax (e.g. =(:predicates
-...)= instead of =(:predicates (predicate-name ?x - object)=. \textsc{itSimple}
-is not customizable (without editing the Java source code). It is not
-possible to define custom key shortcuts for commands. General editor
-features, like to displaying line numbers, matching brackets or code
-folding are not (yet) supported.
-
-/my\textsc{pddl}/ shell support both, the initial design process of creating
-domains (by code snippets and the Clojure interface) and the later
-step of checking validity of existing domains and problems by the
-type generator (and possibly extending them).
+Not only is it possible to directly input the
+domains and problems into a planer, another tool can inspect the
+output from the planning system using the built-in plan analysis. This
+consists of a plan visualization that shows the interaction between
+the plan and the domain by highlighting every change caused by an
+action itSIMPLE's modeling workflow is unidirectional, as changes in
+the PDDL domain do not affect the UML model and UML models have to be
+modeled manually, meaning that they cannot by generated using PDDL.
+Starting in version 4.0 (in beta status as of writing of this thesis)
+itSIMPLE expanded its features to allow the creation of PDDL projects
+from scratch (i.e. without UML to PDDL translation process). Thus far,
+the PDDL editing features are basic. A minimal syntax highlighting
+feature recognizes PDDL keywords, variables, and comments.
+Furthermore, itSIMPLE provides templates for PDDL constructs, such as
+requirement specifications, predicates, actions, initial and goal
+definitions.
 
 ** PDDL-Mode for Emacs
-\textsc{pddl}-mode (announced 2005 in a mailing list) is a major Emacs
-mode for browsing and editing \textsc{pddl} 2.2 files. It provides
-syntax highlighting by basic pattern matching of \textsc{pddl]
-keywords, variables and comments, regardless of the current context.
-Furthermore, its provides automatic indentation and completions and
-bracket matching. Code snippets for the insertion of domains, problems
-and actions are provided. A declaration entry in the Emacs menu bar
-shows all actions  in the current \textsc{pddl} file and
-allows for jumping to the definition.
+Emacs is a popular text editor based on Emacs Lisp, a Lisp dialect.
+The core values of Emacs are its extensibility and customizability
+(source). \textsc{PDDL}-mode (announced 2005 in a mailing list -
+source) is a major Emacs mode, which determines the editing behavior
+of Emacs, for browsing and editing \textsc{PDDL} files. It provides
+syntax highlighting by way of basic pattern matching of keywords,
+variables and comments. Additional features are automatic indentation
+and code completion as well as bracket matching. Code snippets for the
+insertion of domains, problems and actions are also available.
+Finally, the PDDL-mode keeps track of action and problem declarations
+by adding them to a menu and thus intending to allow for easy and fast
+code navigation.
 
-Being an Emacs mode, \textsc{pddl}-mode is highly and easily customizable. Text
-editor features, like auto-completion, can be extended independently
-of this mode, by installing further Emacs modes.
+** Critical Review
 
-/my\textsc{pddl}/ uses Sublime Text, an editor, that is an extensible
-and customizable editor as well. The syntax highlighting feature of
-/my\textsc{pddl}/ supports all \textsc{pddl} versions, up to the most
-recent version 3.1. in contrast to /\textsc{pddl}-mode/,
-/my\textsc{pddl}-h's/ syntax highlighting feature is context-dependent
-and more extensive, as it can recognize almost any \textsc{pddl}
-construct and highlight it according to its semantic.
+All three tools, that have been described above, provide environments
+for the creation of PDDL code. However, each comes with its own
+advantages and disadvantages that are to be reviewed in this section.
+At the end of each discussed feature, the approach that will be used
+in myPDDL is introduced.
 
-By syntax highlighting, both tools can support code navigation,
-however, /\textsc{pddl}-mode/ does not allow for an fast and evident error
-detection.
+First and foremost, it must be mentioned that
+both PDDL-Studio and itSIMPLE were made from scratch, i.e. they do not
+build on existing editors and therefore cannot fall back on refined
+implementations of features that have been modified and improved many
+times throughout their existence. Many of their features must be
+regarded against this backdrop.
 
-** Conclusion & Summary
-As it can be seen, there is need for an up-to-date, customizable, text
-editor with \textsc{pddl} support, that supports the current standard
-\textsc{pddl} 3.1. myPDDL integrates and expands features described in
-this section, while keeping an focus on application, efficiency and
-customization opportunities. 
+For instance, PDDL-Studio has a parser implemented that enables code
+folding on a syntactical basis. PDDL-mode for Emacs, on the other
+handcould be customized to be capable of code folding either on the
+basis of indentation or on a syntacic level. Not providing a simple
+way to automatically indent code is one of the drawbacks of
+PDDL-Studio and itSIMPLE, since “the general consensus is that
+programs formatted with indentation are ‘better,’ that is, are easier
+to follow and modify […]” (QUELLE: Miara, R. J., Musselman, J. A.,
+Navarro, J. A., & Shneiderman, B. (1983). Program indentation and
+comprehensibility. Communications of the ACM,26(11), 861-867. p. 861).
+To avoid a lack of basic editor features (such as automatic
+indentation, selection of tab size, defining custom key shortcuts,
+customizing the general look and feel, or displaying line numbers, and
+bracket matching) and not having the possibility of extending the
+toolkit to include such features, it was decided to use an existing
+text editor to integrate myPDDL into.
+
+The tools can also be compared in terms of their syntax highlighting
+capabilities. In PDDL-mode for Emacs, keywords, variables and comments
+are highlighted. However, this is only done via pattern matching
+without controlling for context. This means that wherever the
+respective terms appear within the code they will get highlighted,
+regardless of the syntactical correctness. Therefore, it is useful
+when the knowledge engineer is familiar with PDDL syntax, but can also
+be misleading if this is not the case. itSIMPLE's syntax highlighting
+is equally as extensive as that of PDDL-mode for Emacs. Despite
+placing a larger emphasis on the creation of PDDL code from scratch
+within the itSIMPLE modeling environment, syntax highlighting did not
+get more advanced with the latest version. PDDL-Studio has advanced
+syntax highlighting that distinguishes all different PDDL 1.2
+constructs and allows knowledge engineers to choose their preferred
+highlighting colors. One of the primary objectives of myPDDL is to
+help users in keeping track of their PDDL programs. As a means to this
+end, it was decided to also implement sophisticated syntax
+highlighting.
+
+Another feature that can be useful for fast programming, is the
+ability to insert larger code skeletons or snippets. This allows the
+knowledge engineer to focus on the specific domain and problem
+characteristics instead of having to worry about the PDDL formalities.
+PDDL Studio does not support the insertion of code snippets at all.
+itSIMPLE features some code templates for predicates, derived
+predicates, functions, actions, constraints, types, comments,
+requirements, objects, and metrics. However, the templates, which are
+not customizable, primarily insert PDDL keywords, without indicating
+the required syntax (for example, (:predicates ...) instead of
+(:predicates (predicate-name ?x – object))).PDDL-mode for Emacs
+provides three larger skeletons, one for domains, one for problems and
+one for actions. Further skeletons could be added. myPDDL aims to
+combine the best of these latter tools and support customizable and
+extendable snippets for domains, problems, types, predicates,
+functions, actions and durative actions. In addition, to allow users
+to easily navigate within snippets, the option of going from one blank
+to the next by pressing the TAB-key is also implemented.
+
+When it comes to visualization, neither PDDL-Studio nor PDDL-mode for
+Emacs provide any visualization options. itSIMPLE, on the other hand,
+is based entirely on visually modeling domains and problems.Therefore,
+since the first version, the focus has mainly been on exporting from
+UML.P to PDDL. myPDDL is to reverse this design approach and enable
+type diagram visualization of some parts of the PDDL code.
+
+However, \textcite{tonidandel2006reading} present a translation
+process, from a \textsc{pddl} domain specification to an
+object-oriented UML.P model as a possible integration for
+\textsc{itSimple}. This translation process makes extensive semantic
+assumptions for \textsc{pddl} descriptions. Two default classes
+“Agent” and “Environment”, corresponding to PDDL types, are
+incorporated into the Class Diagram. The first parameter in
+the :parameters tag of an action is automatically declared as a
+subclass of the class “Agent”. In addition, each action will be
+allocated to the corresponding class of its first parameter in the
+Class Diagram. Furthermore, the first argument of a predicate is
+considered to be its main argument, so depending on their arity,
+predicates would be visualized differently:
+
+- Nullary predicates would be allocated as attributes of the type
+  “Environment”
+- Unary predicates would be declared as attributes of the type of the
+  specified parameter
+- Binary predicates would be regarded as associations, expressed by an
+labeled arrow from the type of the first parameter to the type of the
+second one.
+
+The described approach is limited, because predicates with an arity of
+three or higher cannot be visualized. There is currently no itSIMPLE
+version with this feature, according to an email from one of the
+authors. This approach makes huge semantic associations that could
+distort the visualization. In contrast, myPDDL allocates predicates to
+every mentioned type in the variable list and therefore allows for a
+representation of arbitrary n-ary predicates (n > 0). Actions are not
+visualized in myPDDL.
+
+Searching for errors can be one of the most time consuming parts of
+the programming process. Hence, any tool that is able to help detect
+errors faster is of great value to the programmer. While neither
+PDDL-mode for Emacs nor itSIMPLE facilitate error detection in any
+way, PDDL-Studio has not only syntactic but also semantic error
+detection implemented. Errors are detected immediately when they are
+made thanks to the parser, and a dynamic table keeps track of them and
+provides error prompts. Even though the immediacy with which errors
+are highlighted and added to the table can be helpful, it can also be
+premature at times, for example just because the closing parenthesis
+was not typed yet, does not mean it was forgotten. Therefore, for
+myPDDL the goal was to implement a more subtle syntactic error
+detection. Syntactic errors are simply not highlighted by the syntax
+highlighting feature, while all correct PDDL-code is highlighted. Even
+though checking for semantic errors online should allow finding such
+errors before feeding the program to a planner, and thus increase the
+probability of feeding correct files to the planner, planning software
+is also able to detect semantic errors. For this reason, it was
+decided not to implement semantic error detection in myPDDL yet.
+
+
+Another major drawback of PDDL-Studio and PDDL-mode for Emacs
+especially, is that they are apparently not updated regularly to work
+with the most recent PDDL versions. PDDL-Studio’s parser is only able
+to parse PDDL 1.2, one of the first PDDL versions. As of writing this
+thesis, the latest PDDL version is 3.1. It must be mentioned that PDDL
+has evolved since PDDL 1.2 and was extended in PDDL 2.1 to include
+durative actions to model time dependent behaviors, numeric fluents to
+model non-binary changes of the world state, and plan-metrics to
+customize the evaluation of plans. PDDL-mode for Emacs only works with
+PDDL versions up to 2.2, which introduced derived predicates and timed
+initial predicates, but does not recognize laterfeatures like
+object-fluents, so thatthe range of functions can include object-types
+in addition to numbers. (QUELLE). itSIMPLE on the other hand is more
+regularly maintained and itSIMPLE4.0 is in beta status since 2012. The
+release will be the first itSIMPLE version intended to also support
+the creation of PDDL documents from scratch, meaning that the text
+editor plays a much larger role in this version compared to previous
+ones.
+
+Finally, one of the most important features of any software is the
+possibility of extending and customizing it. Different programmers
+need to work with many different tools and need them to have a similar
+look and feel; they have different use cases and thus need different
+plug-ins and extensions to meet their needs, or they may simply have
+different preferences. PDDL Studio falls short of satisfying this
+requirement as the customization features (without editing the source
+code) are limited to the choice of font style and color of highlighted
+PDDL expressions. Furthermore, PDDL Studio is written as standalone
+program, meaning that there are no PDDL independent extensions. The
+same holds true foritSIMPLE which is also not customizable without
+editing the source code. Being an Emacs mode and Emacs being an
+established text editor, PDDL-mode is highly and easily customizable
+and extensible.
+
+This is the other major reason, why it was decided that myPDDL should
+be integrated into an existing, well-known, much used, extensible, and
+customizable text editor. These requirements are intended to be met by
+integrating the myPDDL toolkit into Sublime Text, a common text
+editor, and that sports such features, for example customizable key
+bindings, display of line numbers and multi-line selection. In
+addition, there is a broad range of extensions for Sublime Text, so
+that features like revision control via Git, file management with a
+sidebar, color highlighting of matching brackets or comparing and
+merging files can be added. Furthermore, Sublime Text supports the
+majority of common programming and markup languages, so that users can
+use the same tool and settings for programming and \textsc{pddl}
+specifications.
+
+myPDDL is designed as a PDDL mode for Sublime Text and provides
+sophisticated syntax highlighting, code snippets, syntactical error
+detection and type diagram visualization. In addition to these
+features, it allows for the automation of modeling taks due to a
+Clojure interface that supports the conversion of PDDL code into
+Clojure code and vice versa Therefore, the myPDDL shell supports both
+the initial design process of creating domains (with code snippets,
+syntax highlighting and the Clojure interface) and the later step of
+checking the validity of existing domains and problems with the type
+diagram generator. Lastly, since it is increasingly important that
+several people work on one project together, the visualization
+capabilities of myPDDL are meant to help users to understand each
+other’s code faster and thus be able to work with it more efficiently.
 
 * Software Engineering Tools for AI Planning
 
