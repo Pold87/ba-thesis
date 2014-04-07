@@ -1,0 +1,26 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+TITLE: Summary - Logistics and Coffee
+#+DATE:
+#+PROPERTY: colnames yes
+
+#+CAPTION: Average Errors per Domain (Arithmetic Mean) 
+#+NAME: errors-per-domain 
+| Domain    | Tool | N | Errors |    SD |    SE |    CI |
+|-----------+------+---+--------+-------+-------+-------|
+| Coffee    | No   | 4 |   8.75 | 2.217 | 1.109 | 3.529 |
+| Coffee    | Yes  | 4 |      9 | 2.582 | 1.291 | 4.109 |
+| Logistics | No   | 4 |    6.5 | 1.291 | 0.646 | 2.056 |
+| Logistics | Yes  | 4 |   11.5 | 4.123 | 2.062 | 6.562 |
+
+
+#+CAPTION: Average Errors (Arithmetic Mean)
+#+RESULTS: found-errors-combined
+#+RESULTS: found-errors-combined
+| Tool | N | Errors |    SD |    SE |    CI |
+|------+---+--------+-------+-------+-------|
+| No   | 8 |  7.625 | 2.066 |  0.73 | 1.726 |
+| Yes  | 8 |  10.25 | 3.454 | 1.221 | 2.887 |

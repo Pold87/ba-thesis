@@ -1,0 +1,267 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+TITLE: Raw Data - Logistics and Coffee
+#+PROPERTY: colnames yes
+
+
+#+NAME: raw-errors
+| VP | Tool | Domain    | Errors |
+|----+------+-----------+--------|
+|  2 | Yes  | Logistics |     15 |
+|  2 | No   | Coffee    |     12 |
+|  3 | No   | Coffee    |      8 |
+|  3 | Yes  | Logistics |     15 |
+|  4 | Yes  | Coffee    |      6 |
+|  4 | No   | Logistics |      5 |
+|  5 | Yes  | Coffee    |      8 |
+|  5 | No   | Logistics |      8 |
+|  6 | No   | Coffee    |      8 |
+|  6 | Yes  | Logistics |      7 |
+|  7 | Yes  | Logistics |      9 |
+|  7 | No   | Coffee    |      7 |
+|  8 | Yes  | Coffee    |     10 |
+|  8 | No   | Logistics |      7 |
+|  9 | Yes  | Coffee    |     12 |
+|  9 | No   | Logistics |      6 |
+
+#+NAME: found-errors
+#+BEGIN_SRC R :var raw=raw-errors :results value :exports none
+gmean <- function(x) {
+  return(exp(mean(log(x))))
+}
+
+geosd <- function(x, na.rm = FALSE, ...)
+{
+exp(sd(log(x, ...), na.rm = na.rm, ...))
+}
+
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+    require(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = round(mean   (xx[[col]]),3),
+          SD   = round(sd     (xx[[col]]),3)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column    
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$SE <- round(datac$SD / sqrt(datac$N),3)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$CI <- round(datac$SE * ciMult,3)
+
+    return(datac)
+}
+
+summarySE(raw, measurevar="Errors", groupvars=c("Domain","Tool"))  
+
+
+
+
+
+
+
+#library(plyr)
+#  cdata <- ddply(raw, c("Domain","Tool"), summarise,
+#                     Errors = mean(Errors))
+#  cdata
+#+END_SRC  
+
+#+RESULTS: found-errors
+| Domain    | Tool | N | Errors |    SD |    SE |    CI |
+|-----------+------+---+--------+-------+-------+-------|
+| Coffee    | No   | 4 |   8.75 | 2.217 | 1.109 | 3.529 |
+| Coffee    | Yes  | 4 |      9 | 2.582 | 1.291 | 4.109 |
+| Logistics | No   | 4 |    6.5 | 1.291 | 0.646 | 2.056 |
+| Logistics | Yes  | 4 |   11.5 | 4.123 | 2.062 | 6.562 |
+
+# Very, very good
+#+NAME: task-completions-splisus-plot
+#+BEGIN_SRC R :var fe=found-errors points=raw-errors :results output graphics :file found-errors-splitted.svg :exports
+  library(ggplot2)
+    
+    ggplot(fe, aes(x=Domain, y=Errors,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_point(data = points, aes(x=Domain, y = Errors, fill=Tool), size = 1, colour = 'black',
+               stat = "identity",position=position_dodge(width=0.9)) + 
+  scale_y_continuous(breaks=0:15*1) +
+      scale_fill_hue(name="Syntax Highlighted\nCode (myPDDL-syn)") +  # Legend label, use darker colors
+      ggtitle("Average Found Errors (Arithmetic Mean)\n per Domain (with Data Dalues)") +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: task-completions-splisus-plot
+[[file:found-errors-splitted.svg]]
+
+# Very, very good
+#+NAME: found-errors-plot-no-dots
+#+BEGIN_SRC R :var fe=found-errors points=raw-errors :results output graphics :file found-errors-splitted-no-dots.svg
+  library(ggplot2)
+    ggplot(fe, aes(x=Domain, y=Errors,fill=Tool)) +
+  scale_y_continuous(breaks=0:15*1) +
+    geom_bar(position=position_dodge(), stat="identity") +
+      scale_fill_hue(name="Syntax Highlighted\nCode (myPDDL-syn)") +  # Legend label, use darker colors
+      ggtitle("Average Found Errors (Arithmetic Mean)\n per Domain") +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: found-errors-plot-no-dots
+[[file:found-errors-splitted-no-dots.svg]]
+
+#+RESULTS: task-completions-splisus-plot-no-dots
+[[file:found-errors.png]]
+
+#+NAME: found-errors-combined
+#+BEGIN_SRC R :var raw=raw-errors :results value :exports none
+gmean <- function(x) {
+  return(exp(mean(log(x))))
+}
+
+geosd <- function(x, na.rm = FALSE, ...)
+{
+exp(sd(log(x, ...), na.rm = na.rm, ...))
+}
+
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+    require(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = round(mean   (xx[[col]]),3),
+          SD   = round(sd     (xx[[col]]),3)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column    
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$SE <- round(datac$SD / sqrt(datac$N),3)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$CI <- round(datac$SE * ciMult,3)
+
+    return(datac)
+}
+
+summarySE(raw, measurevar="Errors", groupvars=c("Tool"))
+
+
+
+
+
+
+#  library(plyr)
+#  cdata <- ddply(raw, c("Tool"), summarise,
+#                     Errors = mean(Errors))
+#  cdata
+#+END_SRC  
+
+#+RESULTS: found-errors-combined
+| Tool | N | Errors |    SD |    SE |    CI |
+|------+---+--------+-------+-------+-------|
+| No   | 8 |  7.625 | 2.066 |  0.73 | 1.726 |
+| Yes  | 8 |  10.25 | 3.454 | 1.221 | 2.887 |
+
+
+
+#+NAME: found-errors-data-combined
+#+BEGIN_SRC R :var raw=raw-errors :results value :exports none
+  library(plyr)
+  cdata <- ddply(raw, c("Tool"), summarise,
+                     Errors = Errors)
+  cdata
+#+END_SRC 
+
+#+RESULTS: found-errors-data-combined
+| Tool | Errors |
+|------+--------|
+| No   |     12 |
+| No   |      8 |
+| No   |      5 |
+| No   |      8 |
+| No   |      8 |
+| No   |      7 |
+| No   |      7 |
+| No   |      6 |
+| Yes  |     15 |
+| Yes  |     15 |
+| Yes  |      6 |
+| Yes  |      8 |
+| Yes  |      7 |
+| Yes  |      9 |
+| Yes  |     10 |
+| Yes  |     12 |
+
+
+# Very, very good
+#+NAME: task-completions-splisus-plot-combined
+#+BEGIN_SRC R :var fe=found-errors-combined points=found-errors-data-combined :results output graphics :file found-combined.svg :exports value
+  library(ggplot2)
+    
+    ggplot(fe, aes(x=Tool, y=Errors,fill=Tool)) +
+    geom_bar(stat="identity") +
+    geom_point(data = points, aes(x=Tool, y = Errors, fill=Tool), size = 1, colour = 'black',
+               stat = "identity",position=position_jitter(width=0.03, h=0)) + 
+  scale_y_continuous(breaks=0:15*1) +
+      scale_fill_hue(name="Syntax Highlighted\nCode (myPDDL-syn)") +  # Legend label, use darker colors
+      ggtitle("Average Found Errors (Arithmetic Mean)\n Aggregated Domains (with Data Dalues)") +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: task-completions-splisus-plot-combined
+[[file:found-combined.svg]]
+
+
+# Very, very good
+#+NAME: errors-plot-combined-no-dots
+#+BEGIN_SRC R :var fe=found-errors-combined points=found-errors-data-combined :results output graphics :file found-combined-no-dots.svg :exports value
+  library(ggplot2)
+    
+    ggplot(fe, aes(x=Tool, y=Errors,fill=Tool)) +
+    geom_bar(stat="identity") +
+
+  scale_y_continuous(breaks=0:15*1) +
+      scale_fill_hue(name="Syntax Highlighted\nCode (myPDDL-syn)") +  # Legend label, use darker colors
+      ggtitle("Average Found Errors (Arithmetic Mean)\n Aggregated Domains") +
+      theme_bw()
+#+END_SRC
+
+#+RESULTS: errors-plot-combined-no-dots
+[[file:found-combined-no-dots.svg]]
+

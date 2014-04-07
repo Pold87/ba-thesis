@@ -1,0 +1,391 @@
+#+TITLE: Skript für Tutorial
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+#+LaTeX_CLASS_OPTIONS: [koma,DIV=1,BCOR=1mm]
+#+OPTIONS: toc:nil
+* Einführung
+Dieses Videotutorial soll in das Thema Planung und vorallem in die
+Planungssprache PDDL einführen. Planung ist eine der wichtigsten
+Komponenten des Problemlösens. Ein Problem liegt dann vor, wenn der
+Soll-Zustand nicht dem Ist-Zustand entspricht. Bei der Planung wird
+eine Abfolge von Handlungsschritten, sogenannten Aktionen entworfen,
+die vom Ist-Zustand zum Soll-Zustand führt. D.h. es wird ein Plan wird
+erstellt, der das Problem löst. Ziel der künstlichen Intelligenz
+Forschung ist es natürlich, dass die Planung von der künstlichen
+Intelligenz ausgeführt wird. Damit dies erfolgen kann, ist eine
+detaillierte Beschreibung der Umwelt und des Problems notwendig.
+Ausserdem bedarf es eines Algorithmus, der aus diesen Beschreibungen
+die nötigen Schritte herleiten kann, die zur Lösung des Problems
+führen. Die drei Bestandteile der automatisierten Planung sind also:
+
+#+CAPTION: Planung in der KI
+#+ATTR_LATEX: :font \footnotesize
+|   | <12>         | <25>                      | <25>                      | <25>                      |
+| / |              | <                         |                           |                           |
+|   | *Komponente* | *Domäne*                  | *Problem*                 | *Planer*                  |
+|---+--------------+---------------------------+---------------------------+---------------------------|
+|   | *Definition* | Beschreibung der Welt     | Beschreibung des Problems | Software, die aus der     |
+|   |              | - Eigenschaften und Beziehungen von Objektypen | - Instanziierung der Welt | Beschreibung der Welt und |
+|   |              | - Einschränkungen         |                           |                           |
+|   |              | - mögliche Aktionen und ihre Konsequenzen           | - Soll-Zustand            | entwickelt                |
+|   |              |                           | - Ist-Zustand             | des Problems einen Plan   |
+|   |              |                           |                           |                           |
+|   |              |                           |                           |                           |
+|   |              |                           |                           |                           |
+
+
+Die Domäne und das Problem müssen zunächst erstellt werden, bevor sie
+dem Planer übergeben werden können. Dieses Modellieren wird heutzutage
+noch hauptsächlich von menschlichen Experten vorgenommen. Daher bedarf
+eines Formulierungsstandards, der durch Planungssprachen gewährleistet
+wird. Analog zu Programmiersprachen haben diese eine Syntax, also
+konkrete Regeln und Vorschriften zum Erstellen von Domänen und
+Problemen. Eine dieser Planungssprachen ist die Planning Domain
+Definition Language oder PDDL.
+
+#+CAPTION: Planung in der KI
+#+ATTR_LATEX: :font \footnotesize
+|   | <12>         | <25>                      | <25>                      | <25>                      |
+| / |              | <                         |                           |                           |
+|   | *Komponente* | *Domäne*                  | *Problem*                 | *Planer*                  |
+|---+--------------+---------------------------+---------------------------+---------------------------|
+|   | *Definition* | Beschreibung der Welt     | Beschreibung des Problems | Software, die aus der     |
+|   |              | - Struktur                | - Instanziierung der Welt | Beschreibung der Welt und |
+|   |              | - Einschränkungen         | - Ist-Zustand             | des Problems einen Plan   |
+|   |              | - mögliche Aktionen und   | - Soll-Zustand            | entwickelt                |
+|   |              | ihre Konsequenzen         |                           |                           |
+|   | *Umsetzung*  | Mit einer Planungssprache | Mit einer Planungssprache | Software                  |
+|   |              | in einem Editor           | in einem Editor           |                           |
+|   | *Ausführung* | Menschlicher Experte      | Menschlicher Experte      | KI                        |
+
+
+Im Folgenden soll dir nun beigebracht werden wie man mit PDDL Domänen
+aufbaut. Dies wird anhand von einem konkreten Beispiel geschehen und
+nach jedem Schritt wird dir eine Verständnisfrage gestellt. Du kannst
+das Tutorial jederzeit pausieren um Fragen zu stellen, nochmal über
+etwas nachzudenken oder zurückspulen wenn du etwas nochmal anschauen
+möchtest. Versuche vorallem die Konzepte zu verstehen, damit du später
+selbst Domänen erstellen kannst. Es ist nicht von Bedeutung, dass du
+die Programmgerüste oder programmspezifischen Begriffe auswendig
+lernst, jedoch, dass du sie später verstehst, wenn du sie erneut
+siehst.
+* Beispiel
+** Die Welt
+Willkommen in unserer Welt. Unsere Welt besteht aus zwei Menschen:
+Tyler und Marla und einem Roboter, der mit ihnen wohnt aber nichts zur
+Sache tut. Tyler arbeitet und Marla studiert Psychologie. Tyler muss
+also jeden Tag auf die Arbeit und Marla geht freiwillig jeden Tag zur
+Uni. Tyler und Marla wohnen im selben Haus, das viele verschiedene
+Räume hat. So gibt es zum Beispiel eine Küche, ein Bad, zwei
+Schlafzimmer, ein Wohnzimmer und eine Garage. Außerdem haben sowohl
+Tyler als auch Marla ein Auto, aber Marla hat zusätzlich noch ein
+Fahrrad. Alle Fahrzeuge stehen in der Garage. Marlas Auto war sehr
+günstig und der Motor springt immer an kalten Tagen nicht an. Heute
+ist ein kalter Montag Morgen.
+
+** Das Problem
+Ist: Tyler und Marla sind zu Hause.
+Soll: Tyler soll auf die Arbeit und Marla soll zur Uni.
+
+** Aufbau einer Domäne
+Wie können wir diese Welt jetzt in PDDL repräsentieren?
+PDDL-Dateien beschreiben entweder eine Domäne oder ein Problem, aber immer nur maximal eines.
+Jede Domäne in PDDL hat die folgende Form:
+
+#+BEGIN_EXAMPLE
+
+(define (domain name)
+	(:requirements :requirement1
+ 			:requirement2...)
+	(:types  subsubtype1 subsubtype2 – subtype1
+subtype1 – type1
+subtype2 – type2…
+subsubtype1 subsubtype2 subtype1 subtype2 type1 type2 …  - object)
+	(:predicates  (predicateName1 ?var1 – typeOfVar1)
+(predicateName2 ?var2 – typeOfVar2 ?var3 – typeOfVar3) ...)
+	(:action actionName1
+:parameters (...)
+:precondition (...)
+:effect (...) )
+(:action actionName2
+:parameters (...)
+:precondition (...)
+:effect (...) )
+... )
+#+END_EXAMPLE
+Das wollen wir nun absatzweise anschauen und aufbauen.
+
+*** (define (domain ...))
+
+#+BEGIN_EXAMPLE
+(define (domain ...))
+#+END_EXAMPLE
+
+Wer schon in LISP oder abgeleiteten Programmiersprachen programmiert
+hat, dem sollte die Klammerung vertraut vorkommen. Auch das
+Schlüsselwort define, das eine PDDL-Datei einleitet, sollte aus LISP
+bereits bekannt sein. Als nächstes wird eingeklammert was man
+eigentlich in dieser Datei definieren möchte. Dazu muss man sich als
+erstes entscheiden ob man eine Domäne oder ein Problem modellieren
+will. Wir interessieren uns momentan nur für Domänen, weshalb das
+erste Wort immer domain sein wird. Jetzt kann man einen Namen für die
+Domäne festlegen. Dieser kann frei gewählt werden. Da die Hauptakteure
+unserer Welt Tyler und Marla heißen, nennen wir unsere Domäne
+fightclub. Bisher sieht unsere PDDL-Datei also so aus:
+
+#+BEGIN_EXAMPLE
+(define (domain fightclub)
+#+END_EXAMPLE
+
+*** Requirements
+#+BEGIN_EXAMPLE
+ (:requirements  :requirement1
+:requirement2...)
+#+END_EXAMPLE
+Die requirements sind vergleichbar mit dem Preamble in LaTeX. Hier
+werden Domäneneigentschaften festgelegt. Unsere Domänen haben nur ein
+requirement, nämlich typing. Das heißt, dass es in unseren Welten
+Typenhierarchien gibt. Alle weiteren möglichen requirements sollen uns
+nicht interessieren. Die Domäne sieht also jetzt so aus:
+#+BEGIN_EXAMPLE
+(define (domain fightclub)
+	(:requirements :typing)
+#+END_EXAMPLE
+
+*** Types
+#+BEGIN_EXAMPLE
+(:types  subsubtype1 subsubtype2 – subtype1
+subtype1 – type1
+subtype2 – type2…
+type1 type2 …  - object)
+#+END_EXAMPLE
+
+Hier wird es jetzt interessant. In diesem Absatz wird die Welt
+typisiert, bzw. strukturiert. Alle Entitäten in Domänen sind immer vom
+Typ Objekt. Innerhalb dieser Objektoberklasse gibt es dann
+verschiedene Typen und Untertypen. Die Hierarchien werden im Absatz
+types modelliert. Damit wir nichts vergessen, ist es sinnvoll uns
+zunächst den Aufbau unserer Beispielwelt in Form eines Diagramms zu
+veranschaulichen.
+
+(UML Diagramm zeichnen)
+
+Nun wollen wir das in PDDL umsetzen:
+
+#+BEGIN_EXAMPLE
+
+(:types man woman – human
+	human robot – agent 
+	car bike – vehicle
+	office university home – building
+	kitchen livingroom bedroom garage bathroom – room
+	room – home 
+	building  – location 
+	agent vehicle location – object)
+
+#+END_EXAMPLE
+
+Unsere domain sieht jetzt also so aus:
+
+#+BEGIN_EXAMPLE
+
+(define (domain fightclub)
+	(:requirements :typing)
+	(:types man woman – human
+	human robot – agent 
+	car bike – vehicle
+	office university home – building
+	kitchen livingroom bedroom garage bathroom – room
+	room – home 
+	building  – location 
+	agent vehicle location – object)
+
+#+END_EXAMPLE
+
+Zur Überprüfung ob du das verstanden hast, versuche nun bitte folgende
+Hierarchie selbst umzusetzen. Male hierfür zunächst auch ein
+UML-Diagramm.
+
+In einer Firma gibt es verschiedene Hierarchieebenen. Ausschließlich
+Agenten können bei einer Firma arbeiten. Agenten können entweder
+Roboter oder Menschen sein. Während es bei den Menschen
+Hierarchiestrukturen gibt, ist dies bei den Robotern nicht der Fall.
+Roboter haben keine Chefs und sind auch nicht in Führungspositionen,
+sie tun einfach das wofür sie programmiert wurden. Die
+Firmenhierarchie ist wie folgt: an oberster Stelle ist der Vorstand.
+Neben dem Vorstand gibt es noch den Aufsichtsrat, der ebenfalls nur
+aus Menschen besteht. Dem Vorstand ist alles untergeordnet. Auf der
+nächsten Ebene lässt sich die Firma nun in die drei Bereiche
+Entwicklung, Fertigung und Verkauf einteilen. Diese sind jeweils
+wieder in zwei Abteilungen unterteilt, außer der Verkauf, der nur aus
+5 einzelnen Arbeitern besteht (einzelne Arbeiter müssen nicht
+modelliert werden). Jede Abteilung besteht wiederum aus zwei kleineren
+Gruppen.
+
+Aber warum ist das wichtig? Warum reicht es nicht einfach alle Objekte
+in der Welt zu benennen? Warum müssen sie auch noch typisiert werden?
+
+Das soll alles mit dem nächsten Absatz klarer werden.
+
+*** Predicates
+#+BEGIN_EXAMPLE
+(:predicates  (predicateName1 ?var1 – typeOfVar1)
+(predicateName2 ?var2 – typeOfVar2 ?var3 – typeOfVar3) ...)
+#+END_EXAMPLE
+
+Um eine Welt zu modellieren, reicht es nicht einfach nur zu sagen, was
+alles vorhanden ist, und in welcher Beziehung die Objekte zueinander
+stehen. Nein, meistens können Objekte in verschiedenen Zuständen
+existieren und diese Zustände können sich ändern. So sind manche
+Menschen schizophren und andere nicht, manche Räume haben Außenwände
+aus Glas und viele nicht, während einige Männer sich gerne prügeln,
+kann man das nicht über Küchengeräte behaupten. Um solche Zustände und
+Eigenschaften von Objekten repräsentieren zu können gibt es Prädikate.
+Prädikate können entweder wahr oder falsch sein. Außerdem
+unterscheidet man Prädikate nach ihrer Stelligkeit. Wir wollen uns
+hier nur mit ein- und zwei-stelligen Prädikaten befassen. Ein Prädikat
+ist einstellig, wenn es nur ein Parameter gibt. Die Eigenschaft
+schizophren zu sein, kann durch ein einstelliges Prädikat modelliert
+werden. Das Prädikat könnte heißen istSchizophren? und es hat nur
+einen Parameter, nämlich ein Objekt vom Typen Human. In PDDL-Notation
+sähe das dann so aus:
+
+#+BEGIN_EXAMPLE
+(istSchizophren? ?x – human)
+#+END_EXAMPLE
+
+Wobei ?x den Parameter ersetzt und festgelegt werden muss von welchem
+Typ dieser sein soll. Der momentane Ort einer Person hingegen, kann
+durch ein zweistelliges Prädikat modelliert werden. Ein solches
+Prädikat könnte heißen ort? und wäre durch zwei Parameter, nämlich ein
+Objekt vom Typ Human und ein Objekt vom Typ Location, definiert. Das
+würde in PDDL-Notation so aussehen:
+
+#+BEGIN_EXAMPLE
+(ort? ?x – human ?y – location)
+#+END_EXAMPLE
+
+Analog wollen wir für unsere Beispielwelt folgende Prädikate
+definieren:
+
+1. Menschen können in Gebäuden und Räumen sein (Wo ist ein eine Person?)
+2. Fahrzeuge müssen im selben Gebäude sein wie der Mensch der sie nutzen will (Ist ein Fahrzeug im selben Gebäude?)
+3. Fahrzeuge müssen dem Menschen gehören der sie nutzen will (Gehört das Fahrzeug dem Mensch?)
+4. Fahrzeuge können kaputt sein (Ist ein Fahrzeug gerade kaputt?)
+
+Versuche doch zunächst einmal selbst diese Prädikate in PDDL-Notation
+aufzustellen.
+
+#+BEGIN_EXAMPLE
+(:predicates (at? ?person – human ?place – location)
+(inSameBuilding? ?person – human ?veh – vehicle)
+(belongsTo? ?veh – vehicle ?person – human)
+(broken? ?veh – vehicle))
+#+END_EXAMPLE
+
+Hier sieht man nun, dass es sinnvoll ist, Typen zu deklarieren, da
+manche Prädikate auf Elemente von Oberklassen zutreffen können und
+somit nicht alle Untertypen einzeln aufgeführt werden müssen.
+
+Bisher sieht unsere Domäne so aus:
+
+#+BEGIN_EXAMPLE
+(define (domain fightclub)
+	(:requirements :typing)
+	(:types man woman – human
+	human robot – agent 
+	car bike – vehicle
+	office university home – building
+	kitchen livingroom bedroom garage bathroom – room
+	room – home 
+	building  – location 
+	agent vehicle location – object)
+	(:predicates (at? ?person – human ?place – location)
+(inSameBuilding? ?person – human ?veh – vehicle)
+(belongsTo? ?veh – vehicle ?person – human)
+(broken? ?veh – vehicle))
+#+END_EXAMPLE
+
+
+*** Aktionen
+
+#+BEGIN_EXAMPLE
+(:action actionName2
+:parameters (...)
+:precondition (...)
+:effect (...) )
+... )
+#+END_EXAMPLE
+
+Zu guter Letzt wollen wir uns nun den Aktionen widmen. Aktionen sind
+wichtig, da durch Aktionen die Zustände und Eigenschaften von Objekten
+derart verändert werden können, dass Probleme gelöst werden können.
+Aktionen bestehen immer aus drei Teilen: Parametern, Vorbedingungen
+und Wirkungen. Nehmen wir an, man könnte schlau werden durch lesen
+bestimmter Inhalte. Damit hätten wir eine sehr einfache Aktion lesen.
+Diese hätte zwei Parameter, nämlich die Person, die liest und die
+Inhalte, die sie liest. Als Vorbedingung muss gelten, dass die Person
+lesen kann, dass die Person nicht bereits schlau ist und dass die
+Inhalte bilden (alles drei Prädikate, die bereits im Absatz predicates
+auftauchen sollten). Der Effekt soll schließlich sein, dass die Person
+schlau ist.
+
+#+BEGIN_EXAMPLE
+(:action read
+         	:parameters 	(?p - person ?con - contents)
+         	:precondition	(and (literate? ?p)
+                             		(not (smart? ?p))
+                            			(educating? ?con))
+         	:effect 		(smart? ?p))
+#+END_EXAMPLE
+
+Versuche nun einmal die Aktion drive für unsere Beispielwelt
+aufzustellen, bei der eine Person ihren Ort ändert mittels eines
+Fahrzeugs, das nicht kaputt sein darf, der Person gehören muss und im
+selben Gebäude wie die Person zu Beginn sein muss.
+
+#+BEGIN_EXAMPLE
+(:action drive
+        :parameters (?p - person ?v – vehicle ?to ?from – location)
+        :precondition (and (at? ?p ?from)
+                           (inSameBuilding? ?p ?v)
+                           (belongsTo? ?v ?p)                                      
+                           (not (broken? ?v)))
+        :effect                 (at? ?p ?to))
+#+END_EXAMPLE
+
+Herzlichen Glückwunsch! Wir haben gemeinsam eine Domäne erstellt.
+Diese sieht jetzt so aus:
+
+#+BEGIN_EXAMPLE
+  (define (domain fightclub)
+          
+    (:requirements :typing)
+  
+    (:types man woman – human
+          human robot – agent 
+          car bike – vehicle
+          office university home – building
+          kitchen livingroom bedroom garage bathroom – room
+          room – home 
+          building  – location 
+          agent vehicle location – object)
+  
+    (:predicates (at? ?person – human ?place – location)
+                  (inSameBuilding? ?person – human ?veh – vehicle)
+                  (belongsTo? ?veh – vehicle ?person – human)
+                  (broken? ?veh – vehicle))
+   
+   (:action drive
+       :parameters (?p - person ?v – vehicle ?to ?from – location)
+       :precondition (and (at? ?p ?from)
+                          (inSameBuilding? ?p ?v)
+                          (belongsTo? ?v ?p)                                      
+                          (not (broken? ?v)))
+       :effect            (at? ?p ?to)))
+#+END_EXAMPLE
+
+Hiermit hast du das Videotutorial geschafft. Keine Sorge, schwieriger
+wird es nicht mehr! Solltest du noch Fragen haben, oder falls
+irgendetwas noch unklar ist bzw. nicht ausreichend erklärt wurde,
+wende dich bitte an den Versuchsleiter. Für den Rest des Versuchs ist
+es wirklich wichtig, dass keine Fragen mehr offen sind!
