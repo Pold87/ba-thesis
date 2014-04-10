@@ -1,0 +1,59 @@
+#+OPTIONS: author:nil toc:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: en
+#+TITLE:
+#+DATE:
+
+* Introduction
+
+* Background and Basics
+
+** Analysis
+** Domain File
+*** Domain Definition
+*** Requirements
+*** Types
+*** Predicates
+*** Actions
+** Problem File
+*** Problem Definition
+*** Associated Domain
+*** Objects
+*** Init
+*** Goal
+** Planning
+
+* Related Work 
+
+** PDDL Studio
+** itSIMPLE
+** PDDL-mode for Emacs
+** Critical Review
+
+\newpage
+
+* Knowledge Engineering Toolkit
+
+** General Interface between PDDL and Clojure
+** Create PDDL Projects
+** Syntax Highlighting Feature
+** Code Snippets
+** Distance Calculation
+** Type Diagram Generator
+** Integrated Development Environment
+
+* Evaluation
+
+** User Study
+*** Participants
+*** Material
+*** Design
+*** Procedure
+*** Results
+** Review of Features
+** Discussion
+
+* Conclusion and Future Work

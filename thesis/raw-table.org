@@ -1,4 +1,4 @@
-#+LATEX_CLASS: article
+q#+LATEX_CLASS: article
 #+OPTIONS: author:nil toc:nil num:nil
 #+LaTeX_CLASS_OPTIONS: [a4paper,10pt]
 #+LaTeX_HEADER: \usepackage[margin=1in]{geometry}
@@ -10,91 +10,427 @@
 * All
 #+ATTR_LaTeX: :environment longtable
 #+NAME: raw-domains
-| VP | Tool | Domain  | Question | Seconds | Correct | First   |
-|----+------+---------+----------+---------+---------+---------|
-|  2 | Yes  | Splisus | Q1       |      38 |       1 | Splisus |
-|  2 | Yes  | Splisus | Q2       |      30 |       1 | Splisus |
-|  2 | Yes  | Splisus | Q3       |       7 |       1 | Splisus |
-|  2 | Yes  | Splisus | Q4       |     140 |       0 | Splisus |
-|  2 | Yes  | Splisus | Q5       |      53 |       1 | Splisus |
-|  2 | No   | Store   | Q1       |      10 |       1 | Splisus |
-|  2 | No   | Store   | Q2       |      24 |       1 | Splisus |
-|  2 | No   | Store   | Q3       |      70 |       1 | Splisus |
-|  2 | No   | Store   | Q4       |      64 |       1 | Splisus |
-|  2 | No   | Store   | Q5       |      77 |       1 | Splisus |
-|  3 | No   | Store   | Q1       |      60 |       1 | Store   |
-|  3 | No   | Store   | Q2       |      37 |       1 | Store   |
-|  3 | No   | Store   | Q3       |     163 |       0 | Store   |
-|  3 | No   | Store   | Q4       |     127 |       1 | Store   |
-|  3 | No   | Store   | Q5       |      77 |       1 | Store   |
-|  3 | Yes  | Splisus | Q1       |      19 |       1 | Store   |
-|  3 | Yes  | Splisus | Q2       |      18 |       1 | Store   |
-|  3 | Yes  | Splisus | Q3       |      33 |       1 | Store   |
-|  3 | Yes  | Splisus | Q4       |     142 |       0 | Store   |
-|  3 | Yes  | Splisus | Q5       |      11 |       1 | Store   |
-|  4 | Yes  | Store   | Q1       |      19 |       1 | Store   |
-|  4 | Yes  | Store   | Q2       |      15 |       1 | Store   |
-|  4 | Yes  | Store   | Q3       |      61 |       1 | Store   |
-|  4 | Yes  | Store   | Q4       |     148 |       1 | Store   |
-|  4 | Yes  | Store   | Q5       |      67 |       1 | Store   |
-|  4 | No   | Splisus | Q1       |      35 |       1 | Store   |
-|  4 | No   | Splisus | Q2       |     124 |       1 | Store   |
-|  4 | No   | Splisus | Q3       |      28 |       1 | Store   |
-|  4 | No   | Splisus | Q4       |      86 |       1 | Store   |
-|  4 | No   | Splisus | Q5       |      56 |       1 | Store   |
-|  5 | Yes  | Store   | Q1       |      33 |       1 | Splisus |
-|  5 | Yes  | Store   | Q2       |      46 |       1 | Splisus |
-|  5 | Yes  | Store   | Q3       |      37 |       0 | Splisus |
-|  5 | Yes  | Store   | Q4       |      48 |       1 | Splisus |
-|  5 | Yes  | Store   | Q5       |     179 |       1 | Splisus |
-|  5 | No   | Splisus | Q1       |      50 |       1 | Splisus |
-|  5 | No   | Splisus | Q2       |      22 |       1 | Splisus |
-|  5 | No   | Splisus | Q3       |      36 |       1 | Splisus |
-|  5 | No   | Splisus | Q4       |      34 |       1 | Splisus |
-|  5 | No   | Splisus | Q5       |     173 |       1 | Splisus |
-|  6 | No   | Store   | Q1       |      15 |       1 | Store   |
-|  6 | No   | Store   | Q2       |      32 |       1 | Store   |
-|  6 | No   | Store   | Q3       |     298 |       1 | Store   |
-|  6 | No   | Store   | Q4       |     124 |       0 | Store   |
-|  6 | No   | Store   | Q5       |      85 |       1 | Store   |
-|  6 | Yes  | Splisus | Q1       |      14 |       1 | Store   |
-|  6 | Yes  | Splisus | Q2       |      35 |       1 | Store   |
-|  6 | Yes  | Splisus | Q3       |      33 |       1 | Store   |
-|  6 | Yes  | Splisus | Q4       |      34 |       0 | Store   |
-|  6 | Yes  | Splisus | Q5       |      34 |       1 | Store   |
-|  7 | Yes  | Splisus | Q1       |      15 |       1 | Splisus |
-|  7 | Yes  | Splisus | Q2       |      25 |       1 | Splisus |
-|  7 | Yes  | Splisus | Q3       |      36 |       1 | Splisus |
-|  7 | Yes  | Splisus | Q4       |      92 |       0 | Splisus |
-|  7 | Yes  | Splisus | Q5       |      25 |       1 | Splisus |
-|  7 | No   | Store   | Q1       |      71 |       1 | Splisus |
-|  7 | No   | Store   | Q2       |      36 |       1 | Splisus |
-|  7 | No   | Store   | Q3       |     119 |       1 | Splisus |
-|  7 | No   | Store   | Q4       |     193 |       1 | Splisus |
-|  7 | No   | Store   | Q5       |      46 |       1 | Splisus |
-|  8 | Yes  | Store   | Q1       |      36 |       1 | Store   |
-|  8 | Yes  | Store   | Q2       |      20 |       1 | Store   |
-|  8 | Yes  | Store   | Q3       |     323 |       1 | Store   |
-|  8 | Yes  | Store   | Q4       |     213 |       1 | Store   |
-|  8 | Yes  | Store   | Q5       |      44 |       1 | Store   |
-|  8 | No   | Splisus | Q1       |     116 |       1 | Store   |
-|  8 | No   | Splisus | Q2       |     142 |       1 | Store   |
-|  8 | No   | Splisus | Q3       |      82 |       1 | Store   |
-|  8 | No   | Splisus | Q4       |     194 |       0 | Store   |
-|  8 | No   | Splisus | Q5       |      92 |       1 | Store   |
-|  9 | No   | Splisus | Q1       |      51 |       1 | Splisus |
-|  9 | No   | Splisus | Q2       |     112 |       1 | Splisus |
-|  9 | No   | Splisus | Q3       |      58 |       1 | Splisus |
-|  9 | No   | Splisus | Q4       |     153 |       0 | Splisus |
-|  9 | No   | Splisus | Q5       |      66 |       1 | Splisus |
-|  9 | Yes  | Store   | Q1       |      15 |       1 | Splisus |
-|  9 | Yes  | Store   | Q2       |      16 |       1 | Splisus |
-|  9 | Yes  | Store   | Q3       |      75 |       1 | Splisus |
-|  9 | Yes  | Store   | Q4       |      68 |       1 | Splisus |
-|  9 | Yes  | Store   | Q5       |      32 |       1 | Splisus |
+| VP | Tool | Domain  | Question | Seconds | Correct | First   | BeganWithTool |
+|----+------+---------+----------+---------+---------+---------+---------------|
+|  2 | Yes  | Splisus | Q1       |      38 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q2       |      30 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q3       |       7 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q4       |     140 |       0 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q5       |      53 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q1       |      10 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q2       |      24 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q3       |      70 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q4       |      64 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q5       |      77 |       1 | Splisus | Yes           |
+|  3 | No   | Store   | Q1       |      60 |       1 | Store   | No            |
+|  3 | No   | Store   | Q2       |      37 |       1 | Store   | No            |
+|  3 | No   | Store   | Q3       |     163 |       0 | Store   | No            |
+|  3 | No   | Store   | Q4       |     127 |       1 | Store   | No            |
+|  3 | No   | Store   | Q5       |      77 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q1       |      19 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q2       |      18 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q3       |      33 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q4       |     142 |       0 | Store   | No            |
+|  3 | Yes  | Splisus | Q5       |      11 |       1 | Store   | No            |
+|  4 | Yes  | Store   | Q1       |      19 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q2       |      15 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q3       |      61 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q4       |     148 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q5       |      67 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q1       |      35 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q2       |     124 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q3       |      28 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q4       |      86 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q5       |      56 |       1 | Store   | Yes           |
+|  5 | Yes  | Store   | Q1       |      33 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q2       |      46 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q3       |      37 |       0 | Splisus | No            |
+|  5 | Yes  | Store   | Q4       |      48 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q5       |     179 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q1       |      50 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q2       |      22 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q3       |      36 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q4       |      34 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q5       |     173 |       1 | Splisus | No            |
+|  6 | No   | Store   | Q1       |      15 |       1 | Store   | No            |
+|  6 | No   | Store   | Q2       |      32 |       1 | Store   | No            |
+|  6 | No   | Store   | Q3       |     298 |       1 | Store   | No            |
+|  6 | No   | Store   | Q4       |     124 |       0 | Store   | No            |
+|  6 | No   | Store   | Q5       |      85 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q1       |      14 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q2       |      35 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q3       |      33 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q4       |      34 |       0 | Store   | No            |
+|  6 | Yes  | Splisus | Q5       |      34 |       1 | Store   | No            |
+|  7 | Yes  | Splisus | Q1       |      15 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q2       |      25 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q3       |      36 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q4       |      92 |       0 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q5       |      25 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q1       |      71 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q2       |      36 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q3       |     119 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q4       |     193 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q5       |      46 |       1 | Splisus | Yes           |
+|  8 | Yes  | Store   | Q1       |      36 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q2       |      20 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q3       |     323 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q4       |     213 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q5       |      44 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q1       |     116 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q2       |     142 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q3       |      82 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q4       |     194 |       0 | Store   | Yes           |
+|  8 | No   | Splisus | Q5       |      92 |       1 | Store   | Yes           |
+|  9 | No   | Splisus | Q1       |      51 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q2       |     112 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q3       |      58 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q4       |     153 |       0 | Splisus | No            |
+|  9 | No   | Splisus | Q5       |      66 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q1       |      15 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q2       |      16 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q3       |      75 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q4       |      68 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q5       |      32 |       1 | Splisus | No            |
+
+#+NAME: raw-domains-without-vp6
+| VP | Tool | Domain  | Question | Seconds | Correct | First   | BeganWithTool |
+|----+------+---------+----------+---------+---------+---------+---------------|
+|  2 | Yes  | Splisus | Q1       |      38 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q2       |      30 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q3       |       7 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q4       |     140 |       0 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q5       |      53 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q1       |      10 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q2       |      24 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q3       |      70 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q4       |      64 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q5       |      77 |       1 | Splisus | Yes           |
+|  3 | No   | Store   | Q1       |      60 |       1 | Store   | No            |
+|  3 | No   | Store   | Q2       |      37 |       1 | Store   | No            |
+|  3 | No   | Store   | Q3       |     163 |       0 | Store   | No            |
+|  3 | No   | Store   | Q4       |     127 |       1 | Store   | No            |
+|  3 | No   | Store   | Q5       |      77 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q1       |      19 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q2       |      18 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q3       |      33 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q4       |     142 |       0 | Store   | No            |
+|  3 | Yes  | Splisus | Q5       |      11 |       1 | Store   | No            |
+|  4 | Yes  | Store   | Q1       |      19 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q2       |      15 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q3       |      61 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q4       |     148 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q5       |      67 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q1       |      35 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q2       |     124 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q3       |      28 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q4       |      86 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q5       |      56 |       1 | Store   | Yes           |
+|  5 | Yes  | Store   | Q1       |      33 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q2       |      46 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q3       |      37 |       0 | Splisus | No            |
+|  5 | Yes  | Store   | Q4       |      48 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q5       |     179 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q1       |      50 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q2       |      22 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q3       |      36 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q4       |      34 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q5       |     173 |       1 | Splisus | No            |
+|  7 | Yes  | Splisus | Q1       |      15 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q2       |      25 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q3       |      36 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q4       |      92 |       0 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q5       |      25 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q1       |      71 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q2       |      36 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q3       |     119 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q4       |     193 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q5       |      46 |       1 | Splisus | Yes           |
+|  8 | Yes  | Store   | Q1       |      36 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q2       |      20 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q3       |     323 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q4       |     213 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q5       |      44 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q1       |     116 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q2       |     142 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q3       |      82 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q4       |     194 |       0 | Store   | Yes           |
+|  8 | No   | Splisus | Q5       |      92 |       1 | Store   | Yes           |
+|  9 | No   | Splisus | Q1       |      51 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q2       |     112 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q3       |      58 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q4       |     153 |       0 | Splisus | No            |
+|  9 | No   | Splisus | Q5       |      66 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q1       |      15 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q2       |      16 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q3       |      75 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q4       |      68 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q5       |      32 |       1 | Splisus | No            |
+
+** Analysis - Total Time on Task 
+
+#+NAME: task-completions-agg-without-q4
+#+BEGIN_SRC R :var raw=raw-domains :results value :exports none
+    library(plyr)
+    eRaw <-  subset(raw, Question != "Q4")
+#+END_SRC  
+
+#+RESULTS: task-completions-agg-without-q4
+| VP | Tool | Domain  | Question | Seconds | Correct | First   | BeganWithTool |
+|----+------+---------+----------+---------+---------+---------+---------------|
+|  2 | Yes  | Splisus | Q1       |      38 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q2       |      30 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q3       |       7 |       1 | Splisus | Yes           |
+|  2 | Yes  | Splisus | Q5       |      53 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q1       |      10 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q2       |      24 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q3       |      70 |       1 | Splisus | Yes           |
+|  2 | No   | Store   | Q5       |      77 |       1 | Splisus | Yes           |
+|  3 | No   | Store   | Q1       |      60 |       1 | Store   | No            |
+|  3 | No   | Store   | Q2       |      37 |       1 | Store   | No            |
+|  3 | No   | Store   | Q3       |     163 |       0 | Store   | No            |
+|  3 | No   | Store   | Q5       |      77 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q1       |      19 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q2       |      18 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q3       |      33 |       1 | Store   | No            |
+|  3 | Yes  | Splisus | Q5       |      11 |       1 | Store   | No            |
+|  4 | Yes  | Store   | Q1       |      19 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q2       |      15 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q3       |      61 |       1 | Store   | Yes           |
+|  4 | Yes  | Store   | Q5       |      67 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q1       |      35 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q2       |     124 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q3       |      28 |       1 | Store   | Yes           |
+|  4 | No   | Splisus | Q5       |      56 |       1 | Store   | Yes           |
+|  5 | Yes  | Store   | Q1       |      33 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q2       |      46 |       1 | Splisus | No            |
+|  5 | Yes  | Store   | Q3       |      37 |       0 | Splisus | No            |
+|  5 | Yes  | Store   | Q5       |     179 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q1       |      50 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q2       |      22 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q3       |      36 |       1 | Splisus | No            |
+|  5 | No   | Splisus | Q5       |     173 |       1 | Splisus | No            |
+|  6 | No   | Store   | Q1       |      15 |       1 | Store   | No            |
+|  6 | No   | Store   | Q2       |      32 |       1 | Store   | No            |
+|  6 | No   | Store   | Q3       |     298 |       1 | Store   | No            |
+|  6 | No   | Store   | Q5       |      85 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q1       |      14 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q2       |      35 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q3       |      33 |       1 | Store   | No            |
+|  6 | Yes  | Splisus | Q5       |      34 |       1 | Store   | No            |
+|  7 | Yes  | Splisus | Q1       |      15 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q2       |      25 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q3       |      36 |       1 | Splisus | Yes           |
+|  7 | Yes  | Splisus | Q5       |      25 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q1       |      71 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q2       |      36 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q3       |     119 |       1 | Splisus | Yes           |
+|  7 | No   | Store   | Q5       |      46 |       1 | Splisus | Yes           |
+|  8 | Yes  | Store   | Q1       |      36 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q2       |      20 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q3       |     323 |       1 | Store   | Yes           |
+|  8 | Yes  | Store   | Q5       |      44 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q1       |     116 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q2       |     142 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q3       |      82 |       1 | Store   | Yes           |
+|  8 | No   | Splisus | Q5       |      92 |       1 | Store   | Yes           |
+|  9 | No   | Splisus | Q1       |      51 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q2       |     112 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q3       |      58 |       1 | Splisus | No            |
+|  9 | No   | Splisus | Q5       |      66 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q1       |      15 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q2       |      16 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q3       |      75 |       1 | Splisus | No            |
+|  9 | Yes  | Store   | Q5       |      32 |       1 | Splisus | No            |
+
+
+#+NAME: ttot
+#+BEGIN_SRC R :var raw=task-completions-agg-without-q4 :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("Tool","VP"), summarize,
+                   TotalTime = sum(Seconds))
+    cdata
+
+#+END_SRC 
+
+#+RESULTS: ttot
+| Tool | VP | TotalTime |
+|------+----+-----------|
+| No   |  2 |       181 |
+| No   |  3 |       337 |
+| No   |  4 |       243 |
+| No   |  5 |       281 |
+| No   |  6 |       430 |
+| No   |  7 |       272 |
+| No   |  8 |       432 |
+| No   |  9 |       287 |
+| Yes  |  2 |       128 |
+| Yes  |  3 |        81 |
+| Yes  |  4 |       162 |
+| Yes  |  5 |       295 |
+| Yes  |  6 |       116 |
+| Yes  |  7 |       101 |
+| Yes  |  8 |       423 |
+| Yes  |  9 |       138 |
+
+#+NAME: ttot-gmean
+#+BEGIN_SRC R :var raw=ttot :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("Tool"), summarize,
+                   TotalTime = round(exp(mean(log(TotalTime)))))
+    cdata
+
+#+END_SRC 
+
+#TODO: Balkendiagramm
+#+RESULTS: ttot-gmean
+| Tool | TotalTime |
+|------+-----------|
+| No   |       297 |
+| Yes  |       155 |
+
+
+# Very, very good
+#+NAME: ttot-without-q4-plot
+#+BEGIN_SRC R :var ttot=ttot-gmean points=ttot :results output graphics :file ttot.png :exports value
+ library(ggplot2)
+
+ggplot(data=ttot, aes(x=Tool,y=TotalTime)) +
+
+geom_bar(stat="identity",width=.3) + 
+geom_point(data = points, size = 1, colour = 'black',
+               stat = "identity") + 
+  scale_fill_hue(name="Total Time on Task") +  # Legend label, use darker colors
+      ggtitle("Average Total Time on Task (Arithmetic Mean)\nfor myPDDL (with Data Values)") +  
+    scale_y_continuous(breaks=0:100*4) +
+    xlab("") +
+    ylab("Total Time on Task") +
+theme_bw()
+#+END_SRC
+
+#+RESULTS: ttot-without-q4-plot
+[[file:ttot.png]]
+
+# Very, very good
+#+NAME: new-plot-without-q4
+#+BEGIN_SRC R :var ttot=ttot-gmean points=ttot :results output graphics :file ttot1.png :exports value
+  library(ggplot2)
+    
+    ggplot(ttot, aes(x=Tool, y=TotalTime,fill=Tool)) +
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_point(data = points, aes(x=Tool, y = TotalTime, fill=Tool), size = 1, colour = 'black',
+               stat = "identity",position=position_dodge(width=0.9)) + 
+  
+    scale_y_continuous(breaks=0:200*20) +
+      scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
+      ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain Planet Splisus' per Question (with Data Dalues)") +
+      guides(fill = guide_legend(override.aes = list(text = 1))) +
+      theme_bw()
+  
+  
+#+END_SRC
+
+#+RESULTS: new-plot-without-q4
+[[file:ttot1.png]]
 
 
 ** Analysis - Order
+
+
+#+NAME: tool-order
+#+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("VP","Tool","Domain","BeganWithTool"), summarize,
+                   TotalTime = sum(Seconds))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS: tool-order
+| VP | Tool | Domain  | BeganWithTool | TotalTime |
+|----+------+---------+---------------+-----------|
+|  2 | No   | Store   | Yes           |       245 |
+|  2 | Yes  | Splisus | Yes           |       268 |
+|  3 | No   | Store   | No            |       464 |
+|  3 | Yes  | Splisus | No            |       223 |
+|  4 | No   | Splisus | Yes           |       329 |
+|  4 | Yes  | Store   | Yes           |       310 |
+|  5 | No   | Splisus | No            |       315 |
+|  5 | Yes  | Store   | No            |       343 |
+|  6 | No   | Store   | No            |       554 |
+|  6 | Yes  | Splisus | No            |       150 |
+|  7 | No   | Store   | Yes           |       465 |
+|  7 | Yes  | Splisus | Yes           |       193 |
+|  8 | No   | Splisus | Yes           |       626 |
+|  8 | Yes  | Store   | Yes           |       636 |
+|  9 | No   | Splisus | No            |       440 |
+|  9 | Yes  | Store   | No            |       206 | 
+
+
+
+#+BEGIN_SRC R :var time=tool-order :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(time, c("Tool","Domain","BeganWithTool"), summarize,
+                   TotalTime = round(exp(mean(log(TotalTime))),0))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS:
+| Tool | Domain  | BeganWithTool | TotalTime |
+|------+---------+---------------+-----------|
+| No   | Splisus | No            |       372 |
+| No   | Splisus | Yes           |       454 |
+| No   | Store   | No            |       507 |
+| No   | Store   | Yes           |       338 |
+| Yes  | Splisus | No            |       183 |
+| Yes  | Splisus | Yes           |       227 |
+| Yes  | Store   | No            |       266 |
+| Yes  | Store   | Yes           |       444 |
+
+#+BEGIN_SRC R :var time=tool-order :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(time, c("BeganWithTool","Domain"), summarize,
+                   TotalTime = round(exp(mean(log(TotalTime))),0))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS:
+| Tool | Domain  | TotalTime |
+|------+---------+-----------|
+| No   | Splisus |       411 |
+| No   | Store   |       414 |
+| Yes  | Splisus |       204 |
+| Yes  | Store   |       344 |
+
+  
+
 #+NAME: task-order
 #+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
 library(plyr)
@@ -103,32 +439,101 @@ library(plyr)
   return(exp(mean(log(x))))
   }
 
-    cdata <- ddply(raw, c("VP","Tool","Domain","First"), summarize,
+    cdata <- ddply(raw, c("VP","Tool","Domain","First","BeganWithTool"), summarize,
                    TotalTime = sum(Seconds))
     cdata
 
 #+END_SRC  
 
 #+RESULTS: task-order
-| VP | Tool | Domain  | First   | TotalTime |
-|----+------+---------+---------+-----------|
-|  2 | No   | Store   | Splisus |       245 |
-|  2 | Yes  | Splisus | Splisus |       268 |
-|  3 | No   | Store   | Store   |       464 |
-|  3 | Yes  | Splisus | Store   |       223 |
-|  4 | No   | Splisus | Store   |       329 |
-|  4 | Yes  | Store   | Store   |       310 |
-|  5 | No   | Splisus | Splisus |       315 |
-|  5 | Yes  | Store   | Splisus |       343 |
-|  6 | No   | Store   | Store   |       554 |
-|  6 | Yes  | Splisus | Store   |       150 |
-|  7 | No   | Store   | Splisus |       465 |
-|  7 | Yes  | Splisus | Splisus |       193 |
-|  8 | No   | Splisus | Store   |       626 |
-|  8 | Yes  | Store   | Store   |       636 |
-|  9 | No   | Splisus | Splisus |       440 |
-|  9 | Yes  | Store   | Splisus |       206 | 
+| VP | Tool | Domain  | First   | BeganWithTool | TotalTime |
+|----+------+---------+---------+---------------+-----------|
+|  2 | No   | Store   | Splisus | Yes           |       245 |
+|  2 | Yes  | Splisus | Splisus | Yes           |       268 |
+|  3 | No   | Store   | Store   | No            |       464 |
+|  3 | Yes  | Splisus | Store   | No            |       223 |
+|  4 | No   | Splisus | Store   | Yes           |       329 |
+|  4 | Yes  | Store   | Store   | Yes           |       310 |
+|  5 | No   | Splisus | Splisus | No            |       315 |
+|  5 | Yes  | Store   | Splisus | No            |       343 |
+|  6 | No   | Store   | Store   | No            |       554 |
+|  6 | Yes  | Splisus | Store   | No            |       150 |
+|  7 | No   | Store   | Splisus | Yes           |       465 |
+|  7 | Yes  | Splisus | Splisus | Yes           |       193 |
+|  8 | No   | Splisus | Store   | Yes           |       626 |
+|  8 | Yes  | Store   | Store   | Yes           |       636 |
+|  9 | No   | Splisus | Splisus | No            |       440 |
+|  9 | Yes  | Store   | Splisus | No            |       206 |
 
+
+
+#+NAME: task-order-total
+#+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("VP","Tool","Domain"), summarize,
+                   TotalTime = sum(Seconds))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS: task-order-total
+| VP | Tool | Domain  | TotalTime |
+|----+------+---------+-----------|
+|  2 | No   | Store   |       245 |
+|  2 | Yes  | Splisus |       268 |
+|  3 | No   | Store   |       464 |
+|  3 | Yes  | Splisus |       223 |
+|  4 | No   | Splisus |       329 |
+|  4 | Yes  | Store   |       310 |
+|  5 | No   | Splisus |       315 |
+|  5 | Yes  | Store   |       343 |
+|  6 | No   | Store   |       554 |
+|  6 | Yes  | Splisus |       150 |
+|  7 | No   | Store   |       465 |
+|  7 | Yes  | Splisus |       193 |
+|  8 | No   | Splisus |       626 |
+|  8 | Yes  | Store   |       636 |
+|  9 | No   | Splisus |       440 |
+|  9 | Yes  | Store   |       206 |
+
+#+NAME: task-order-total-without-vp6
+#+BEGIN_SRC R :var raw=raw-domains-without-vp6 :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(raw, c("VP","Tool","Domain"), summarize,
+                   TotalTime = sum(Seconds))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS: task-order-total-without-vp6
+| VP | Tool | Domain  | TotalTime |
+|----+------+---------+-----------|
+|  2 | No   | Store   |       245 |
+|  2 | Yes  | Splisus |       268 |
+|  3 | No   | Store   |       464 |
+|  3 | Yes  | Splisus |       223 |
+|  4 | No   | Splisus |       329 |
+|  4 | Yes  | Store   |       310 |
+|  5 | No   | Splisus |       315 |
+|  5 | Yes  | Store   |       343 |
+|  6 | No   | Store   |       554 |
+|  6 | Yes  | Splisus |       150 |
+|  7 | No   | Store   |       465 |
+|  7 | Yes  | Splisus |       193 |
+|  8 | No   | Splisus |       626 |
+|  8 | Yes  | Store   |       636 |
+|  9 | No   | Splisus |       440 |
+|  9 | Yes  | Store   |       206 |
 
 #+BEGIN_SRC R :var time=task-order :results value table :exports results
 library(plyr)
@@ -154,6 +559,48 @@ library(plyr)
 | Yes  | Splisus | Store   |       183 |
 | Yes  | Store   | Splisus |       266 |
 | Yes  | Store   | Store   |       444 |
+
+#+BEGIN_SRC R :var time=task-order-total :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(time, c("Tool","Domain"), summarize,
+                   TotalTime = round(exp(mean(log(TotalTime))),0))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS:
+| Tool | Domain  | TotalTime |
+|------+---------+-----------|
+| No   | Splisus |       411 |
+| No   | Store   |       414 |
+| Yes  | Splisus |       204 |
+| Yes  | Store   |       344 |
+
+#+BEGIN_SRC R :var time=task-order-total-without-vp6 :results value table :exports results
+library(plyr)
+  ### Define geometric mean
+  gmean <- function(x) {
+  return(exp(mean(log(x))))
+  }
+
+    cdata <- ddply(time, c("Tool","Domain"), summarize,
+                   TotalTime = round(exp(mean(log(TotalTime))),0))
+    cdata
+
+#+END_SRC  
+
+#+RESULTS:
+| Tool | Domain  | TotalTime |
+|------+---------+-----------|
+| No   | Splisus |       411 |
+| No   | Store   |       375 |
+| Yes  | Splisus |       226 |
+| Yes  | Store   |       344 |
 
 #+NAME: task-order-aggregated
 #+BEGIN_SRC R :var raw=raw-domains :results value table :exports results
@@ -473,7 +920,7 @@ summarySE(raw, measurevar="Seconds", groupvars=c("Tool"))
 #+END_SRC
 
 #+RESULTS: task-completions-plot
-[[file:myshine.pdf]]
+[[file:ttot.png]]
 
 # A test for saving the text separately
 #+NAME: task-completions-plot

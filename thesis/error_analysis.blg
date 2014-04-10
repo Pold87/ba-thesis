@@ -1,0 +1,5 @@
+[0] Config.pm:318> INFO - This is Biber 1.8
+[0] Config.pm:321> INFO - Logfile is 'error_analysis.blg'
+[92] biber:275> INFO - === Wed Mar 26, 2014, 20:43:55
+[244] Utils.pm:185> ERROR - Cannot find control file 'error_analysis.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
+[244] Biber.pm:109> INFO - ERRORS: 1

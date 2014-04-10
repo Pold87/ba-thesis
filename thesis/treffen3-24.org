@@ -1,0 +1,47 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,11pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE: 
+** Statistiken
+*** Zeiten
+Berechnung mit geometrischem Mittel (+ 95%-Konfidenzintervall?)
+- Average Task Completion /Time/
+- Average Task-Completion /Rate/
+- Mean Time to Failure
+- Average Time on Task
+
+Sollen die einzelnen Kennzahlen angegeben werden oder reichen die Plots?
+
+*** Plots
+
+**** Between-Subjects Design
+
+- Average Task Completion /Time/ als Balkenchart
+- Average Task-Completion /Rate/ als Zahl in Balken
+- Einzelne Werte als Punkte?
+- Konfidenzintervall?
+
+Separat pro Domain -> zwei Plots
+
+
+**** Within-Subjects Design
+
+- Average Task Completion /Time/ als Balkenchart
+- Average Task-Completion /Rate/ als Zahl in Balken
+- Konfidenzintervall?
+- Einzelne Werte als Punkte?
+Aggregiert (mit vs. ohne Tools) über beide Domains, wobei Fragen
+zusammengefasst werden
+
+-> Aggregiert -> ein Plot
+
+** Text
+
+- Basics: Beispiel
+- Beschreibung des Programmes
+- Eingliederung in Sublime Text

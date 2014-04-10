@@ -274,6 +274,7 @@ edge[dir=back, arrowtail=empty]
 (hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
 
 
+;; This method is used by all the other methods
 (defn get-PDDL-construct
   "Takes a PDDL keyword and a PDDL domain/problem
 file and returns all parts of the file that
@@ -282,6 +283,17 @@ belong to the PDDL keyword."
   (filter #(and (seq? %)
                 (= (keyword pddl-keyword)
                    (first %)))
+          (read-lispstyle-edn pddl-file)))
+
+;; This methods is written for the thesis
+(defn get-PDDL-construct-no-key
+  "Takes a PDDL keyword and a PDDL domain/problem
+file and returns all parts of the file that
+belong to the PDDL keyword."
+  [pddl-keyword pddl-file]
+  (filter #(and (seq? %)
+                (= (name pddl-keyword)
+                   (name (first %))))
           (read-lispstyle-edn pddl-file)))
 
 

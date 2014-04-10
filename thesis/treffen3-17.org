@@ -1,0 +1,47 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE:
+
+* Bachelorarbeit - 17. März 2014
+- Brauche ich einen Abschnitt über Planner und verwendete Algorithmen,
+  wenn es um Knowledge Engineering geht?
+- Wie soll ich eine Inkonsistenz, zwischen einem Paper und einer
+  E-Mail, in der Bachelorarbeit erwähnen?
+/E-Mail/:
+Sorry for taking so long to reply to you. The last couple of weeks
+have been very busy with deadlines. Thanks for you email by the way.
+We haven't implemented completely a translation from PDDL to UML after
+the paper. I have pieces of codes that we did, but we have never
+publish it since they are not functional yet. What we have in
+itSIMPLE4 is the import of PDDL problem instances (a testing version)
+to an existing UML model. In this case the UML class diagram is
+already defined so the predicates and functions of the pddl problems
+instances are mapped to the definitions on the UML diagrams. I don't
+recall having documentation on that but fell free to mentioned that if
+applied.
+
+The translation from PDDL domain model (predicates, actions, etc) to
+UML class diagram and state machine diagram is a little bit more
+complicated than the problem instances alone. For example, some
+predicates can be translated to attributes of a class but they can
+also be translated as associations (e.g., 'at', 'in'). Sometimes you
+will have just to follow on approach if no other information is given.
+You can also infer multiplicities from the pddl model and some
+constraints on how the predicates/attributes are related.
+
+- Wie stark darf ich andere Papers kritisieren bzw. soll ich im
+  Related Work-Teil auf Fähigkeiten meiner Tools und Unterschiede zu
+  dort erwähnten Tools eingehen?
+
+- Ist es sinnvoll bzw. gut wenn ich alles anhand eines Beispiels
+  erkläre (kapitelübergreifend)
+
+- Soll die Anwendung der Tools explizit erwähnt werden (Installation,
+  Aufruf, usw.)
+

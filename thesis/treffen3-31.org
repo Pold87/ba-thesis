@@ -1,0 +1,69 @@
+#+LATEX_CLASS: article
+#+OPTIONS: author:nil toc:nil num:nil
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LaTeX_HEADER: \usepackage[]{keystroke}
+#+LaTeX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LANGUAGE: de
+#+TITLE: 
+#+DATE:
+
+* Auswertung
+- Graphen (siehe Ausdrucke)
+- System Usability Scale (SUS)
+  - Mean: 88.75
+  - Min: 82.5
+  - Max: 95.0
+  - Confidence Interval: 85.04473 92.45527
+  - Standard Deviation: 4.43
+
+#+NAME: sus-values
+|  SUS |
+|------|
+|   90 |
+|   90 |
+|   90 |
+| 82.5 |
+| 82.5 |
+| 92.5 |
+| 87.5 |
+|   95 |
+
+
+#+NAME: sus-mean
+|   SUS |
+|-------|
+| 88.75 |
+
+
+
+
+# Very, very good
+#+NAME: task-completions-plot
+#+BEGIN_SRC R :var sus=sus-mean susv=sus-values :results output graphics :file sus.svg :exports none
+ library(ggplot2)
+
+ggplot(data=sus, aes(x="All Participants",y=SUS)) +
+
+geom_bar(stat="identity",width=.3,fill="gray") + 
+geom_point(data = susv, size = 1, colour = 'black',
+               stat = "identity") + 
+  scale_fill_hue(name="SUS Score") +  # Legend label, use darker colors
+      ggtitle("Average SUS Score (Arithmetic Mean)\nfor myPDDL (with Data Values)") +  
+    scale_y_continuous(breaks=0:100*4) +
+    xlab("") +
+    ylab("SUS Score") +
+theme_bw()
+#+END_SRC
+
+#+RESULTS: task-completions-plot
+[[file:sus.svg]]
+
+#+BEGIN_SRC R :var sus=sus-mean susv=sus-values :results output graphics :file sus-simple.png :exports none
+modified <- sus$SUS
+barplot(modified, main="Car Distribution")
+#+END_SRC
+
+#+RESULTS:
+[[file:sus-simple.png]]
+

@@ -154,3 +154,24 @@
 | No   | Store   |       414 |
 | Yes  | Splisus |       204 |
 | Yes  | Store   |       344 |
+
+\newpage
+#+CAPTION: Sum of Total Time on Task per VP
+| VP | Tool | Domain  | First   | BeganWithTool | TotalTime |
+|----+------+---------+---------+---------------+-----------|
+|  2 | No   | Store   | Splisus | Yes           |       245 |
+|  2 | Yes  | Splisus | Splisus | Yes           |       268 |
+|  3 | No   | Store   | Store   | No            |       464 |
+|  3 | Yes  | Splisus | Store   | No            |       223 |
+|  4 | No   | Splisus | Store   | Yes           |       329 |
+|  4 | Yes  | Store   | Store   | Yes           |       310 |
+|  5 | No   | Splisus | Splisus | No            |       315 |
+|  5 | Yes  | Store   | Splisus | No            |       343 |
+|  6 | No   | Store   | Store   | No            |       554 |
+|  6 | Yes  | Splisus | Store   | No            |       150 |
+|  7 | No   | Store   | Splisus | Yes           |       465 |
+|  7 | Yes  | Splisus | Splisus | Yes           |       193 |
+|  8 | No   | Splisus | Store   | Yes           |       626 |
+|  8 | Yes  | Store   | Store   | Yes           |       636 |
+|  9 | No   | Splisus | Splisus | No            |       440 |
+|  9 | Yes  | Store   | Splisus | No            |       206 |
