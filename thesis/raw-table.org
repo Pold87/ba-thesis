@@ -301,39 +301,19 @@ library(plyr)
 
 
 # Very, very good
-#+NAME: ttot-without-q4-plot
-#+BEGIN_SRC R :var ttot=ttot-gmean points=ttot :results output graphics :file ttot.png :exports value
- library(ggplot2)
-
-ggplot(data=ttot, aes(x=Tool,y=TotalTime)) +
-
-geom_bar(stat="identity",width=.3) + 
-geom_point(data = points, size = 1, colour = 'black',
-               stat = "identity") + 
-  scale_fill_hue(name="Total Time on Task") +  # Legend label, use darker colors
-      ggtitle("Average Total Time on Task (Arithmetic Mean)\nfor myPDDL (with Data Values)") +  
-    scale_y_continuous(breaks=0:100*4) +
-    xlab("") +
-    ylab("Total Time on Task") +
-theme_bw()
-#+END_SRC
-
-#+RESULTS: ttot-without-q4-plot
-[[file:ttot.png]]
-
-# Very, very good
 #+NAME: new-plot-without-q4
-#+BEGIN_SRC R :var ttot=ttot-gmean points=ttot :results output graphics :file ttot1.png :exports value
+#+BEGIN_SRC R :var ttot=ttot-gmean points=ttot :results output graphics :file ttot1.pdf :exports value
   library(ggplot2)
     
     ggplot(ttot, aes(x=Tool, y=TotalTime,fill=Tool)) +
-    geom_bar(position=position_dodge(), stat="identity") +
-    geom_point(data = points, aes(x=Tool, y = TotalTime, fill=Tool), size = 1, colour = 'black',
+    geom_bar(position=position_dodge(), stat="identity",width=0.7) +
+    geom_point(data = points, aes(x=Tool, y = TotalTime, fill=Tool), shape=4, size = 1.7, colour = 'black',
                stat = "identity",position=position_dodge(width=0.9)) + 
   
     scale_y_continuous(breaks=0:200*20) +
       scale_fill_hue(name="With diagram\n(myPDDL-dia)") +  # Legend label, use darker colors
-      ggtitle("Average Task Completion Time (Geometric Mean)\nfor Domain Planet Splisus' per Question (with Data Dalues)") +
+    ylab("Total Time on Task") +
+      ggtitle("Total Time on Task (Geometric Mean)\n aggregated over Participants\n (with Data Dalues)") +
       guides(fill = guide_legend(override.aes = list(text = 1))) +
       theme_bw()
   
@@ -341,7 +321,7 @@ theme_bw()
 #+END_SRC
 
 #+RESULTS: new-plot-without-q4
-[[file:ttot1.png]]
+[[file:ttot1.pdf]]
 
 
 ** Analysis - Order

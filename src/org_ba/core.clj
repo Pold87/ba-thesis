@@ -454,7 +454,7 @@ exited after the JFrame is closed"
   "Runs the input/output scripts"
   [& args]
 
-  ; TODO: Check is folder already exists
+  ; TODO: Check if folder already exists
 
   (cond
    ;; Create a new PDDL project

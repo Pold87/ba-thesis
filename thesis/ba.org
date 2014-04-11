@@ -21,7 +21,7 @@ diagrams could support knowledge engineers in the design and analysis
 process. The users detected 35 % more errors using the syntax
 highlighter in the same time as non-users and the average task
 completion time for questions on a hierarchical domain was reduced by
-..%.
+52 %.
 #+END_ABSTRACT
 
 * Introduction
@@ -31,112 +31,81 @@ Have you ever struggled to find the optimal sequence of actions for a
 recurrent problem? While a task like this could take you hours, weeks
 or even a lifetime to complete, a planning software could possibly get
 the job done within milliseconds. Being a key aspect of artificial
-intelligence, planning is concerned with devising a plan, that is a
+intelligence, planning is concerned with devising a plan, i.e. a
 sequence of actions, to achieve a desired goal
 \cite{helmert2008understanding}. It can be both a tool to create
 automated systems and a means to support and understand human behavior
 \cite{konar1999artificial}. However, the effectiveness of planning
 largely depends on the quality of the problem formalization
-\cite{shah2013knowledge,keps2014}. The Planning Domain Definition
-Language (\textsc{pddl}) \cite{mcdermott1998pddl} is a formal language
-and the de facto standard for the description of planning tasks
+\cite{shah2013knowledge,keps2014}. To ensure a standardized modeling
+format, the Planning Domain Definition Language (\textsc{pddl})
+\cite{mcdermott1998pddl} was developed and has become the de facto
+standard for the description of planning tasks
 \cite{ilghami2005extension}. The discipline that deals with the
 integration of world information into a computer system via a human
-expert is called knowledge engineering \cite{feigenbaum1983fifth}. To
-lay the foundations for this thesis, a basic introduction to and
-design principles for \pddl will be given in Chapter [[ch:basics]].
-Creating these planning task specifications is a complex task that can
-be error-prone and time consuming.
+expert is called knowledge engineering \cite{feigenbaum1983fifth}.
+While automated planning could save you a vast amount of time if
+everything works as intended, creating the planning task
+specifications is a complex task that can be error-prone and
+cumbersome. Searching for an error in a long \pddl file can be like
+looking for a needle in a haystack; debugging could take hours as some
+planners crash on erroneous \pddl files without providing any problem
+report.
 
-The following \pddl domain contains exactly one error. Finding an
-error in a longer \pddl file can be like looking for a needle in a
-haystack.
-
-#+CAPTION: The Logistics domain that contains an error
-#+NAME: log-domain
-#+BEGIN_SRC text
-;; Logistics domain, PDDL 3.1 version.
-
-(define (domain logistics-object-fluents)
-
-(:requirements :typing :equality :object-fluents)
-
-(:types package place city - object
-        vehicle location - place
-        airport - location
-        truck airplane - vehicle)
-
-(:functions (city-of ?l - location) - city
-            (vehicle-location ?v - vehicle) - location
-            (package-location ?p - package) - place)
-
-(:action drive
-         :parameters    (?t - truck ?l - location)
-         :precondition  (= (city-of (vehicle-location ?t)) (city-of ?l))
-         :effect        (assign (vehicle-location ?t) ?l))
-
-(:action fly
-         :parameters    (?a - airplane ?l - airport)
-         :effect        (assign (vehicle-location ?a) ?l))
-
-(:action load
-         :parameters    (?p - package ?v vehicle)
-         :precondition  (= (package-location ?p) (vehicle-location ?v))
-         :effect        (assign (package-location ?p) ?v))
-
-(:action unload
-         :parameters    (?p - package ?v - vehicle)
-         :precondition  (= (package-location ?p) ?v)
-         :effect        (assign (package-location ?p) (vehicle-location ?v)))
-
-)
-#+END_SRC
-
-It requires the analysis of the underlying problem itself and the
-systematic use of appropriate tools specialized for developing
-planning task specifications \cite{shah2013knowledge}. Therefore,
-developing tools for \pddl and hence facilitating the knowledge
-engineering process is worthwhile.
+The strenuous modeling process and the efficiency issues it brings
+gave rise to the need for tools designed for creating planning task
+specifications \cite{shah2013knowledge}, so much so that the annual
+International Conference on Automated Planning and Scheduling [fn:25] has
+workshops (such as Knowledge Engineering for Planning and Scheduling),
+tutorials and presentations dedicated to this topic. Therefore,
+developing such tools for \pddl and hence facilitating the knowledge
+engineering process is appreciated and worthwhile.
 
 The modular toolkit \mypddl (\textit{m}odeling efficientl\textit{y}
 \pddl was developed, within the scope of this thesis, in order to
 tackle frequent needs of knowledge engineers, like project management,
-efficient development, error-detection, team collaboration features
-and to increase the acceptance and usage of \pddl in real-world
-domains \cite{shah2013knowledge,keps2014}. Existing tools will be
-critically reviewed in Chapter [[ch:related]] to set the goals for
-\mypddl.
+efficient development, error-detection, team collaboration and to
+increase the acceptance and usage of \pddl in real-world domains
+\cite{shah2013knowledge,keps2014}.
 
 \mypddl is intended to support knowledge engineers throughout the
 entire design cycle of specifying planning tasks. In the initial
 stages, it allows for the creation of structured \textsc{pddl}
-projects that should support a disciplined design process. With the
+projects that should encourage a disciplined design process. With the
 help of snippets, i.e. code templates, often used constructs can be
 inserted in \textsc{pddl} files. A syntax highlighting feature that
-supports a faster error-detection and aids with understanding parts of
-planning task specifications at a glance can come in handy in
-intermediate stages. Understanding the textual representation of
-complex type hierarchies in domain files can be confusing, so an
-additional feature enables their visualization. \textsc{pddl}'s
-limited modeling capabilities were bypassed by developing an interface
-that supports the conversion of \textsc{pddl} code into Clojure
-\cite{hickey2008clojure} code and vice versa. One use case for such an
-interface could be the partial automation of modeling tasks. Within
-this project, the interface was used for a feature that calculates
-distances between objects specified in a problem model. All of these
-features were integrated into the customizable and extensible Sublime
-Text \cite{sublimetext2} editor. They are described in detail in
-Chapter [[ch:tools]]. Since the main aim in the development of the toolkit
-was for it to be easy to use and maintain, it is evaluated with regard
-to these criteria in Chapter [[ch:evaluation]]. The usability was assessed
-by means of a user test with eight subjects that had no prior
+speeds up the error-detection can come in handy in intermediate
+stages. Understanding the textual representation of complex type
+hierarchies in domain files can be confusing, so an additional feature
+enables their visualization. \textsc{pddl}'s limited modeling
+capabilities were bypassed by developing an interface that converts
+\textsc{pddl} code into Clojure \cite{hickey2008clojure} code and vice
+versa. Within this project, the interface was employed for a feature
+that calculates distances between objects specified in a problem
+model, but the interface provides numerous other possibilities and
+could also be used to further automate the modeling process. All of
+these features were integrated into the customizable and extensible
+Sublime Text \cite{sublimetext2} editor. Since the main aim in the
+development of the toolkit was for it to be easy to use and maintain,
+it is evaluated with regard to these criteria. The usability was
+assessed by means of a user test with eight subjects that had no prior
 experience with artificial intelligence planning. The results indicate
 that both error-detection and the understanding of a given domain can
-be facilitated by \mypddl. Finally, the implications are briefly
-discussed before an outlook for future research and developments in
-the field concludes this thesis in Chapter [[ch:conclusion]].
+be facilitated by \mypddl.
 
+To lay the foundations for this thesis, a basic introduction to and
+design principles for \pddl will be given in Chapter [[ch:basics]].
+Existing tools will be critically reviewed in Chapter [[ch:related]] to
+set the goals for \mypddl. The features and modules of \mypddl are then
+described in detail in Chapter [[ch:tools]]. Details and results of the
+usability study are provided in Chapter [[ch:evaluation]]. Finally, the
+implications are briefly discussed before an outlook for future
+research and developments in the field concludes this thesis in
+Chapter [[ch:conclusion]].
 
+[fn:25] More information on \textsc{icaps} 2014, the 24th
+International Conference on Automated Planning and Scheduling can be
+found on http://icaps14.icaps-conference.org/.
 
 * Background and Basics
 <<ch:basics>>
@@ -150,8 +119,9 @@ constructs are needed that can represent the information about the
 world and the problem. In automated planning, this is usually done
 \cite{fox2003pddl2} using a planning language, like \textsc{pddl}.
 
-To illustrate the usage and basics of \textsc{pddl}, the remainder of this
-section presents a modeling walkthrough using a fictional example.
+To illustrate the usage and basics of \textsc{pddl}, the remainder of
+this section presents a modeling walkthrough using a fictional
+example.
 
 Consider the following world that is to be integrated into a computer
 system using \textsc{pddl}:
@@ -164,7 +134,8 @@ to work, that is to exploit (or hack into) vulnerable software.
 In this description, we can identify several constructs that should
 somehow be integrated into the computer. There are:
 
-- Types of entities:  :: The world consists of hackers, software and pizza.
+- Types of entities:  :: The world consists of hackers, software and
+     pizza.
 - Logical states: :: Hackers can be hungry or not, software can be
      vulnerable or not, software can be exploited or not.
 - Actions: :: Hackers can exploit software and they can eat pizza.
@@ -187,7 +158,7 @@ Again, several constructs can be identified:
              objects, including persons), the pepperoni pizza, the
              software.
 
-- Initial state :: Gary is hungry and the software 'MagicFailureApp'
+- Initial state :: Gary is hungry and the software MagicFailureApp
                    is vulnerable.
 
 - Goal state :: The MagicFailureApp is exploited.
@@ -199,8 +170,10 @@ must be formalized so that a planner can utilize them. In
 \textsc{pddl}, this is done in problem files. In the end, Gary will be
 able to feed the domain and the problem file into a planner which will
 generate a sequence of actions that Gary can take to solve his
-problem. Summing up, \textsc{pddl} planning tasks specifications are
-composed of two separate, corresponding files:
+problem.
+
+Summing up, \textsc{pddl} planning tasks specifications
+are composed of two separate, corresponding files:
 
 - Domain file: :: General, problem-independent description of types,
                  predicates (logical states) and actions.
@@ -214,8 +187,7 @@ This separation allows for a powerful task modeling process: while
 general world information is described in the domain file, specific
 instances of problems are created in the problem files. This means
 that one abstract model of a world can be used for solving many
-problem instances. Figure \ref{workflow} (TODO: Add figure) visualizes
-the workflow for planning in \textsc{pddl}.
+problem instances.
 
 The rest of this section is to propose general design guidelines for,
 and give an introduction to \textsc{pddl} [fn:5], to serve as a basis
@@ -270,7 +242,9 @@ problem definition. At the end of the introduction of each construct,
 the corresponding code block of the /Hacker World/ and /Gary's Huge
 Problem/ is given.
 
-[fn:11] Based on the in How to Design Classes.
+[fn:11] These design principles are based on
+\citetitle{felleisen2010design} that describes four steps of designing
+class hierarchies for object-oriented programs.
 
 ** Domain File
 
@@ -286,11 +260,10 @@ name of the domain. A semicolon (=;=) declares the rest of the line as
 comment.
 
 #+CAPTION: The domain definition of the /Hacker World/
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle garys-hacker-world.pddl
 ; Hacker World - A realistic example
 (define (domain hacker-world)
 #+END_SRC
-
 
 *** Requirements
 
@@ -303,9 +276,8 @@ explicitly. For example, one requirement used by many planning domains
 \cite{wickler2011using} is:
 
 - :typing :: Enables the typification of variables (see
-             [[subsubsec:types]] Types
-             below), so that it is mandatory for variables to be of a
-             particular type.
+             [[subsubsec:types]] Types below), so that it is mandatory for
+             variables to be of a particular type.
 
 Besides =:typing=, the /Hacker World/ will use a further
 requirement:
@@ -315,7 +287,7 @@ requirement:
      if a predicate is not true initially.
 
 #+CAPTION: The requirements that are necessary to model the /Hacker World/
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle hacker-world.pddl
 (:requirements :typing
                :negative-preconditions)
 #+END_SRC
@@ -339,17 +311,17 @@ domain includes the built-in types =object= and =number=, and every
 defined type, in turn, is a subtype of =object=.
 
 #+CAPTION: The type hierarchy for the /Hacker World/, consisting of different
-#+CAPTION: types of persons, furniture, computers, hackers, and software.
+#+CAPTION: types of persons, furniture, computers, hackers, food, pizza and software.
 #+CAPTION: The elements on the left-hand side
 #+CAPTION: (for example =hacker non-hacker=) are declared subtypes of the right-hand
 #+CAPTION: side (=person=) whereby the type hierarchy is expressed. 
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle hacker-world.pddl
   (:types hacker non-hacker - person
           desk chair - furniture
           laptop workstation - computer
           pizza burgers fries - food
           pepperoni supreme - pizza
-          food person furniture software - object)
+          person furniture compiter food software - object)
 #+END_SRC
 
 *** Predicates
@@ -372,13 +344,15 @@ equivalent to =(p ?v1 ?v2 - t)=.
 #+CAPTION: This section declares
 #+CAPTION: five predicates: the unary predicates
 #+CAPTION: =hungry=, =vulnerable= and =exploited=, the binary predicate =has=,
-#+CAPTION: and the 3-ary predicate =location= that specifies x and y coordinates for a furniture item.
-#+BEGIN_SRC text
-(:predicates (has ?s - software ?p - person)
-             (hungry ?p - person)
-             (vulnerable ?s - software)
-             (exploited ?s - software)
-             (location ?f - furniture ?x ?y - number)
+#+CAPTION: and the 3-ary predicates =location= that specifies x and y coordinates for objects,
+#+CAPTION: =distance= that expresses the distance between objects.
+#+BEGIN_SRC text :tangle garys-hacker-world.pddl
+  (:predicates (has ?s - software ?p - person)
+               (hungry ?p - person)
+               (vulnerable ?s - software)
+               (exploited ?s - software)
+               (distance ?o1 ?o2 - object ?x - number)
+               (location ?o - object ?x ?y - number))
 #+END_SRC
 
 *** Actions
@@ -402,33 +376,36 @@ Actions usually consist of three parts:
              the post-condition of an action.
 
 #+CAPTION: Three actions that can change logical values in the /Hacker World/. 
-#+CAPTION: It is important to remember  that  predicate values keep being
+#+CAPTION: It is important to remember that predicate values keep being
 #+CAPTION: true if an effect adds a logical fact. This is often not desired.
 #+CAPTION: Consider the action move, that changes the location of a chair.
 #+CAPTION: Only having the effect =(location chair ?new-x ?new-y)= would result in
 #+CAPTION: the chair being located at two locations, at =?old-x= and =?old-y=
 #+CAPTION: and the new, specified coordinates. Therefore, the old coordinates have to be
-#+CAPTION: deleted, using =(not ...)=. 
-#+BEGIN_SRC text
-;; Eat a delicious pizza (:action eat-pizza
-  :parameters (?pi - pizza ?p - person)
-  :precondition (hungry ?p)
-  :effect (not (hungry ?p)))
-
-;; Exploit vulnerable software of a victim
-(:action exploit        
-  :parameters (?h - hacker ?s - software ?p - person)
-  :precondition (and (has ?s ?p)
-                     (vulnerable ?s)
-                     (not (hungry ?h)))
-  :effect (exploited ?s))
-
-;; Move a piece of furniture
-(:action move
-  :parameters (?f - furniture ?old-x ?old-y ?new-x ?new-y)
-  :precondition ()
-  :effect (and (location ?f ?new-x ?new-y)
-               (not (location ?f ?old-x ?old-y)))))
+#+CAPTION: deleted, using =(not ...)=. The =:precondition= part can be omitted, if an
+#+CAPTION: action should be always applicable.
+#+BEGIN_SRC text :tangle hacker-world.pddl
+  ;; Eat a delicious pizza
+  (:action eat-pizza
+    :parameters (?pi - pizza ?p - person)
+    :precondition (and (hungry ?p)
+                       (has ?pi ?p))
+    :effect (and (not (hungry ?p))
+                 (not (has ?pi ?p))))
+  
+  ;; Exploit vulnerable software of a victim
+  (:action exploit        
+    :parameters (?h - hacker ?s - software ?p - person)
+    :precondition (and (has ?s ?p)
+                       (vulnerable ?s)
+                       (not (hungry ?h)))
+    :effect (exploited ?s))
+  
+  ;; Move a piece of furniture
+  (:action move
+    :parameters (?f - furniture ?old-x ?old-y ?new-x ?new-y)
+    :effect (and (location ?f ?new-x ?new-y)
+                 (not (location ?f ?old-x ?old-y)))))
 #+END_SRC
 
 ** Problem File
@@ -445,7 +422,7 @@ Analogous to the domain definition, problem files are initiated with
 problem.
 
 #+CAPTION: Initiating the problem file with the name garys-huge-problem
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle garys-huge-problem.pddl
 (define (problem garys-huge-problem)
 #+END_SRC
  
@@ -459,7 +436,7 @@ to be identical.
 
 #+CAPTION: The domain "hacker-world" is
 #+CAPTION: the corresponding domain name to the problem garys-huge-problem
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle garys-huge-problem.pddl
 (:domain hacker-world)
 #+END_SRC
 
@@ -473,7 +450,7 @@ concrete objects are assigned to the types.
 #+CAPTION: This part assigns concrete objects to the type
 #+CAPTION: templates. In this case, magicfailureapp - software means that the
 #+CAPTION: object magicfailureapp is of the type application.
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle garys-huge-problem.pddl
   (:objects big-pepperoni - pepperoni
             gary - hacker
             gisela - non-hacker
@@ -483,7 +460,7 @@ concrete objects are assigned to the types.
 
 ***  Init
 
-The =(init ...)= block models the initial state of the world with a
+The =(:init ...)= block models the initial state of the world with a
 list of instantiated predicates that are declared as true. All other,
 non-specified predicates are assumed to be false. This is called the
 /closed-world assumption/ [fn:4].
@@ -491,8 +468,9 @@ non-specified predicates are assumed to be false. This is called the
 #+CAPTION: The initial situation in Gary's Huge Problem consists of the hungry
 #+CAPTION: hacker Gary and the vulnerable application MagicFailureApp that
 #+CAPTION: belongs to Gisela.
-#+BEGIN_SRC text
+#+BEGIN_SRC text :tangle garys-huge-problem.pddl
   (:init (hungry gary)
+         (has big-pepperoni gary)
          (vulnerable magicfailureapp)
          (has magicfailureapp gisela))
 #+END_SRC
@@ -512,9 +490,10 @@ goal state.
 
 #+CAPTION: In the end, the software magicfailureapp
 #+CAPTION: should be exploited.
-#+BEGIN_SRC text
-(:goal (exploited magicfailureapp)
+#+BEGIN_SRC text :tangle garys-huge-problem.pddl
+(:goal (exploited magicfailureapp))
 #+END_SRC
+
 
 ** Planning
 
@@ -675,7 +654,7 @@ actions, initial and goal definitions.
 
 ** PDDL-Mode for Emacs
 GNU Emacs is a text editor, primarily written in, and customizable by
-using Emacs Lisp (TODO!), a Lisp dialect
+using Emacs Lisp, a Lisp dialect
 \cite{stallman1981emacs,lewis1990gnu}. The core values of Emacs are
 its extensibility and customizability. \pddlmode \cite{pddlmode} is a
 major Emacs mode, which determines the editing behavior of Emacs, for
@@ -753,7 +732,8 @@ combine the best of these latter tools and support customizable and
 extensible snippets for domains, problems, types, predicates,
 functions, actions and durative actions. In addition, to allow users
 to easily navigate within snippets, the option of going from one blank
-to the next by pressing \keys{\tab} (tab key) on the keyboard is also provided.
+to the next by pressing the tabulator key \keys{\tab} on the keyboard
+is also provided.
 
 When it comes to visualization, neither \pddlstudio nor \pddlmode for
 Emacs provide any visualization options. \itsimple, on the other hand,
@@ -885,17 +865,16 @@ defining custom key shortcuts, customizing the general look and feel,
 displaying line numbers, and bracket matching.
 
 
-* Knowledge Engineering Tools for Artificial Intelligence Planning
+* Knowledge Engineering Tools for Automated Planning
 <<ch:tools>>
   
 ** Statement of Problem
 
-The erroneous domain in Chapter [[ch:introduction]] and the /Hacker World/
-and /Gary's Huge Problem/, presented in Chapter [[ch:basics]], already
-indicated that writing and maintaining \pddl files can be cumbersome
-\cite{li2012translating,zhuo2010learning}. Due to the amount of
-information that has to be integrated for specifying \pddl domains
-(evtl. source), files can get hard to overlook. \pddl's modeling
+The /Hacker World/ and /Gary's Huge Problem/, presented in Chapter
+[[ch:basics]], already indicated that writing and maintaining \pddl files
+can be cumbersome \cite{li2012translating,zhuo2010learning}. Due to
+the amount of information that has to be integrated for specifying
+\pddl domains, files can get hard to overlook. \pddl's modeling
 capabilities have been developed further with the release of new \pddl
 versions \cite{fox2003pddl2,kovacs2011bnf} and it is likely that it
 will be used for even more complex, realistic domains that are
@@ -904,57 +883,22 @@ designed by a team of experts instead of a single person
 accepted that effective tool support is required to build domain
 models" \cite{shah2013knowledge}.
 
-\mypddl uses purposely a text-based modeling approach instead of a
-graphical modeling approach. 
-
-- Information content
-- Speed of creation
-- Speed and quality of formatting.
-- Version control.
-- Outlines and graphical overviews. 
-
-
-There is some evidence, that text-based modeling consti- tutes a
-noteworthy alternative to graphical modeling because of its simple
-usage, scalability and easy development and reuse of tool support.
-
-Textual concrete syntaxes for models are beneficial for many reasons.
-They foster usability and productivity because of their fast editing
-style, their us- age of error markers, autocompletion and quick fixes.
-Furthermore, they can eas- ily be integrated into existing tools such
-as diff/merge or information interchange through e-mail, wikis or
-blogs. Several frameworks and tools from different com- munities for
-creating concrete textual syntaxes for models emerged during recent
-years.
-
-
-
-
-as there 
-Experienced developers argue that a text-based approach with
-conventional editors is much more convenient.
-
-
- The following sections will present \mypddl, a highly customizable
+The following sections will present \mypddl, a highly customizable
 and extensible modular system, designed for supporting knowledge
 engineers in the process of writing, analyzing and expanding \pddl
 files and thereby promoting the collaboration between knowledge
 engineers and the use of \pddl in real-world applications. 
-
-question 
-
-It consists
-of the following, integral parts:
+It consists of the following, integral parts:
 
 - \mypddl-new :: Create a \pddl project folder structure with \pddl
                  domain and problem skeletons.
-- \mypddl-dia :: A type diagram generator for analyzing the structure
-                 of \pddl type hierarchies.
-- \mypddl-loc :: Automated distance calculation for \pddl locations,
-                 specified in a problem file.
 - \mypddl-syn :: A context-aware syntax highlighting feature.
 - \mypddl-snp :: Code snippets (templates), which can be inserted in
                  \pddl files.
+- \mypddl-loc :: Automated distance calculation for \pddl locations,
+                 specified in a problem file.
+- \mypddl-dia :: A type diagram generator for analyzing the structure
+                 of \pddl type hierarchies.
 - \mypddl-ide :: An integrated development environment for the use of
                  \mypddl in Sublime Text.
 
@@ -973,9 +917,10 @@ However, \pddl's calculating capabilities are limited
 supported by \pddl itself, preprocessing \pddl files and then hardcode
 the results back into the file seems to be a reasonable workaround.
 This preprocessing needs to be done outside of the \pddl environment,
-thus necessitating an interface. With the help of such an interface,
-the modeling time can reduced an even partly automated (see [[subsec:loc]]
-the distance calculator \mypddl-loc).
+thus necessitating an interface with a programming language that
+supports a wide range of mathematical operations. With the help of
+such an interface, the modeling time can reduced an even partly
+automated (see [[subsec:loc]] the distance calculator \mypddl-loc).
 
 Since \pddl's syntax is inspired by Lisp \cite{fox2003pddl2}, using a
 Lisp dialect for the interface stood to reason. Consequently, file
@@ -1008,13 +953,25 @@ methods:
 
 - add-construct(file, position, part) :: Provides a means for adding
      constructs to a specified position in \pddl problem files.
+     Listing [[src:add-construct]] displays the application of this method.
 
-#+CAPTION: A \pddl predicate that was added using the interface
+#+CAPTION: Adding the predicate (hungry gisela) to /Gary's Huge Problem/ using the PDDL/Clojure interface.
 #+NAME: src:add-construct
 #+BEGIN_SRC clojure
-TODO
+(add-construct "garys-huge-problem.pddl" :init '((hungry gisela)))
 #+END_SRC
 
+Subsequently, the modified part of the problem file looks like
+follows: \hspace{0.3cm}
+#+BEGIN_SRC text
+...
+ (:init
+  (hungry gary)
+  (vulnerable magicfailureapp)
+  (has magicfailureapp gisela)
+  (hungry gisela))
+...
+#+END_SRC
 
 [fn:18] In doing so, it uses a safe reader method, provided by
      https://github.com/clojure/tools.reader that avoids that possibly
@@ -1112,9 +1069,6 @@ and keeping track of the file structure can be become a real challenge
 for knowledge engineers. In order to recognize file elements quickly
 and detect errors at a glance, highlighting syntactical constructs is
 an established feature of text editors \cite{reijers2011syntax}.
-Syntax highlighting is a secondary notation, i.e. it does not alter
-the meaning of the code but instead is designed purely for the human
-reader who can usually detect code errors more quickly (TODO: source).
 
 \mypddl-syn is a \pddl context-aware syntax highlighting feature for
 Sublime Text. It distinguishes all \pddl constructs up to version 3.1 [fn:16],
@@ -1131,21 +1085,30 @@ Figure [[fig:syntax-highlighting]] displays an extract of the domain
 /Coffee/, which was used in the user study for the evaluation of this
 tool.
 
-#+CAPTION: The deliberately erroneous domain /Coffee/  without (a) and
-#+CAPTION: with (b) syntax highlighting,
-#+CAPTION: using the Sublime Text color scheme /Monokai/.
-#+CAPTION: All non-highlighted (white) constructs either
-#+CAPTION: contain errors or are specified in the wrong block.
-#+NAME: fig:syntax-highlighting
-#+BEGIN_FIGURE
-  \hspace*{1.5cm}
-  \includegraphics[width=0.8\textwidth]{task-completions-agg}
+#+BEGIN_LaTeX
+    \begin{sidewaysfigure}
+      \centering
+      \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\textwidth]{img/coffee_yes.pdf}
+        \caption{Using the syntax highlighting feature incorrect \pddl constructs can be easily identified as they are not
+  highlighted and therefore displayed in white.}
+        \label{fig:sh-coffee-yes}
+      \end{subfigure}%
+      \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\textwidth]{img/coffee_yes.pdf}
+        \caption{The same domain as on the left hand side without syntax highlighting.}
+        \label{fig:sh-coffee-no}
+      \end{subfigure}%
+    \caption{The deliberately erroneous domain \emph{Coffee} without \ref{fig:sh-coffee-yes}
+      and with \ref{fig:sh-coffee-no} syntax highlighting, using the Sublime Text color
+      scheme /Monokai/.}
+      \label{fig:syntax-highlighting}
+    \end{sidewaysfigure}
+#+END_LaTeX
 
-#+END_FIGURE
-
-Text then colorizes different parts of the code according to these
-names and the used color scheme, so that the look and feel can be
-alternated by changing Sublime Text's color scheme [fn:14].
+Sublime Text then colorizes different parts of the code according to
+these names and the used color scheme, so that the look and feel can
+be alternated by changing Sublime Text's color scheme [fn:14].
 
 For the ease of creation, the \pddl syntax highlighter is
 implemented by the use of the ST plug-in \textcite{aaapackagedev}. So,
@@ -1169,11 +1132,6 @@ color according to its meaning, were checked by 320 (syntax
 error-free) \pddl files, consisting of 87 domain and 230 problem files
 (list of files). In that, no inconsistencies nor non-highlighted words
 could be found.
-
-#+NAME: Screenshot in Sublime Text 3
-#+CAPTION: Coffee domain with and without syntax highlighting
-[[/home/pold/Documents/BA/org-ba/thesis/img/coffee_errors_img.png]]
-[[/home/pold/Documents/BA/org-ba/thesis/img/coffee_errors_no.pngp]]
 
 [fn:14] The extend to which the syntax highlighting is supported is
 dependent on the used color scheme. By using the built-in Sublime Text
@@ -1199,7 +1157,7 @@ Consider again the basic skeleton of an action:
 	:parameters (?x - object)
 	:precondition (and (pred-1))
 	:effect (and ))
-#+END_SRC
+#+END_SRC          
 
 Almost all \pddl actions consist of these same parts. Writing and
 extending \pddl files, knowledge engineers therefore have to to use
@@ -1208,7 +1166,7 @@ in. To facilitate and speed up the implementation of standard
 constructs, \mypddl-snp provides code skeletons, i.e. templates for
 often used \pddl constructs, like domain and problem definitions,
 predicates and actions. They can be inserted by typing a triggering
-keyword. Typing =action= and pressing the tabulator key (\key{\tab}),
+keyword. Typing =action= and pressing the tabulator key (\keys{\tab}),
 inserts the action specified in Listing [[ls-action-skeleton]]. \pddl
 constructs with a specified arity can be inserted by adding the arity
 number to the trigger keyword (=p2= would insert the binary predicate
@@ -1223,13 +1181,6 @@ pressing \tab on the keyboard and thereby navigating inside the
 snippet, so that the cursor will first mark the action-name .q
 inserted content contains fields with placeholders, that can be
 accessed and filled in consecutively.
-
-#+BEGIN_LaTeX
-\begin{figure}[h]
-\keystroke{p}\keystroke{2}\Tab\keystroke{h}\keystroke{a}\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{s}\Tab\keystroke{p}\Tab\keystroke{p}\Tab
-\caption[Example for the use of snippets]{\label{fig:snippet-example} Example for the use of snippets. =p2= creates a binary predicate template that can filled in.}
-\end{figure}
-#+END_LaTeX
 
 Every snippet is stored in a separate file, located in the folder
 =Packages/PDDL/= of Sublime Text. New snippets can be added and
@@ -1256,15 +1207,10 @@ the Babylonian method, requiring many iterations, this method would
 most likely have an adverse effect on plan generation
 \cite{parkinson2012increasing}.
 
-Hab ich hinzugefügt:
-Furthermore, this method describes a workaround for one mathematical
-operation, however,  it could be desirable to use further mathematical
-operations, like log, exp.
-
 The PDDL/Clojure interface reads a problem file and extracts all
-locations, defined in the =:init= part. In Clojure, the Euclidean
-distances between all locations are then calculated and written back
-to an extended problem file.
+locations, defined in the =(:init ...)= code block. In Clojure, the
+Euclidean distances between all locations are then calculated and
+written back to an extended problem file.
 
 The calculator works on any arity of the specified predicate, so that
 locations could be specified one, two and three dimensionally and even
@@ -1281,34 +1227,8 @@ to extend \pddl would be to increase its mathematical expressivity
 requirement =:math= that specifies further mathematical operations and
 to extend \pddl in future versions.
 
-
-#+BEGIN_LaTeX
-  \begin{subfigure}[]{0.5\textwidth}
-    \begin{listing}[H]
-      \begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
-        ...
-        (:init (location home-gary 7 3)
-        (location home-gisela 10 5)) 
-        ...
-      \end{minted}
-      \caption{Problem file before using myPDDL}
-    \end{listing}
-  \end{subfigure}
-  \begin{subfigure}[]{0.5\textwidth}
-    \begin{listing}[H]
-      \begin{minted}[fontsize=\small,bgcolor=dhscodebg,rulecolor=\color{gray!40},frame=lines,framesep=5\fboxrule,framerule=1pt,tabsize=2]{text}
-        ...
-        (:init (location home-gary 7 3)
-        (location home-gisela 10 5)) 
-        ...
-      \end{minted}
-      \caption{Problem file before using myPDDL}
-    \end{listing}
-  \end{subfigure}
-#+END_LaTeX
-
-
-#+CAPTION: Problem file before using myPDDL
+#+CAPTION: Extract of the extended file /Gary's Huge Problem'
+#+CAPTION: before using \mypddl-loc.
 #+BEGIN_SRC text
   ...
   (:init (location home-gary 7 3)
@@ -1316,7 +1236,9 @@ to extend \pddl in future versions.
   ...
 #+END_SRC
 
-#+CAPTION: After
+#+CAPTION: After the application of \mypddl-loc, the calculated distances 
+#+CAPTION: are inserted in the =(:init ...)= code block of a copy of the
+#+CAPTION: problem file.
 #+BEGIN_SRC text
  (:init
   (location home-gary 7 3)
@@ -1330,13 +1252,13 @@ to extend \pddl in future versions.
 ** Type Diagram Generator (myPDDL-dia)
 <<subsec:gen>>
 
-About a quarter of our neurons deal with the integration of visual
-information. Information can be transmitted more precisely
-\cite{goolkasian2000pictures} and remembered better. visually In a
-computer science, the diagrammatic representation of textual
-information helps quickly grasp the connection of hierarchically
-structured items \cite{storey2005use} and is supposed to simplify the
-communication and collaboration between developers.
+TODO: Write something about diagrammatic reasoning \\
+...furthermore, visual information can be transmitted more precisely
+\cite{goolkasian2000pictures} and remembered better
+\cite{nelson1976pictorial}. The diagrammatic representation of textual
+information helps to quickly understand the connection of
+hierarchically structured items \cite{storey2005use} and is supposed
+to simplify the communication and collaboration between developers.
 
 Object types play a major role in typed \pddl domains: they constrain
 the types of arguments to predicates and determine the types of
@@ -1360,18 +1282,19 @@ parts:
 - The header displays the name of the type.
 - The lower part displays all predicates that use the corresponding
   type at least once as a parameter. The predicates are written just
-  (TODO: clarify) as they appear in the \pddl code.
+  as they appear in the \pddl code.
 
 Generalization relationships ("is a", e.g. "a laptop /is a/ computer")
-are expressed by arrows from the subtype (here: /laptop/) to the super
-type, where the arrow head aims at the super type (here: /computer/).
-This relationship expresses that every subtype is also an instance of
-the illustrated super type. (TODO: clarify and sentence umschreiben)
+express that every subtype is also an instance of the illustrated
+super type. This relationship is indicated in the diagram with arrow
+from the subtype (here: /laptop/) to the super type, where the arrow
+head aims at the super type (here: /computer/).
 
 #+CAPTION: The type diagram that was generated from the
-#+CAPTION: /Hacker World/ using myPDDL-dia.
+#+CAPTION: /Hacker World/ in Chapter [[ch:basics]] using \mypddl-dia.
 #+NAME: img:auto-gen
-[[/home/pold/Documents/BA/org-ba/hacker-world/dot/gary-pdf.pdf]]
+[[/home/pold/Documents/BA/org-ba/hacker-world/diagrams/png-diagram7.pdf]]
+
 
 In order to create the diagram, \mypddl-dia makes use of the
 PDDl/Clojure interface that extracts the =(:types ...)= block. Then,
@@ -1396,25 +1319,13 @@ of the domain file is stored in the folder =domains/=. Every time
 saved files are extended by an ascending revision number. Thus, one
 cannot only identify associated \pddl, \textsc{dot} and \textsc{png}
 files, but also use this feature for basic revision control. Figure
-[[fig:folder-structure]] displays the folder structure after invoking
+[[fig:mypddl-new-project-folder]] displays the folder structure after invoking
 \mypddl-dia twice on the /Hacker World/. The type hierarchy and
 predicate structure of a previous version of a domain file can thereby
 be identified by the corresponding type diagram (both files have
 matching revision numbers), and it is possible to revert to a previous
-revision, stored in the folder =domains/= . All folders are created if
-necessary.
+revision, stored in the folder =domains/= .
 
-TODO: vllt irgendwo einfügen
-In the diagram, predicates are only added to the types that are
-explicitly mentioned in the argument of the predicate. However, as
-subtypes of types declared in the predicate arguments, can also be
-used as argument to the predicate, this means, that all
-specializations of a type can also be used for this predicate. This
-can be seen in Figure xyz ...:For example, a the \pddl domain file
-could declare =(hungry ?p - person)=, although men and women can be
-hungry.
-
-#+NAME: fig:folder-structure
 #+BEGIN_LATEX
 \begin{figure}[] 
 \dirtree{%
@@ -1429,14 +1340,15 @@ hungry.
 .3 hacker-world0.pddl.
 .3 hacker-world1.pddl.
 }
-\caption[\textit{my\pddl-dia} folder structure]{\label{fig:mypddl-new-project-folder} Folder structure after two invocations of textit{my\pddl-dia}. Files and folders are automatically created and extended by a revision number (=0=,=1=) each time dia is used.}
+\caption[\textit{my\pddl-dia} folder structure]{\label{fig:mypddl-new-project-folder}
+Folder structure after two invocations of \mypddl-dia.
+Files and folders are automatically created and extended by a revision number
+(\texttt{0},\texttt{1}) each time dia is used.}
 \end{figure}
 #+END_LATEX
 
 
-** Integrated Design Environment (myPDDL-sub) 
-
-Nochmal alles überdenken und ordentliche Sätze bilden.
+** Integrated Design Environment (myPDDL-ide) 
 
 The above presented tools provide a command-line interface for
 interacting with the user. This offers high flexibility, the possible
@@ -1449,7 +1361,7 @@ the Sublime Text 2 Documentation, like auto completion of words
 already used in this file, code folding and column selection. Sublime
 Text is used to combine the so far presented command-line tools, as
 well as the syntax highlighter and the code snippets to form an IDE.
-While /snp/ and /syn/ are devised explicitly for Sublime Text and
+While \mypddl-snp and syn are devised explicitly for Sublime Text and
 therefore integrated from the outset, the other tools (new, dia, loc)
 can be used independently of ST with the command-line interface and
 any \pddl file. To provide an IDE for using \mypddl, /-sub/ integrates
@@ -1467,9 +1379,9 @@ The three tools can be invoked using the ST command palette
 
 
 \mypddl can be installed automatically via Sublime Text Package
-Control or by copying the files of \mypddl [fn:8] into the packages
-folder of Sublime Text [fn:7]. Following, the features can be
-activated by changing Sublime Text's syntax to \pddl
+Control \cite{stpackage} or by copying the files of \mypddl [fn:8]
+into the packages folder of Sublime Text [fn:7]. Following, the
+features can be activated by changing Sublime Text's syntax to \pddl
 (\menu{View > Syntax > PDDL}).
 
 [fn:7] Further information about Sublime Text packages can be found at
@@ -1483,13 +1395,13 @@ http://www.sublimetext.com/docs/3/packages.html.
 
 To evaluate a software means to assess its quality. Appropriate
 criteria are supplied by \textcite{shah2013knowledge} who evaluate
-different knowledge engineering tools in planning, including, among
-others, \itsimple. All in all, they identified seven criteria, the
-lead questions of which can be found in Table [[tab:criteria]].
+different knowledge engineering tools in planning including \itsimple.
+All in all, they identified seven criteria, the lead questions of
+which can be found in Table [[tab:criteria]].
 
 #+CAPTION: The seven design criteria that were identified by \textcite{shah2013knowledge}
 #+NAME: tab:criteria
-| Criteria       | Description                                                |
+| /Criteria/     | /Description/                                              |
 |----------------+------------------------------------------------------------|
 | Operationality | How efficient are models produced?                         |
 |                | Is the method able to improve the performances of planners |
@@ -1516,62 +1428,65 @@ lead questions of which can be found in Table [[tab:criteria]].
 
 The first criterion (/operationality/) was not of interest when
 developing \mypddl, since it can be reduced to the question of whether
-planners perform well on standard \pddl files. Therefore, it was
-decided to replace the criterion operationality with functional
-suitability from the \textsc{isco/iec} 25010 standard. To assess the
-functional suitability and to illustrate where \mypddl fits in with
-similar tools, it was considered appropriate to compare it to the
-other three tools introduced and discussed in chapter 3, namely
-\pddlstudio, \itsimple, and \pddlmode for Emacs. Of the remaining six
-criteria in Table [[tab:criteria]], collaboration, experience, and
-debugging were tested with a user test. The other three criteria,
-maintenance, efficiency, and support, will simply be discussed.
+planners perform well on \pddl files created using a text editor
+(instead of a graphical language). Therefore, it was decided to
+replace the criterion /operationality/ with /functional suitability/
+from the \textsc{isco/iec} 25010 standard. To assess the functional
+suitability and to illustrate where \mypddl fits in with similar
+tools, it was compared to the other three tools introduced and
+discussed in chapter 3, namely \pddlstudio, \itsimple, and \pddlmode
+for Emacs. Of the remaining six criteria in Table [[tab:criteria]],
+/collaboration/, /experience/, and /debugging/ were tested with a
+usability test. The other three criteria, /maintenance/, /efficiency/,
+and /support/, will simply be discussed.
+
 
 ** Benchmarking
 
-To assess the functional suitability, it was decided to compare
-\mypddl to the three tools already discussed in Chapter [[ch:related]]:
-\pddlstudio, \itsimple, and \pddlmode for Emacs. This is to show its
-appropriateness or “the degree to which the software product provides
-an appropriate set of functions for specified tasks and user
-objectives“ (\textsc{isco} 25010 6.1.1). Where does \mypddl fit in
-with existing tools for the same purpose? When and for which tasks it
-is best suited? The major user objective is identical for all four
-tools and can be summed up as the desire to integrate human knowledge
-into a knowledge based system, in particular to create domains and
-problems that can be fed to a planner. All tools intend to support
-this process in general and the various stages of the design cycle to
-different degrees. However, sometimes knowledge engineers may only
-have to alter or develop already existing models further. \mypddl aims
-to also assist in the objective to quickly understand foreign code.
-Table [[tool-comp]] is to illustrate how the four tools compare in terms
-of features and how each of these features is helpful in the knowledge
-engineering process.
+The comparison of \mypddl to the three tools from Chapter ch:related
+is intended to to show its appropriateness or “the degree to which the
+software product provides an appropriate set of functions for
+specified tasks and user objectives“ (\textsc{iso} 25010 6.1.1). Where
+does \mypddl fit in with existing tools for the same purpose? When and
+for which tasks it is best suited? The major user objective is
+identical for all four tools and can be summed up as the desire to
+integrate human knowledge into a knowledge based system, in particular
+to create domains and problems that can be fed to a planner. All tools
+intend to support this process in general and the various stages of
+the design cycle to different degrees. However, sometimes knowledge
+engineers may only have to alter or develop already existing models
+further. \mypddl aims to also assist with the objective to quickly
+understand foreign code. Table [[tool-comp]] illustrates how the four
+tools compare in terms of features and how each of these features is
+helpful in the knowledge engineering process.
 
 
 #+CAPTION: Comparison of tools and their features for creating domains.
 #+NAME: tool-comp
-#+ATTR_LATEX: :float sidewaystable
-|                                     | Function                                                               | \pddlstudio | \itsimple | \pddlmode | \mypddl |
-|-------------------------------------+------------------------------------------------------------------------+-------------+-----------+-----------+---------|
-| /                                   |                                                                        | <           |           |           |         |
-| latest supported \pddl version      | considering recent \pddl features                                      | 1.2         | 3.1       | 2.2       | 3.1     |
-| syntax highlighting                 | supporting error detection and navigation                              | Yes         | Yes       | Yes       | Yes     |
-| syntactic error detection           | supporting debugging                                                   | Yes         | No        | No        | Yes     |
-| automatic indentation               | TODO (better code)                                                     | No          | No        | Yes       | Yes     |
-| semantic error detection            | supporting debugging                                                   | Yes         | No        | No        | No      |
-| code completion                     | speed-up knowledge engineering process                                 | Yes         | No        | Yes       | Yes     |
-| code snippets                       | speed-up knowledge engineering process and externalizing user's memory | No          | Yes       | Yes       | Yes     |
-| code folding                        | supporting keeping an overview                                         | Yes         | No        | Maybe     | Yes     |
-| project management                  | supporting keeping an overview                                         | Yes         | Yes       | No        | Yes     |
-| \pddl code visualization            | supporting fast understanding                                          |             |           |           |         |
-| \uml to \pddl code translation      | supporting initial modeling                                            | No          | Yes       | No        | Yes     |
-| customization features              | acknowledging individual needs and preferences                         |             |           |           |         |
-| planner integration                 | allowing for easy planner access                                       | Basic       | Yes       | No        | Yes?    |
-| plan visualization                  | supports understanding and crosschecking the plan                      | no          | yes       | no        | no      |
-| Petri net visualization             | supporting dynamic domain analysis and model checking                  | no          | yes       | no        | no      |
-| declaration menu                    | supporting easy code navigation                                        | no          | no        | yes       | no      |
-| interface with programming language | automating tasks; extending \pddl's modeling capabilities              |             |           |           |         |
+#+ATTR_LATEX: :float sidewaystable :font \footnotesize
+|                                     | Function                                              | \pddlstudio | \itsimple | \pddlmode | \mypddl |
+|-------------------------------------+-------------------------------------------------------+-------------+-----------+-----------+---------|
+| /                                   |                                                       | <           |           |           |         |
+| latest supported \pddl version      | considering recent \pddl features                     | 1.2         | 3.1       | 2.2       | 3.1     |
+| syntax highlighting                 | supporting error detection and navigation             | Yes         | Yes       | Yes       | Yes     |
+| syntactic error detection           | supporting debugging                                  | Yes         | No        | No        | Yes     |
+| automatic indentation               | supporting readability and navigation                 | No          | No        | Yes       | Yes     |
+| semantic error detection            | supporting debugging                                  | Yes         | No        | No        | No      |
+| code completion                     | speeding-up knowledge engineering process             | Yes         | No        | Yes       | Yes     |
+| code snippets                       | speeding-up knowledge engineering process             | No          | Yes       | Yes       | Yes     |
+|                                     | externalizing user's memory                           |             |           |           |         |
+| code folding                        | supporting keeping an overview                        | Yes         | No        | Maybe     | Yes     |
+| project management                  | supporting keeping an overview                        | Yes         | Yes       | No        | Yes     |
+| \pddl code visualization            | supporting fast understanding                         |             |           |           |         |
+| \uml to \pddl code translation      | supporting initial modeling                           | No          | Yes       | No        | Yes     |
+| customization features              | acknowledging individual needs and preferences        |             |           |           |         |
+| planner integration                 | allowing for easy planner access                      | Basic       | Yes       | No        | Yes?    |
+| plan visualization                  | supports understanding and crosschecking the plan     | no          | yes       | no        | no      |
+| Petri net visualization             | supporting dynamic domain analysis and model checking | no          | yes       | no        | no      |
+| declaration menu                    | supporting easy code navigation                       | no          | no        | yes       | no      |
+| interface with programming language | automating tasks                                      |             |           |           |         |
+|                                     | extending \pddl's modeling capabilities               |             |           |           |         |
+TODO!
 
 ** Usability Test
 
@@ -1580,7 +1495,7 @@ vast amounts of money on developing a system and finding, upon its
 release, that users cannot interact with it properly or do not see how
 it can help them. When designing and implementing a system intended to
 support humans, it is therefore of great importance to determine its
-usability \cite{johnson2000gui}. A common method for doing so is by
+usability \cite{johnson2000gui}. An common method for doing so is by
 usability testing (inviting users to thoroughly test the software by
 means of a series of realistic tasks and asking their opinions).
 Therefore, two of the most important \mypddl features, syntax
@@ -1633,94 +1548,97 @@ completed using the Sublime Text editor with the color scheme
 questions were recorded using an online tool [fn:10] as this allowed
 splitting the total time on task into smaller times for subtasks.
 Furthermore, the recorded times could be downloaded directly as a
-\textsc{csv] file. To test the syntax highlighting and the type
+\textsc{csv} file. To test the syntax highlighting and the type
 diagram generator, two different task types were needed. As a within
 subjects design was considered most suited (to control for individual
 differences within such a small sample), it was necessary to construct
-two tasks for each of these two types to compare the effects of having
-the tools available. For these four tasks (matched in difficulty),
-domains and instructions were written. The two tasks to test syntax
-highlighting presented the user with domains that were 54 lines in
-length, consisted of 1605 characters and contained 17 errors each.
-Errors were distributed evenly throughout the domains and were
-categorized into different types and the occurrence frequencies of
+two tasks, matched in difficulty, for each of these two types to
+compare the effects of having the tools available. Subsequently,
+domains and instructions were written for these four tasks. The two
+tasks to test syntax highlighting presented the user with domains that
+were 54 lines in length, consisted of 1605 characters and contained 17
+errors each. Errors were distributed evenly throughout the domains and
+were categorized into different types. The occurrence frequencies of
 these types were matched across domains as well, to ensure equal
 difficulty for both domains (see table [[tab:errors]] in the appendix). To
 test the type diagram generator, two fictional domains with equally
-complex type hierarchies consisting of non-words were designed
-(approximately same (5/6 layers) depth and approximately same number
-(20/21) of types). The domains were also matched in length and overall
-complexity (same number (1) of actions, same number of predicates (4)
-in precondition of action, approximately same number (2/3) of
-predicates in effect of action and approximately same number (5/6) of
-predicates with the same arity distributions). All questionnaires and
-task descriptions can be found in the appendix. Lastly, participants
-were given pen and paper and a one page summary (/cheat sheet/) of
-\pddl domain syntax (see appendix) to help them solve tasks if they
-saw a need for it.
+complex type hierarchies consisting of non-words were designed (five
+and six layers in depth, 20 and 21 types). The domains were also
+matched in length and overall complexity (five and six predicates with
+approximately the same distribution of arities, one action with four
+predicates in the precondition and two and three predicates in the
+effect). All questionnaires and task descriptions can be found in the
+appendix. Lastly, participants were given pen and paper and a one page
+summary (/cheat sheet/) of \pddl domain syntax (see appendix) to help
+them solve tasks if they saw a need for it.
 
 [fn:10] http://online-stopwatch.chronme.com
 
-[fn:17] /Monokai/ is the default color scheme of Sublime Text and has
+[fn:17] /Monokai/ is the default color scheme of Sublime Text. It has
 a dark gray background.
 
 *** Method
 
 No earlier than 24 hours before the experiment was to take place,
 participants received the web link to the tutorial and were thus given
-the option to watch in their own time if they felt so inclined. This
-method was chosen, because it was important that participants learn
-and understand the contents and this could be hindered by the presence
-of the experimenter or the testing situation, depending on the
-subject’s personality. Upon their arrival, participants were handed a
-consent form and the preliminary questionnaire. If they had already
-watched the tutorial, they were asked if they had had any questions
-concerning the tutorial and if they thought that they had understood
-everything. If they had not yet watched it at home, they proceeded to
-do so. After the tutorial, they were asked to complete the tasks in
-the order specified in table [[tab:order]] in the appendix. Two factors
-were varied: whether the participant had the tools available for the
-first two tasks or for the second two tasks, and whether the
-participant started with an debugging task or a type hierarchy task.
-Directly before the tasks requiring the application of the tools, the
-three minute video introduction was shown. For the debugging tasks,
-participants were given six minutes [fn:12] to detect as many of the
-errors as possible. They were asked to record each error in a table
-(pen and paper) with the line number and a short comment and to
-immediately correct them in the code if they knew how to, but not to
-dwell on the correction if they did not. For the type hierarchy task,
+the option to watch it in their own time if they felt so inclined.
+This method was chosen, because it was important that participants
+learn and understand the contents and this could be hindered by the
+presence of the experimenter or the testing situation, depending on
+the subject’s personality. Upon their arrival, participants were
+handed a consent form and the preliminary questionnaire. If they had
+already watched the tutorial, they were asked if they had any
+questions concerning the tutorial and if they thought that they had
+understood everything. Otherwise, they proceeded to do so. After
+watching the tutorial, they were asked to complete the tasks in the
+order specified in table [[tab:order]] in the appendix. Two factors were
+varied: whether the participant had the tools available for the first
+two tasks or for the second two tasks, and whether the participant
+started with a debugging task or a type hierarchy task. Directly
+before being given the tasks requiring the application of the tools,
+the three minute video introduction was shown. For the debugging
+tasks, participants were given six minutes [fn:12] to detect as many
+of the errors as possible. They were asked to record each error in a
+table (pen and paper) with the line number and a short comment and to
+immediately correct the errors in the code if they knew how to, but
+not to dwell on the correction otherwise. For the type hierarchy task,
 participants were asked to answer five questions concerning the
 domains, all of which could be facilitated with the type diagram
 generator, but some of which still required looking in the code.
 Participants were told, that they should not feel pressured to answer
 quickly, but to not waste time either. Also they were asked to say
-their answer out loud, once they figured it out. They were not told
-that the time it took them to come up with an answer was recorded,
-since this knowledge could make them feel pressured and lead to more
-false answers. At the end of the usability test, they were asked to
-evaluate the perceived usability of \mypddl using the system usability
-scale.
+their answer out loud, as soon as it became evident to them. They were
+not told that the time it took them to come up with an answer was
+recorded, since this knowledge could have made them feel pressured and
+thus led to more false answers. At the end of the usability test, they
+were asked to evaluate the perceived usability of \mypddl using the
+system usability scale.
 
 [fn:1] http://www.youtube.com/playlist?list=PL3CZzLUZuiIMWEfJxy-G6OxYVzUrvjwuV
 
-[fn:12]  A reasonable time frame tested on two pilots.
+[fn:12] A reasonable time frame tested on two pilots.
 
 *** Results
-
 **** Debugging Tasks
 
 To test the syntax highlighter, participants were asked to find as
 many errors as they could in a given domain within a certain amount of
 time. On average, participants found 7.6 errors without syntax
-highlighting and 10.25 errors with syntax highlighting (approximately
-35\,% more found errors with syntax highlighting). The difference
-is shown in Diagram [[found-errors-combined]].
+highlighting and 10.25 errors with syntax highlighting (i.e.
+approximately 35 % more errors were found with syntax highlighting). The
+difference is shown in Diagram [[found-errors-combined]].
 
-#+CAPTION: 
 #+NAME: fig:found-errors-combined
-#+BEGIN_figure
-\includesvg[width=0.8]{found-combined}
-#+END_figure
+#+BEGIN_LaTeX
+\beging{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{found-combined.pdf}
+\caption{Comparison of detected errors with and without
+the syntax highlighting feature. Each cross (\times) shows
+the data value of one participant. The bars display the arithmetic
+mean.}
+\end{figure}
+#+END_LaTeX
 
 Here, it is worth looking at the raw data, though, and more
 specifically the raw data in combination with the comments and remarks
@@ -1731,27 +1649,31 @@ One of them even mentioned that the contrast of the colors used was so
 low that they were hard for her to distinguish. She found the same
 number of errors with and without syntax highlighting, the other of
 the two was the only participant that found less errors with syntax
-highlighting as without. Excluding these two participants from the
-analysis results in 49\nbsp% more errors being found with the help of
-syntax highlighting. Since only eight participants took part in the
+highlighting than without it. Excluding these two participants from
+the analysis results in 49\nbsp% more errors being found with the help
+of syntax highlighting. Since only eight participants took part in the
 study, splitting the data up further (to compare, for example, the
 errors found per domain) did not appear sensible as aggregated data
 values would then consist of data from four participants at the most.
 A between groups comparison with only four individuals per group is
-most likely not going to provide insightful and reliable results.
-(TODO: source)
+most likely not going to provide insightful and reliable results
+(TODO: source).
 
 **** Type Hierarchy Tasks
 
-Diagram [[task-completions-agg]] shows the geometric mean of the task
-completion time (i.e. excluding wrong answers) for each question with
-and without the type diagram generator.
+Diagram [[fig:task-completions-agg]] shows the geometric mean [fn:23] of
+the task completion time [fn:22] for each question with and without
+the type diagram generator.
 
-#+CAPTION: Geometric mean of task completion time per Question
-#+NAME: task-completions-agg
-#+BEGIN_Figure
-
-#+END_Figure
+#+BEGIN_LaTeX
+  \begin{figure}
+    \centering
+    \hspace{0.5cm}
+    \includegraphics[width=0.7\textwidth]{task-completions-agg.pdf}
+    \caption{The diagram shows the geometric mean of the task completion time. The crosses (\times) represent one participant.}
+    \label{fig:task-completions-agg}
+  \end{figure}
+#+END_LaTeX
 
 It can be seen that when having the type diagram generator available,
 participants answer all questions, except question 4, nearly twice as
@@ -1763,25 +1685,62 @@ were required to look at the actions in the domain file in addition to
 the type diagram. Most participants were confused by this, because
 they had assumed that once having the type diagram available, it alone
 would suffice to answer all questions. This initial confusion cost
-some time, thus negatively influencing the task completion times.
-Therefore, question four is excluded from Diagram XY b).
+some time, thus negatively influencing the time on task.
+Therefore, question four is excluded from Diagram
+[[task-completions-agg-without-q4]].
 
-#+CAPTION: Geometric mean of aggregated task completion time without Question 4
-#+NAME: task-completions-agg-without-q4
-#+BEGIN_Figure
+#+BEGIN_LaTeX
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{ttot1.pdf}
+    \caption{Geometric mean of the total time on task without Question 4}
+    \label{fig:task-completions-agg-without-q4}
+  \end{figure}
+#+END_LaTeX
 
-#+END_Figure
 
 Diagram [[task-completions-agg-without-q4]] illustrates the effect that
 the tool availability had on the total time participants spent on a
 task, without question 4. It only takes 52% of the time without tools
-to answer questions 1, 2, 3 and 5 once tools can be used. Here it was
-also decided to refrain from separating the data any further, for the
-same reason as already stated above.
+to answer questions 1, 2, 3 and 5 once tools can be used.
 
-**** System Usability Scale 
+[fn:22] The task completion time only includes task times of users who
+completed the task successfully.
 
-TODO
+[fn:23] The geometric mean is a more accurate measure of the mean for
+small sample sizes as task times have a strong tendency to be positively
+skewed \cite{sauro2012quantifying}. 
+
+**** System Usability Scale
+
+\mypddl reached a score of 89.6 on the system usability scale [fn:24],
+with a standard deviation of 3.9. Figure [[fig:sus]] displays this score
+and the data values of the seven participants who completed this
+questionnaire. Since the overall mean score of the system usability
+scale is approximately 68 with a standard deviation of 12.5
+\cite{sauro2011practical}, the score of \mypddl is well above average
+with a small standard deviation. A score of 89.6 is usually assigned
+to superior products \cite{bangor2008empirical}. Furthermore, 89.6
+corresponds approximately to a percentile rank of 99.8 %, meaning that
+it has a better perceived ease-of-use than 99.8 % of the products in
+the database used in \textcite{sauro2011practical}.
+
+#+BEGIN_LaTeX
+  \begin{figure}[]
+    \centering
+    \includegraphics[width=0.7\textwidth]{sus1.pdf}
+    \caption{\mypddl got a score of 89.6 on the system usability scale
+      that ranges from 0 - 100. Every cross (\times) indicates the
+      system usability scale value of one participant. It is evident
+      that all scores range in the high end of the scale.}
+    \label{fig:sus}
+  \end{figure}
+#+END_LaTeX
+
+
+[fn:24] The range of possible values for the system usability scale is
+0 to 100.
+
 
 *** Discussion
 
@@ -1802,22 +1761,22 @@ strengths lies in being up-to-date and supporting the most recent
 basic editor features and a high customizability. Being the only one
 of the four tools capable of visualizing parts of the \pddl code, it
 must be understood as complementary to \itsimple, which takes the
-opposite approach of transforming \uml diagrams into \pddl files. The
-fact that \mypddl does not check for semantic errors is not actually a
-drawback, as planners will usually detect semantic errors. All in all,
-\mypddl combines the most useful tools of \pddlstudio, \itsimpleq and
-\pddlmode for Emacs and strives to support the knowledge engineer
-during all phases of the modeling process. Additionally, it features
-some unique tools, which have, in part, already been proven to be
-helpful by the user study. It can therefore be concluded that \mypddl
-provides an appropriate set of functions for developing \pddl files
-and is thus functionally suitable.
+opposite approach of transforming \textsc{uml} diagrams into \pddl
+files. The fact that \mypddl does not check for semantic errors is not
+actually a drawback, as planners will usually detect semantic errors.
+All in all, \mypddl combines the most useful tools of \pddlstudio,
+\itsimple and \pddlmode for Emacs and strives to support the knowledge
+engineer during all phases of the modeling process. Additionally, it
+features some unique tools, which have, in part, already been proven
+to be helpful in the user study. It can therefore be concluded that
+\mypddl provides an appropriate set of functions for developing \pddl
+files and is thus functionally suitable.
 
 **** Collaboration
 
-With the growing importance of team work and people working in teams
-not necessarily working in the same building or in the same country
-for that matter, there is an increasing need for tools supporting the
+With the growing importance of team work and team members not
+necessarily working in the same building or in the same country for
+that matter, there is an increasing need for tools supporting the
 collaboration effort. In developing \mypddl, this need was sought to
 be met by \mypddl-dia. Complex type hierarchies can be hard to
 overlook, especially if they were constructed by someone else.
@@ -1825,57 +1784,77 @@ Therefore, a good way of tackling this problem seemed to be by
 providing a means to visualize such hierarchies in the form of type
 diagrams. But is this really able to help knowledge engineers? This
 was tested in the user study by having participants answer questions
-to complex type hierarchies that they had never seen before, made up
-entirely of non-words. With the help of the diagram participants were
-able to answer questions correctly nearly twice as fast as without
-this service. This indicates that \mypddl-gen helps to understand
-foreign domain structures faster and more easily, therefore
-facilitating the collaboration between knowledge engineers.
+on complex type hierarchies that they had never seen before, made up
+entirely of non-words (to eliminate the interference of world
+knowledge). With the help of the diagram participants were able to
+answer questions correctly nearly twice as fast as without this
+service. This indicates that \mypddl-gen helps to understand foreign
+domain structures faster and more easily, therefore facilitating the
+collaboration between knowledge engineers.
 
 **** Experience
 
 Although it is assumed that most people interested in using \mypddl
-have some experience in knowledge engineering in general and planning
-in particular, unversed users should not be put off by a complex or
-incomprehensible interface. To test if \mypddl is usable even for
-novices, it was chosen to only allow for inexperienced participants in
-the user study. However, because \pddl is Lisp based, they were all
-required to be familiar with at least one \Lispq dialect. (TODO:
-Satzbau) As described above, they were all asked to watch a 30-minute
+have some experience in planning, unversed users should not be put off
+by a complex or incomprehensible interface. To test if \mypddl is
+usable even for novices, it was chosen to only allow for inexperienced
+participants in the user study. However they were all required to be
+familiar with at least one Lisp dialect because \pddl is Lisp-based.
+As described above, participants were asked to watch a 30-minute
 interactive planning and \pddl video tutorial, establishing the
 basics. Before having to use the \mypddl tools, another three minute
 video tutorial introduced \mypddl-syn and \mypddl-dia. None of the
 users seemed to have any problems in comprehending either of these
-tools after seeing the tutorial. Nonetheless, two subjects reported
-having trouble with \mypddl-syn, because they did not find it helpful
-or because they found the colors hard to distinguish. It seems,
-though, that this cannot be accounted to inexperience so much as to
-personal preference. None of the participants mentioned any issues
-with \mypddl-dia. Therefore, it can be concluded that a small time
-investment for inexperienced users, and an possibly even smaller
-investment for \pddl experts, results in proficient usage of \mypddl.
+tools after seeing the tutorial. Therefore, it can be concluded that a
+small time investment for inexperienced users, and an possibly even
+smaller investment for \pddl experts, results in proficient usage of
+\mypddl. Nonetheless, two subjects reported having trouble with
+\mypddl-syn, because they did not find it helpful or because they
+found the colors hard to distinguish. It seems, though, that this
+cannot be accounted to inexperience so much as to personal preference.
 
 **** Debugging
 
-To help users find errors faster, \mypddl-syn was created. It
-highlights all syntactically correct constructs and leaves all
-syntactical errors non-highlighted. In order to assess if \mypddl
-helps in debugging, \mypddl-syn was included in the user test. Users
-were asked to find as many errors as they could in a specified amount
-of time. Six of the eight subjects found more errors with syntax
-highlighting than without it, one person found the same number and one
-actually found one error less with the tool available. These latter
-two users reported being distracted by the colors. Syntax highlighting
-is optional in the Sublime Text integration, thanks to the high
-customizability, and what is more, different color schemes allow for
-the individualization of \mypddl-syn. This option was not made
-available in the user study, as it would have been an additional,
-possibly confounding variable, making the results harder to interpret.
-While eight people seem too few to generalize the numbers, it can be
-said that \mypddl with \mypddl-syn seems to help the majority of users
-in debugging.
+To help users find errors faster, the syntax highlighting feature
+\mypddl-syn was created. It highlights all syntactically correct
+constructs and leaves all syntactical errors non-highlighted. In order
+to assess if \mypddl helps in debugging, \mypddl-syn was included in
+the usability test. Users were asked to find as many errors as they
+could in a specified amount of time. Six of the eight subjects found
+more errors with syntax highlighting than without it, one person found
+the same number and one actually found one error less with the tool
+available. These latter two users reported being distracted by the
+colors. Syntax highlighting is optional in the Sublime Text
+integration, thanks to the high customizability, and what is more,
+different color schemes allow for the individualization of
+\mypddl-syn. However, this option was not made available in the user
+study, as it would have been an additional, possibly confounding
+variable, making the results harder to interpret. While eight people
+seem too few to generalize the numbers, it can be said that \mypddl
+with \mypddl-syn seems to help the majority of users in debugging.
+
 
 **** Maintenance
+
+The possibility to maintain \pddl files is a key aspect of \mypddl.
+The automatically generated type diagram (\mypddl-dia) gives an
+overview of the domain structure, and thereby serves as a continuous
+means of documentation. In addition, the diagram supports the
+understanding of existing or extended domains provided by other
+knowledge engineers. Helping to understand foreign code, though, it
+follows logically that \mypddl-dia also helps in coming back and
+changing one’s own models if some time has elapsed since they were
+last edited. The basic revision control feature of \mypddl-dia keeps
+track of changes, making it easy to revert to a previous domain
+version. Furthermore, \mypddl-new encourages adhering to an organized
+project structure and stores corresponding files at the same location.
+Text-based modeling facilitates using a common revision control system
+like Git \cite{gronniger2007textbased}. The automatically created
+readme file can induce the user to provide further information and
+documentation about the \pddl project. When using a web-based hosting
+service, the readme file is usually prominently displayed on the home
+page of the project.
+
 
 **** Efficiency
 
@@ -1891,13 +1870,21 @@ and automatic indentation increases its legibility. To easily keep
 track of all the parts of a project, folders are automatically created
 and named. Lastly, it is also possible to customize \mypddl so as to
 adapt its look and feel to other programs one is already familiar
-with, or simply to make it more enjoyable to use. With all these
-features, it seems impossible for \mypddl not to increase the
-efficiency (TODO). Especially skilled knowledge engineers should be
-able to produce acceptable models very quickly with the help of
-\mypddl.
+with, or simply to make it more enjoyable to use. All these features
+should increase the efficiency, and especially skilled knowledge
+engineers should be able to produce acceptable models very quickly
+with the help of \mypddl.
 
 **** Support
+
+\mypddl can be installed using Sublime Text's Package Control
+\cite{stpackage}. This allows for an easy installation and staying
+up-to-date with future versions. In order to provide global access and
+with it the possibility for developing an active community, the
+project source code is hosted on GitHub [fn:19]. An additional project
+site [fn:20] provides \mypddl video introductions, a manual and room
+for discussing features and reporting bugs.
+
 
 #+BEGIN_LaTeX
   \begin{figure}
@@ -1907,16 +1894,17 @@ able to produce acceptable models very quickly with the help of
   \end{figure}
 #+END_LaTeX
 
+[fn:19] https://github.com/Pold87/myPDDL
+
+[fn:20] http://pold87.github.io/sublime-pddl/
+
 * Conclusion and Future Work
 <<ch:conclusion>>
 
 \mypddl has been designed to support knowledge engineers in modeling
 planning task specifications as well as in understanding, modifying,
 extending and using existing planning domains. \mypddl is written in a
-modular fashion, and is extensible, customizable.\mypddl-dia can
-visualize any PDDL domain, without making semantic assumptions and
-n-ary predicates.
-
+modular fashion, is extensible and customizable.
 Implemented features comprise code editing features, namely syntax
 highlighting and code snippets, a type diagram generator and a
 distance calculator.
@@ -1925,15 +1913,16 @@ The user study shows some initial evidence that the core features,
 syntax highlighting (\mypddl-sub) and type diagram generation
 (\mypddl-dia) can support knowledge engineers in the design and
 analysis process, in particular in error detection and in keeping
-track of the domain structure, the type hierarchy and grasping
+track of the domain structure, the type hierarchy and understandingq
 predicates using these types.
 
 Knowledge engineers can customize and extend Sublime Text and use
 existing text editor features. Although \mypddl is made available in
 Sublime Text, users could transfer the ideas to other text editors.
 
-Furthermore the interface can be used to extract knowledge, specified
-in another formal language and create \pddl files from them.
+Furthermore the \pddl/Clojure interface can be used to extract
+knowledge, specified in another formal language and create \pddl files
+from them.
 
 The plug-in for the editor ST could be further extended to provide
 features of common integrated developing environments (IDE). A build
@@ -1951,13 +1940,13 @@ Another alternative is to make use of an external helper and, instead
 of calculating every entry of the distance matrix. the distance only
 if needed, incorporate every possible combination of two locations.
 
-The yearly (TODO: really yearly??) workshop Knowledge Engineering for
-Planning and Scheduling (KEPS) will promote the research in planning
-and scheduling technology. Potentially, the main effort of for
-implementing models in planning will be shifted from the manual
-knowledge engineering to the automated knowledge acquisition (KA).
-Perception systems, Nevertheless, a engineer who double-checks the
-generated tasks will be irreplaceable.
+The yearly workshop Knowledge Engineering for Planning and Scheduling
+(KEPS) will promote the research in planning and scheduling
+technology. Potentially, the main effort of for implementing models in
+planning will be shifted from the manual knowledge engineering to the
+automated knowledge acquisition (KA). Perception systems,
+Nevertheless, a engineer who double-checks the generated tasks will be
+irreplaceable.
 
 The PDDL/Clojure interface provides a basis for dynamic and
 interactive planning scenarios. So, time-dependent knowledge could be
@@ -1975,14 +1964,77 @@ everything".
 
 \printbibheading
 \printbibliography[nottype=online,heading=subbibliography,title=Paper Sources]
-\printbibliography[type=online,heading=subbibliography,title=Website
-Sources]
-
+\printbibliography[type=online (\, heading=subbibliography) (\, title=Website) Sources]
 * Appendix
 
 
 ** General
-TODO: Add domain / problem file
+#+CAPTION: Hacker World
+#+BEGIN_SRC text
+; Hacker World - A realistic example
+(define (domain hacker-world)
+	(:requirements :typing
+               	       :negative-preconditions
+		       :fluents)
+
+  (:types hacker non-hacker - person
+          desk chair - furniture
+          laptop workstation - computer
+          pizza burgers fries - food
+          pepperoni supreme - pizza
+          computer food person furniture software - object
+          number)
+
+    (:predicates (has ?s - software ?p - person)
+                 (hungry ?p - person)
+             	 (vulnerable ?s - software)
+               	 (exploited ?s - software)
+                 (distance ?o1 ?o2 - object ?x - number)
+                 (location ?o - object ?x ?y - number))
+
+;; Eat a delicious pizza
+  (:action eat-pizza
+    :parameters (?pi - pizza ?p - person)
+    :precondition (and (hungry ?p)
+                       (has ?pi ?p))
+    :effect (and (not (hungry ?p))
+                 (not (has ?pi ?p))))
+  
+ ;; Exploit vulnerable software of a victim
+  (:action exploit        
+    :parameters (?h - hacker ?s - software ?p - person)
+    :precondition (and (has ?s ?p)
+                       (vulnerable ?s)
+                       (not (hungry ?h)))
+    :effect (exploited ?s))
+  
+ ;; Move a piece of furniture
+  (:action move
+    :parameters (?f - furniture ?old-x ?old-y ?new-x ?new-y)
+    :effect (and (location ?f ?new-x ?new-y)
+                 (not (location ?f ?old-x ?old-y)))))
+#+END_SRC
+
+#+CAPTION: Garys' Huge Problem
+#+BEGIN_SRC text
+(define (problem garys-huge-problem)
+	
+	(:domain hacker-world)
+	
+	(:objects big-pepperoni - pepperoni
+		gary - hacker
+		gisela - non-hacker
+		magicfailureapp - software)
+	
+	(:init (hungry gary)
+		   (has big-pepperoni gary)
+		   (vulnerable magicfailureapp)
+		   (has magicfailureapp gisela))
+
+	(:goal (exploited magicfailureapp)))
+
+
+#+END_SRC
 
 ** Usability Test
 *** Design
@@ -2020,7 +2072,290 @@ TODO: Add domain / problem file
 |---------------------+-------------+----------|
 | Gesamt              |          17 |       17 |
 
+** Fragen
 
+* Lösung - Planet Splisus
+
+1. Ja, =Flipsis= sind =Splis=, =Splis= sind =Gids= und =Gids= sind =Ruffisplisus=.
+2. Nein, =Schloks= sind keine =Splis=.
+3. Nein, =Merle= sind =Splis= aber keine =Splus=.
+4. Nein, =Spleus= sind zwar =Splos= und =Hurpf= sind =Splis=, weshalb
+   =Spleus= und =Hurpf= verheiratet (=married=) sein könnten,
+   aber =Hurpf= sind keine =Sipsi= und nur =Sipsi= können
+   Waffen (=has-weapon ?h - sipsi)= besitzen. Laut der Aktion =kill=
+   muss man zum Umbringen eine Waffe besitzen.
+5. 
+   - =Ruffisplisus= - Wesen
+   - =Lech= - Orte
+   - =Mak= - Nahrung
+
+* Lösung - Store
+
+1. Ja, =Lulas= sind =Nulls= und =Nulls= sind =Minis=.
+2. Nein, nur =Nulls= sind =Zahls=.
+3. Ja, =Iltre= sind vom Typ =Lala= (=Iltre=, =Nulls=, =Minis=, =Lala=)
+   und können an einem Arbeitsplatz (=workplace=) vom Typ =Knozi=
+   arbeiten, da diese wiederum =Lolas= sein können (=Lola=, =Zahls=,
+   =Knozi=)
+4. Nein, denn nur ein Objekt vom Typ =Spax= kann ein Produkt am Ende
+   eines Verkaufsvorgangs besitzen und =Kostas= sind keine =Spax=.
+5. 
+   - =Lala= - Menschen
+   - =Lila= - Produkte
+   - =Lola= - Orte
+\newpage
+* Fehlerliste - Logistics Domain
+\vspace{0.5cm}
+| \# | *Zeile* | *Fehler*      | *Korrektur*       | *Fehlertyp*         |
+|  1 |       3 | ?logistics    | logistics         | extra Zeichen       |
+|  2 |       6 | :types        | :typing           | Wortverwechslung    |
+|  3 |       8 | :typing       | :types            | Wortverwechslung    |
+|  4 |      11 | car 2         | car2              | extra Zeichen       |
+|  5 |      16 | = true        | Komplett weg      | Zusatz              |
+|  6 |      18 | ??veh         | ?veh              | extra Zeichen       |
+|  7 |      22 | ?tr           | ?t                | Variablenfehler    |
+|  8 |      24 | incity        | in-city           | fehlendes Zeichen   |
+|  9 |      31 | n0t           | not               | Tippfehler          |
+| 10 |      35 | ?to airport   | ?to – aiport      | fehlendes Zeichen   |
+| 11 |      42 | parameters:   | :parameters       | Zeichenvertauschung |
+| 12 |      43 | precondition: | :precondition     | Zeichenvertauschung |
+| 13 |      37 | ay            | at                | Tippfehler          |
+| 14 |      45 | )             | Klammer entfernen | Klammerfehler       |
+| 15 |      49 | p             | ?p                | fehlendes Zeichen   |
+| 16 |      51 | ?p ?v         | (at ?p ?v)        | fehlende Syntax     |
+| 17 |      54 | ?p - ?l       | ?p ?l             | extra Zeichen       |
+
+\newpage
+* Fehlerliste - Coffee Domain
+\vspace{0.5cm}
+| \# | *Zeile* | *Fehler*           | *Korrektur*                    | *Fehlertypen*       |
+|  1 |       3 | COFFEE             | (domain COFFEE)                | fehlende Syntax     |
+|  2 |       6 | requirements       | :requirements                  | fehlendes Zeichen   |
+|  3 |       9 | _                  | -                              | Zeichenvertauschung |
+|  4 |      10 | (at ?l – location) | location                       | Zusatz              |
+|  5 |      11 | ?coffee            | coffee                         | extra Zeichen       |
+|  6 |      20 | $k                 | ?k                             | Zeichenvertauschung |
+|  7 |      21 | :preconditions     | :precondition                  | Wortverwechslung    |
+|  8 |      25 | _furniture         | furniture                      | extra Zeichen       |
+|  9 |      27 | ?fu                | ?f                             | Variablenfehler     |
+| 10 |      32 | :parameters:       | :parameters                    | extra Zeichen       |
+| 11 |      33 | änd                | and                            | Tippfehler          |
+| 12 |      36 | location           | location wurde nicht definiert | Wortverwechselung   |
+| 13 |      42 | ?fromr             | ?from-r                        | fehlendes Zeichen   |
+| 14 |      44 | ?tor               | ?to-r                          | fehlendes Zeichen   |
+| 15 |      47 | cjp                | cup                            | Tippfehler          |
+| 16 |      52 | ?hand-over         | hand-over                      | extra Zeichen       |
+| 17 |      55 | Klammer zu viel    | Klammer entfernen              | Klammerfehler       |
+
+\newpage
+* Fehleranalyse
+\vspace{0.5cm}
+| *Fehlertyp*         | *Logistics* | *Coffee* |
+| Extra Zeichen       |           4 |        4 |
+| Fehlendes Zeichen   |           3 |        3 |
+| Tippfehler          |           2 |        2 |
+| Wortverwechslung    |           2 |        2 |
+| Zeichenvertauschung |           2 |        2 |
+| Zusatz              |           1 |        1 |
+| Variablenfehler     |           1 |        1 |
+| Klammerfehler       |           1 |        1 |
+| Fehlende Syntax     |           1 |        1 |
+|---------------------+-------------+----------|
+|---------------------+-------------+----------|
+| Gesamt              |          17 |       17 |
+
+
+\newpage
+
+* Coffee Domain
+#+BEGIN_EXAMPLE
+  ;;;; Coffee Domain
+  
+  (define COFFEE
+    
+    (requirements
+      :typing)
+    
+    (:types room - location
+            robot human _ agent
+            furniture door - (at ?l - location)
+            kettle ?coffee cup water - movable
+            location agent movable - object)
+      
+    (:predicates (at ?l - location ?o - object)
+                 (have ?m - movable ?a - agent)
+                 (hot ?m - movable)
+                 (on ?f - furniture ?m - movable))
+    
+    (:action boil
+      :parameters (?m - movable $k - kettle ?a - agent)
+      :preconditions (have ?m ?a)
+      :effect (hot ?m))
+  
+    (:action grip-some
+      :parameters (?m - movable ?r - robot ?f - _furniture ?l - location)
+      :precondition (and (at ?l ?r)
+                         (on ?fu ?m)
+                         (at ?l ?f))
+      :effect (and (have ?m ?r)))
+  
+    (:action move
+      :parameters: (?m - movable ?a - agent ?from ?to - location)
+      :precondition (or (änd (at ?from ?a)
+                             (at ?from ?m))
+                        (and (at ?from ?m)
+                             (location ?from ?a)))
+      :effect (and (not (at ?from ?m))
+                   (at ?to ?m)))
+  
+    (:action change-room
+      :parameters (?from-r ?to-r - room ?a - agent)
+      :precondition (at ?fromr ?a) 
+      :effect (and (not (at ?from-r ?a))
+                   (at ?tor ?a)))
+  
+    (:action prep-coffee
+      :parameters (?a - agent ?c - cjp ?w - water ?cof - coffee)
+      :precondition (and (have ?c ?a)
+                         (hot ?w))
+      :effect (have ?cof ?a))
+  
+    (:action ?hand-over
+      :parameters (?m - movable ?a1 - agent ?a2 - agent)
+      :precondition (have ?m ?a1))
+      :effect (and (not (have ?m ?a1))
+                   (have ?m ?a2))))
+#+END_EXAMPLE
+
+\newpage
+* Logistics Domain
+#+BEGIN_EXAMPLE
+  ;;;; Logistics domain
+  
+  (define (domain ?logistics)
+  
+    (:requirements
+      :types) 
+  
+    (:typing truck airplane motorboat - vehicle
+             package vehicle suitcase furniture - thing
+             airport garage station - location
+             car1 car 2 car3 - vehicle
+             city location thing - object)
+    
+    (:predicates (in-city ?l - location ?c - city)
+                 (at ?obj - thing ?l - location)
+                 (key ?v - vehicle) = true
+                 (full ?v - vehicle)
+                 (in ?p - package ??veh - vehicle))
+    
+    (:action drive
+      :parameters (?t - truck ?from ?to - location ?c - city)
+      :precondition (and (at ?tr ?from)
+                         (in-city ?from ?c)
+                         (incity ?to ?c))
+      :effect (and (not (at ?t ?from))
+                   (at ?t ?to)))
+  
+    (:action fly
+      :parameters (?a - airplane ?from ?to - airport)
+      :precondition (at ?a ?from)
+      :effect (and (n0t (at ?a ?from))
+                   (at ?a ?to)))
+  
+    (:action fuel
+      :parameters (?v - vehicle ?c - city ?to airport)
+      :precondition (and (not (full ?v))
+                         (in-city ?to ?c)
+                         (at ?v ?to))
+      :effect (full ?v))                   
+  
+    (:action load
+      parameters: (?v - vehicle ?p - package ?l - location)
+      precondition: (and (?v ?l)
+                         (at ?p ?l))
+      :effect (and (ay ?p ?l)
+                   (in ?p ?v)))
+  
+    (:action unload
+      :parameters (?v - vehicle p - package ?l - location)
+      :precondition (and (at ?v ?l)
+                             ?p ?v)
+      :effects (and (not (in ?p ?v))
+                    (at ?p - ?l))))
+  
+#+END_EXAMPLE
+
+\newpage
+* Planet Splisus
+#+BEGIN_EXAMPLE
+  (define (domain splisus) 
+    
+    (:requirements :typing)
+  
+    (:types splis - gid
+            spleus - splos
+            schprok schlok - splus
+            rud mekle - lech
+            hulpf hurpf - hupf
+            sipsi flipsi hupf - splis
+            schmok schkok - splus
+            gid splos splus - ruffisplisus
+            merle - hupf
+            ruffisplisus mak lech - object)
+  
+    (:predicates (father-of ?r1 - ruffisplisus ?r2 - ruffisplisus)
+                 (married ?s1 - splos ?s2 - splis)
+                 (has-weapon ?h - sipsi)
+                 (dead ?r1 - ruffisplisus)
+                 (at ?l - lech ?r - ruffisplisus))
+  
+    (:action kill
+      :parameters (?l - lech ?r1 - ruffisplisus ?s - splis)
+      :precondition (and (at ?l ?r1)
+                         (at ?l ?s)
+                         (married ?r1 ?s)
+                         (has-weapon ?s))
+      :effect (and (dead ?r1)
+              (not (married ?r1 ?s)))))
+#+END_EXAMPLE
+
+\newpage
+* Store
+#+BEGIN_EXAMPLE
+(define (domain store)
+
+  (:requirements :typing)
+
+  (:types lala lila - zahls
+          blisis blusis - ultri
+          iltre lula - nulls
+          zahls schwinds - knozi
+          minis - lala
+          ultri sopple schmitzl - lila
+          ultres raglos wexis - lola
+          kosta - nulls
+          nulls spax - minis
+          lola - zahls
+          knozi schmus - object)
+
+  (:predicates (product ?k - knozi) ; Produkt
+               (workplace ?l1 - lola ?l2 - lala) ; Arbeitsplatz einer Person
+               (product-at ?l1 - lola ?l2 - lila) ; Ort eines Produkts
+               (cashier ?k - knozi) ; Kassierer / Verkäufer
+               (customer ?s - spax) ; Kunde
+               (owns ?l - lila ?s - spax)) ; Eigentum
+
+  (:action sell
+    :parameters (?p - lila ?z - zahls ?l - lola ?w - wexis ?s - spax)
+    :precondition (and (product ?p)
+                       (cashier ?z)
+                       (product-at ?l ?p)
+                       (customer ?s))
+    :effect (and (product-at ?w ?p)
+                 (not (product-at ?l ?p))
+                 (owns ?p ?s))))
+#+END_EXAMPLE
 ** Code 
 
 This code can also be found on the enclosed CD, and on the Internet
@@ -2048,13 +2383,17 @@ website for this project.
   (:import [javax.swing JPanel JButton JFrame JLabel]
            [java.awt.image BufferedImage BufferedImageOp]
            [java.io File]))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn read-lispstyle-edn
   "Read one s-expression from a file"
   [filename]
   (with-open [rdr (java.io.PushbackReader. (clojure.java.io/reader filename))]
     (edn/read rdr)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defmacro write->file
   "Writes body to the given file name"
   [filename & body]
@@ -2063,7 +2402,9 @@ website for this project.
      (binding [*out* w#]
        ~@body))
   (println "Written to file: " ~filename)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn read-objs
   "Read \textsc{pddl} objects from a file and add type
   (e.g. 'table bed' -> (list table - furniture
@@ -2072,9 +2413,11 @@ website for this project.
   (as-> (slurp file) objs
         (clojure.string/split objs #"\s")
         (map #(str % " - " object-type) objs)))
+#+END_SRC
 
 
 
+#+BEGIN_SRC clojure
 (defn create-pddl
   "Creates a \textsc{pddl} file from a list of objects and locations"
   [objs-file objs-type]
@@ -2112,7 +2455,10 @@ website for this project.
      :effect (at end <effects>))
 )"
    ))
+#+END_SRC
 
+
+#+BEGIN_SRC clojure
 (defn split-up
   "Split a \textsc{pddl} type list (:types obj1.1 obj1.2 - objT1 obj2 - objT2 ...)
   into strings of subtypes and associated types,
@@ -2126,8 +2472,9 @@ website for this project.
     ;; Capturing group 1 is type1.
     (re-seq #"((?:(?:\b[a-zA-Z](?:\w|-|_)+)\s+)+)-\s+(\b[a-zA-Z](?:\w|-|_)+)"
             (clojure.string/join " " coll))))
+#+END_SRC
 
-
+#+BEGIN_SRC clojure
 (defn types->hash-map-helper
   "Convert splitted type list (['<expr>' '<subtype1.1> <subtype1.2> ...' '<type1>']
   to a hash-map {'<type1>': ['<subtype1.1>' '<subtype1.2>' ...], '<type2>': ...}"
@@ -2141,12 +2488,16 @@ website for this project.
                         (clojure.string/split objs #"\s")))))
           {}
           coll))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn types->hash-map
   "Splits types and converts them into a hash-map"
   [pddl-types]
   (types->hash-map-helper (split-up pddl-types)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn map-entry->TikZ-seq
   "Converts a hashmap entry (:key [val1 val2 ...])
 to a TikZ string (key -- { val1, val2 })"
@@ -2155,7 +2506,9 @@ to a TikZ string (key -- { val1, val2 })"
    (name (key entry))
    " -- "
    "{" (clojure.string/join ", " (val entry)) "}"))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn hash-map->TikZ-out
   "Converts complete \textsc{pddl} type hash-map to TikZ file"
   [h-map]
@@ -2182,7 +2535,9 @@ to a TikZ string (key -- { val1, val2 })"
 
 \\end{tikzpicture}
 \\end{document}"))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn types-map-entry->dot-language
   "Converts one hash-map entry
 to the dot language"
@@ -2191,7 +2546,9 @@ to the dot language"
    "\"" (name (key entry)) "\""
    " -> "
    "{" (clojure.string/join " " (map #(str "\"" % "\"")  (val entry))) "}"))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 
 (defn types-hash-map->dot-language
   "Converts a \textsc{pddl} types hash-map
@@ -2199,6 +2556,9 @@ to the dot language notation"
   [pddl-types-map]
   (clojure.string/join "\n" (map types-map-entry->dot-language pddl-types-map)))
 
+#+END_SRC
+
+#+BEGIN_SRC clojure
 ;;; Read \textsc{pddl} predicates and generate UML 'type' diagram
 (defn get-types-in-predicate
   "Takes a \textsc{pddl} predicate,
@@ -2211,7 +2571,9 @@ to the dot language notation"
      (let [first-char (first (name s))]
        (or (= \- first-char)
            (= \? first-char)))) (rest pddl-pred)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn pddl-pred->hash-map-long
   "Takes a \textsc{pddl} predicate, e.g.
   '(at ?x - location ?y - object) and returns a
@@ -2226,10 +2588,13 @@ to the dot language notation"
               (list pddl-pred)))
           {}
           (get-types-in-predicate pddl-pred)))
+#+END_SRC
 
-
+#+BEGIN_SRC clojure
 (pddl-pred->hash-map-long '(at ?x - location ?y - object))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 ;;; TODO: Create short version wiht prolog predicate style
 ;;; e.g. at/2
 (defn all-pddl-preds->hash-map-long
@@ -2242,7 +2607,9 @@ to the dot language notation"
                      pddl-preds)]
     (apply merge-with concat
            (map pddl-pred->hash-map-long pddl-preds))))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn hash-map->dot
   "Converts a hash-map to
   dot language for creating
@@ -2256,7 +2623,9 @@ to the dot language notation"
               (clojure.string/join "\\l"  (val map-entry))
               "}\"]\n"))
        h-map))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn hash-map->dot-with-style
   "Adds dot template to
 hash-map>dot"
@@ -2268,8 +2637,10 @@ edge[dir=back, arrowtail=empty]
 \n"
    (clojure.string/join (hash-map->dot h-map))
    "}"))
+#+END_SRC
 
 
+#+BEGIN_SRC clojure
 (defn \textsc{pddl}->dot-with-style
   "Adds dot template to
 hash-map>dot"
@@ -2284,18 +2655,9 @@ edge[dir=back, arrowtail=empty]
    (types-hash-map->dot-language (types->hash-map types))
 
    "}"))
+#+END_SRC
 
-;;; Example for Predicate:
-(def predicates 
-  '(:predicates (at ?x - location ?y - object)
-                (have ?x - object) 
-                (hot ?x - object)
-                (on ?f - furniture ?o - object)))
-
-;;; Example invocation:
-(hash-map->dot-with-style (all-pddl-preds->hash-map-long predicates))
-
-
+#+BEGIN_SRC clojure
 (defn get-\textsc{pddl}-construct
   "Takes a \textsc{pddl} keyword and a \textsc{pddl} domain/problem
 file and returns all parts of the file that
@@ -2305,9 +2667,10 @@ belong to the \textsc{pddl} keyword."
                 (= (keyword pddl-keyword)
                    (first %)))
           (read-lispstyle-edn pddl-file)))
+#+END_SRC
 
-
-                                        ; TODO: Throw error if length != 1
+#+BEGIN_SRC clojure
+; TODO: Throw error if length != 1
 (defn get-\textsc{pddl}-predicates
   "Get all predicates in a \textsc{pddl} file"
   [pddl-file]
@@ -2317,33 +2680,41 @@ belong to the \textsc{pddl} keyword."
   "Get all predicates in a \textsc{pddl} file"
   [pddl-file]
   (first (get-\textsc{pddl}-construct 'init pddl-file)))
+#+END_SRC
 
 
-                                        ; TODO: Throw error if length != 1
+#+BEGIN_SRC clojure
+; TODO: Throw error if length != 1
 (defn get-\textsc{pddl}-types
   "Get all types in a \textsc{pddl} file"
   [pddl-file]
   (first (get-\textsc{pddl}-construct 'types pddl-file)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn \textsc{pddl}->dot
   "Takes a complete \textsc{pddl} file
 and generates a UML type diagram"
   [pddl-file]
   (\textsc{pddl}->dot-with-style (get-\textsc{pddl}-predicates pddl-file)
                         (get-\textsc{pddl}-types pddl-file)))
+#+END_SRC
 
+#+BEGIN_SRC clojure
 (defn \textsc{pddl}->dot-commandline-input
   "Assumes that the \textsc{pddl} input is
 a string and 'reads' this string"
   [pddl-file]
   (print "The type is " (type pddl-file))
   (\textsc{pddl}->dot (edn/read-string pddl-file)))
+#+END_SRC
 
-
+#+BEGIN_SRC clojure
 (defn \textsc{pddl}->dot-file-input
   "Reads \textsc{pddl} file"
   [pddl-file-name]
   (\textsc{pddl}->dot pddl-file-name))
+#+END_SRC
 
 ;;;; math helper functions
 
@@ -3102,6 +3473,10 @@ repository:
 #+LaTeX_HEADER: \definecolor{dhscodebg}{rgb}{0.95,0.95,0.95}
 #+LaTeX_HEADER: \usepackage{menukeys}
 #+LATEX_HEADER: \usepackage{scalefnt}
+#+LATEX_HEADER: \usepackage{wrapfig}
+#+LATEX_HEADER: \usepackage{lscape}
+#+LATEX_HEADER: \usepackage{rotating}
+#+LATEX_HEADER: \usepackage{epstopdf}
 
 ##+LaTeX_HEADER:% \newcommand{\mypddl}{\textsc{myPddl}\xspace}
 #+LaTeX_HEADER: \newcommand{\mypddl}{\smallerft[0.8]{myPDDL}\xspace}
@@ -3109,9 +3484,10 @@ repository:
 #+LaTeX_HEADER: \newcommand{\itsimple}{\textsc{itSimple}\xspace}
 #+LaTeX_HEADER: \newcommand{\pddlmode}{\textsc{pddl}-mode\xspace}
 #+LaTeX_HEADER: \newcommand{\pddl}{\textsc{pddl}\xspace}
+#+LaTeX_HEADER: \newcommand{\uml}{\textsc{uml}\xspace}
 #+LATEX_HEADER: \newcommand\smallerft[2][0.85]{{\scalefont{#1}#2}}
 
-
+#+PROPERTY: tangle hacker-world-tangle.pdl
 #+OPTIONS org-export-publishing-directory "./exports"
 #+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css" />
 ** TODO: Glossary?

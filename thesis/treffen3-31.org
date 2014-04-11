@@ -24,40 +24,51 @@
 |   90 |
 |   90 |
 | 82.5 |
-| 82.5 |
 | 92.5 |
 | 87.5 |
 |   95 |
 
 
 #+NAME: sus-mean
-|   SUS |
-|-------|
-| 88.75 |
+|  SUS |
+|------|
+| 89.6 |
+#+TBLFM: @2$1=vmean(remote (sus-values,$1))
 
 
+#+BEGIN_SRC R
+
+sus <- c(90,90,90,82.5,92.5,87.5,95)
+
+round(mean(sus),1)
+round(sd(sus),1)
+
+#+END_SRC
+
+#+RESULTS:
+: 3.9
 
 
 # Very, very good
 #+NAME: task-completions-plot
-#+BEGIN_SRC R :var sus=sus-mean susv=sus-values :results output graphics :file sus.svg :exports none
+#+BEGIN_SRC R :var sus=sus-mean susv=sus-values :results output graphics :file sus1.svg :exports none
  library(ggplot2)
 
 ggplot(data=sus, aes(x="All Participants",y=SUS)) +
 
 geom_bar(stat="identity",width=.3,fill="gray") + 
-geom_point(data = susv, size = 1, colour = 'black',
-               stat = "identity") + 
-  scale_fill_hue(name="SUS Score") +  # Legend label, use darker colors
-      ggtitle("Average SUS Score (Arithmetic Mean)\nfor myPDDL (with Data Values)") +  
-    scale_y_continuous(breaks=0:100*4) +
+geom_point(data = susv, size = 1.5, colour = 'black',
+               stat = "identity", shape=4) + 
+  scale_fill_hue(name="System Usability Scale Score") +  # Legend label, use darker colors
+      ggtitle("System Usability Scale Score\nfor myPDDL (with Data Values)") +  
+    scale_y_continuous(breaks=0:104*4) +
     xlab("") +
     ylab("SUS Score") +
 theme_bw()
 #+END_SRC
 
 #+RESULTS: task-completions-plot
-[[file:sus.svg]]
+[[file:sus1.svg]]
 
 #+BEGIN_SRC R :var sus=sus-mean susv=sus-values :results output graphics :file sus-simple.png :exports none
 modified <- sus$SUS
