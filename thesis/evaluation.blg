@@ -1,5 +1,0 @@
-[1] Config.pm:318> INFO - This is Biber 1.8
-[1] Config.pm:321> INFO - Logfile is 'evaluation.blg'
-[98] biber:275> INFO - === Mon Mar 24, 2014, 00:59:40
-[191] Utils.pm:185> ERROR - Cannot find control file 'evaluation.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[192] Biber.pm:109> INFO - ERRORS: 1
