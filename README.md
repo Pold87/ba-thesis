@@ -1,7 +1,7 @@
 Bachelor Thesis - Volker Strobel
 =======================================================
 
-myPDDL - A Modular Knowledge Engineering Tool for PDDL
+myPDDL - A Modular Knowledge Engineering Tool
 ------------------------------------------------------
 
 myPDDL is a highly customizable and extensible modular system,
@@ -18,6 +18,6 @@ developments and further information.
   myPDDL.
 - Use the
   [PDDL/Clojure Interface](https://github.com/Pold87/pddl-clojure-interface)
-- See the
-  [Source Code](https://github.com/Pold87/pddl-clojure-interface-source)
-  of the PDDL/Clojure interface.
+- Use the Interface as [Standalone](https://github.com/Pold87/pddl-clojure-interface-standalone)
+- ... and see the [Source Code](https://github.com/Pold87/pddl-clojure-interface-standalone-source) of the Standalone
+
